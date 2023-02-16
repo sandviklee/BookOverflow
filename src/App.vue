@@ -1,99 +1,10 @@
-<template>
-  <div class="book-IMDb">
-
-    <div class="title centered-text">
-      IMDb for Books
-    </div>
-
-    <nav class="navbar is-transparent">
-  <div class="navbar-brand">
-    <a class="navbar-item" href="https://bulma.io">
-      Logo here
-    </a>
-    <div class="navbar-burger" data-target="navbarExampleTransparentExample">
-      <span></span>
-      <span></span>
-      <span></span>
-    </div>
-  </div>
-
-  <div id="navbarExampleTransparentExample" class="navbar-menu">
-    <div class="navbar-start">
-      <a class="navbar-item" href="https://bulma.io/">
-        Home
-      </a>
-      <div class="navbar-item has-dropdown is-hoverable">
-        <a class="navbar-link" href="https://bulma.io/documentation/overview/start/">
-          Toplists
-        </a>
-        <div class="navbar-dropdown is-boxed">
-          <a class="navbar-item" href="https://bulma.io/documentation/overview/start/">
-            NY Times top 100
-          </a>
-          <a class="navbar-item" href="https://bulma.io/documentation/overview/modifiers/">
-            Top 100 authors
-          </a>
-          <a class="navbar-item" href="https://bulma.io/documentation/columns/basics/">
-            Top newcomers
-          </a>
-          <a class="navbar-item" href="https://bulma.io/documentation/layout/container/">
-            Top rated
-          </a>
-          <a class="navbar-item" href="https://bulma.io/documentation/form/general/">
-            Form
-          </a>
-          <hr class="navbar-divider">
-          <a class="navbar-item" href="https://bulma.io/documentation/elements/box/">
-            Elements
-          </a>
-          <a class="navbar-item is-active" href="https://bulma.io/documentation/components/breadcrumb/">
-            Components
-          </a>
-        </div>
-      </div>
-    </div>
-
-    <div class="navbar-end">
-      <div class="navbar-item">
-        <div class="field is-grouped">
-          <p class="control">
-            <a class="bd-tw-button button" data-social-network="Twitter" data-social-action="tweet" data-social-target="https://bulma.io" target="_blank" href="https://twitter.com/intent/tweet?text=Bulma: a modern CSS framework based on Flexbox&amp;hashtags=bulmaio&amp;url=https://bulma.io&amp;via=jgthms">
-              <span class="icon">
-                <i class="fab fa-twitter"></i>
-              </span>
-              <span>
-                My lists
-              </span>
-            </a>
-          </p>
-          <p class="control">
-            <a class="button is-primary" href="https://github.com/jgthms/bulma/releases/download/0.9.4/bulma-0.9.4.zip">
-              <span class="icon">
-                <i class="fas fa-download"></i>
-              </span>
-              <span>User</span>
-            </a>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</nav>
-    <div class="field has-addons mt-5">
-      <p class="control">
-        <input class="input" type="text" placeholder="Find a book">
-      </p>
-      <p class="control">
-        <a class="button is-info">
-          Search
-        </a>
-      </p>
-    </div>
-
-  </div>
-</template>
-
-<script setup>
+<script>
+export default{
+  data(){
+    return {
+    }
+  }
+}
 /*
   imports
 */
@@ -102,30 +13,86 @@ import { ref } from 'vue'
 
 /*
   books
+  Change it to get from Firebase
 */
 
-const books = ref([
+/* const books = ref([
   {
     id: 'id1',
-    content: 'Harry Potter',
-    content: '8',
+    title: 'Harry Potter & The Philosophers Stone',
+    author: 'J.K Rowling',
+    rating: '7',
+    summary: 'In this story ...',
     inList: true
   },
   {
     id: 'id2',
-    content: 'Lord of the Rings',
-    content: '10',
+    title: 'Lord of the Rings',
+    author: 'J.R.R Tolkien',
+    rating: '10',
+    summary: '',
     inList: false
   }
 ])
+*/
 
 </script>
 
-<style>
-@import 'bulma\css\bulma.min.css';
+<template>
+  <div class="BookOverflow">
+    <nav class="navbar">
+      <div class="navbar-brand">
+        <a class="navbar-item" href="../index.html">
+          BookOverflow logo
+        </a>
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
 
-.book-IMDb{
+      <div id="navbar" class="navbar-menu">
+        <div class="navbar-item">
+          <input v-model="text" placeholder="Find a book or author">
+          <button @click="search">search</button>
+          <p class="control">
+            <a class="bd-list-button button" target="_blank" href="https://twitter.com/intent/tweet?text=Bulma: a modern CSS framework based on Flexbox&amp;hashtags=bulmaio&amp;url=https://bulma.io&amp;via=jgthms">
+              <span>
+                My lists
+              </span>
+            </a>
+          </p>
+          <p class="control">
+            <a class="button is-primary" href="https://github.com/jgthms/bulma/releases/download/0.9.4/bulma-0.9.4.zip">
+              <span>
+                User
+              </span>
+            </a>
+          </p>
+        </div>
+      </div>
+    </nav>
+
+    <div class="lists">
+      <p>
+        Add different lists from firebase database to the website with scripts
+      </p>
+    </div>
+  </div>
+</template>
+
+<style>
+
+.BookOverflow{
   padding: 10px;
   margin: 0 auto;
+  background-color: rgba(234, 231, 220, 1);
+}
+
+.navbar{
+  background-color: rgba(216, 195, 165, 1);
+}
+
+.p{
+  color:black;
 }
 </style>
