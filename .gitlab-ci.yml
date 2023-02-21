@@ -1,25 +1,27 @@
-image: node:18.14.0
+image: node:latest
+
+cache:
+  key: ${CI_COMMIT_REF_SLUG}
+  paths:
+    - node_modules/
 
 stages:
   - build
   - test
+  - deploy
 
-cache:
-  paths:
-    - node_modules/
-
-build site:
+build:
   stage: build
   script:
-    - npm ci --progress=false
+    - npm ci
     - npm run build
 
-# unit test:
+# test:
 #   stage: test
 #   script:
-#     - npm test
-#   artifacts:
-#     paths:
-#       - dist/
-#       - node_modules/
-#       - package.json
+#     - npm run test
+
+deploy:
+  stage: deploy
+  script:
+    - echo "Deploying to production"
