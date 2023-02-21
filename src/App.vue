@@ -122,7 +122,7 @@ const books = ref([
 </script>
 
 <style>
-@import 'bulma\css\bulma.min.css';
+@import '/node_modules/bulma/css/bulma.min.css';
 
 .book-IMDb{
   padding: 10px;
