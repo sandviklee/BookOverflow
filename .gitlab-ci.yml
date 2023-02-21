@@ -1,4 +1,4 @@
-image: node:10.6.0
+image: node:18.14.0
 
 stages:
   - build
@@ -11,7 +11,7 @@ cache:
 build site:
   stage: build
   script:
-    - npm install --progress=false
+    - npm ci --progress=false
     - npm run build
 
 # unit test:
