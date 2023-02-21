@@ -2,7 +2,7 @@
   <div class="book-IMDb">
 
     <div class="title centered-text">
-      IMDb for Books
+      BookOverflow
     </div>
 
     <nav class="navbar is-transparent">
