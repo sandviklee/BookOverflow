@@ -2,7 +2,7 @@
     <div class="navbar">
         <div class="logo">
             <a href="./HomePage.vue">
-                <img src="src/assets/BookOverflow/logo.png" alt="BookOverflow Logo">
+                <img src="/src/assets/BookOverflow/logo.png" alt="BookOverflow Logo">
             </a>
         </div>
         <div class="search-bar">
@@ -13,7 +13,7 @@
         </div>
         <div class="user-lists">
             <a href="./UserList.vue">
-                <img src="/assets/BookOverflow/lists.png" alt="User Lists">
+                <img src="" alt="User Lists">
             </a>
         </div>
         <div class="signup-login">
