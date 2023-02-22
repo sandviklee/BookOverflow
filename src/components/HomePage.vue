@@ -79,7 +79,7 @@ onMounted(async () => {
         }
         bookArray.push(book)
     });
-    books.value, booksDiscover.value, booksPopular.value, booksToday.value = bookArray
+    books.value = booksDiscover.value = booksPopular.value = booksToday.value = bookArray
 })
 </script>
 
