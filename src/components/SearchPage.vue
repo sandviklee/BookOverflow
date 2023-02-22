@@ -13,7 +13,6 @@
   </header>
 </template>
   
-  
 <script>
   import { ref, onMounted } from 'vue';
   //import * as firebase from 'firebase/app';
