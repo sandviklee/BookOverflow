@@ -1,14 +1,15 @@
 <template>
     <div class="navbar">
         <div class="logo">
-            <a href="./HomePage.vue">
+            <a href="./">
                 <img src="/src/assets/BookOverflow/logo.png" alt="BookOverflow Logo">
             </a>
         </div>
         <div class="search-bar">
             <form>
-                <input type="text" v-model="searchTerm" placeholder="Search...">
-                <button type="submit" @click.prevent="search">{{ buttonText }}</button>
+                <i class="pi pi-search"></i>
+                <input type="text" v-model="searchTerm" placeholder="Search BookOverflow...">
+                <button type="submit" @click.prevent="search">{{ 'All' }}</button>
             </form>
         </div>
         <div class="user-lists">
@@ -17,8 +18,9 @@
             </a>
         </div>
         <div class="signup-login">
-            <button>Sign Up/In</button>
+            <Button label="Sign In" icon="pi pi-user" class="p-button-text" />
         </div>
+        
 </div>
 </template>
 
@@ -27,7 +29,7 @@ export default {
     data() {
         return {
             searchTerm: "",
-            buttonText: "Search"
+            buttonText: ""
         };
     },
     methods: {
@@ -43,42 +45,52 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    height: 80px;
-    padding: 0 20px;
+    height: 70px;
+    padding: 0 30px;
     background-color: rgba(216, 195, 165, 1);
     border-bottom: 1px solid #ddd;
 }
 
 .logo img {
-    height: 60px;
+    height: 75%;
+    width: 75%;
 }
 
 .search-bar {
     display: flex;
+    padding-left: 28vh;
     align-items: center;
+    position: relative;
     flex-grow: 1;
 }
 
+i {
+    position: absolute;
+    padding: 1.5vh 1.5vh;
+}
+
 .search-bar input[type="text"] {
-    height: 40px;
-    padding: 0 10px;
+    height: 45px;
+    width: 50vh;
+    padding: 0 40px;
     border: none;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 2px 2px 0px #E98074;
+    background-color: #EDEAE5;
     font-size: 16px;
     flex-grow: 1;
 }
 
 .search-bar button {
-    height: 40px;
-    padding: 0 20px;
+    height: 45px;
+    padding-right: 2vh;
+    width: 50px;
     border: none;
     border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #0074d9;
-    color: #fff;
+    box-shadow: 2px 2px 0px #E98074;
+    background-color: #EDEAE5;
+    color: #8E8D8A;
     font-size: 16px;
-    margin-left: 10px;
 }
 
 .user-lists img {
@@ -86,14 +98,5 @@ export default {
     cursor: pointer;
 }
 
-.signup-login button {
-    height: 40px;
-    padding: 0 20px;
-    border: none;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    background-color: #0074d9;
-    color: #fff;
-    font-size: 16px;
-}
 </style>
+
