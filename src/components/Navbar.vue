@@ -2,7 +2,7 @@
     <div class="navbar">
         <div class="logo">
             <a href="./HomePage.vue">
-                <img src="/assets/BookOverflow/logo.png" alt="BookOverflow Logo">
+                <img src="src/assets/BookOverflow/logo.png" alt="BookOverflow Logo">
             </a>
         </div>
         <div class="search-bar">
