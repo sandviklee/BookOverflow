@@ -1,21 +1,26 @@
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
+import PrimeVue from 'primevue/config';
 
-createApp(App).use(router).mount('#app')
+//Component imports
+import Button from 'primevue/button';
+import Dropdown from 'primevue/dropdown';
+
+//Import themes
+import 'primevue/resources/themes/saga-blue/theme.css';       //theme
+import 'primevue/resources/primevue.min.css';                 //core css
+import 'primeicons/primeicons.css';                           //icons
 
 
-// Import your components here
-import Navbar from './components/Navbar.vue'
+let app = createApp(App)
+app.use(router)
+app.use(PrimeVue)
+app.mount('#app')
 
-// Register your components here
-Vue.component('navbar', Navbar)
+//Add components to app
+app.component('Button', Button);
+app.component('Dropdown', Dropdown);
 
-Vue.config.productionTip = false
 
-
-new Vue({
-  router,
-  render: h => h(App),
-}).$mount('#app')
 
