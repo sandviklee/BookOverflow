@@ -12,7 +12,7 @@
   </template>
   
   <script>
-  import { db } from './firebase';
+  import { db } from '../firebase/firebase';
   
   export default {
     name: 'ViewBook',
