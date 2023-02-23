@@ -36,8 +36,8 @@
 <script>
 
 
-//import { db } from './firebase.js';
-/*export default {
+import { db } from './firebase';
+export default {
     data() {
         return {
             popularBooks: [],
@@ -54,5 +54,5 @@
     });
   }
 };
-*/
+
 </script>
