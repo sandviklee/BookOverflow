@@ -19,6 +19,5 @@ export default {
 <style>
 #app {
   background-color: rgba(234, 231, 220, 1);
-
 }
 </style>

@@ -1,9 +1,9 @@
 <template>
     <div class="navbar">
         <div class="logo">
-            <a href="./">
+            <router-link to="/">
                 <img src="/src/assets/BookOverflow/logo.png" alt="BookOverflow Logo">
-            </a>
+            </router-link>
         </div>
         <div class="search-bar">
             <form>
@@ -17,12 +17,14 @@
         </div>
         <div class="vl"></div>
         <div class="my-bookshelf">
-            <a href="./UserList.vue">
+            <router-link to="/userlist/:id">
                 <button class="button is-text is-ghost is-medium"><i class="pi pi-book" style="font-size: 1.5rem"></i>&ensp;My Bookshelf</button>
-            </a>
+            </router-link>
         </div>
         <div class="signup-login">
+            <router-link to="/signup">
             <button class="button is-text is-ghost is-medium"><i class="pi pi-user" style="font-size: 1.5rem"></i>&ensp;Sign In</button>
+            </router-link>
         </div>
         <div class="menu">
             <button class="button is-text is-ghost is-medium"><i class="pi pi-bars" style="font-size: 2rem"></i></button>
