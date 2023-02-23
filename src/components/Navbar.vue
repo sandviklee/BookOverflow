@@ -86,11 +86,9 @@ export default {
     padding: 1.3vh 1.5vh;
 }
 
-
-
 .search-bar input[type="text"] {
     height: 48px;
-    width: 80vh;
+    width: 65vh;
     padding: 0 40px;
     border: none;
     border-radius: 5px;
