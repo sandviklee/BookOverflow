@@ -1,8 +1,8 @@
-import * as firebase from 'firebase/app';
-//import 'firebase/auth';
-import { getFirestore } from 'firebase/firestore'
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getFirestore } from "firebase/firestore";
 
-const config = {
+const firebaseConfig = {
     apiKey: "AIzaSyBcPMAVJdmJ3yWADip0ymhN1VatVjUOuZE",
     authDomain: "bookoverflow-561d1.firebaseapp.com",
     projectId: "bookoverflow-561d1",
@@ -12,6 +12,11 @@ const config = {
     measurementId: "G-YW0HE6YYVP"
 }
 
-const firebaseApp = firebase.initializeApp(config)
-//db kan brukes til å aksessere databasen vår i firestore
-export const db = getFirestore(firebaseApp)
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+const analytics = getAnalytics(app);
+const db = getFirestore(app);
+
+export {
+    db
+}

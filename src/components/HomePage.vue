@@ -1,58 +1,112 @@
 <template>
+    <div class="main">
+        <div class="card mb-6">
+            <div class="card-body">
+                
+
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
                 <div class="card mb-3">
-                    <div class="card-header">
-                        <h5>Popular Books</h5>
+                    <span class="icon-text">
+                        <div class="card-header-title pl-5">
+                        <span class="icon">
+                            <i class="pi pi-megaphone"></i>
+                        </span>
+                        <h3>Discover</h3>
                     </div>
+                    </span>
+
                     <div class="card-body">
-                        <div v-for="(book, index) in popularBooks" :key="index">
-                            <h6>{{ book.title }}</h6>
-                            <p>{{ book.author }}</p>
-                            <p>Rating: {{ book.rating }}</p>
-                        </div>
+                        <Book class="books" v-for="book in books" :imagePath="book.author + '/' + book.title + '.png'"/>
                     </div>
                 </div>
             </div>
-            <div class="col-md-6">
+            <div class="col-md-10">
                 <div class="card mb-3">
-                    <div class="card-header">
-                        <h5>New Releases</h5>
-                    </div>
-                    <div class="card-body">
-                        <div v-for="(book, index) in newReleases" :key="index">
-                            <h6>{{ book.title }}</h6>
-                            <p>{{ book.author }}</p>
-                            <p>Rating: {{ book.rating }}</p>
+                    <span class="icon-text">
+                        <div class="card-header-title pl-5">
+                        <span class="icon">
+                            <i class="pi pi-thumbs-up"></i>
+                        </span>
+                        <h3>Popular Books</h3>
                         </div>
+                    </span>
+
+                    <div class="card-body">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="card mb-3">
+                    <span class="icon-text">
+                        <div class="card-header-title pl-5">
+                        <span class="icon">
+                            <i class="pi pi-star"></i>
+                        </span>
+                        <h3>Favorites</h3>
+                    </div>
+                    </span>
+                    <div class="card-body">
+                        
                     </div>
                 </div>
             </div>
         </div>
-</div>
+    </div>
 </template>
   
-<script>
+<script setup>
 
+import { db } from '../firebase/firebase.js'
+import {ref, onMounted} from 'vue'
+import { collection, getDocs } from "firebase/firestore";
 
-import { db } from './firebase';
-export default {
-    data() {
-        return {
-            popularBooks: [],
-            newReleases: []
+const books = ref([])
+
+onMounted(async () => {
+    const querySnapshot = await getDocs(collection(db, 'books'));
+    let bookArray = []
+    querySnapshot.forEach((doc) => {
+        const book = {
+            id: doc.id,
+            author: doc.data().author.name,
+            title: doc.data().title
         }
-    },
-    mounted() {
-    db.ref('books').on('value', snapshot => {
-      const bookArray = [];
-      snapshot.forEach(book => {
-        bookArray.push({ id: book.key, ...book.val() });
-      });
-      this.books = bookArray;
+        bookArray.push(book)
     });
-  }
+    books.value = bookArray
+})
+console.log(books);
+
+</script>
+
+<script>
+import Book from './Book.vue';
+export default {
+    components: {
+        Book
+    }
 };
 
 </script>
+<style>
+.main {
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.card-body {
+    height: 22vh;
+}
+
+.books {
+    display: inline-block;
+    padding: 1vh 2vh;
+}
+
+</style>
