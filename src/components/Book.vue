@@ -1,7 +1,9 @@
 <template>
     <div>
         <div class="card">
-            <img class="bookImg" :src="logo">
+            <router-link :to="'/book/' + id">
+                <img class="bookImg" :src="path">
+            </router-link>
         </div>
     </div>
 </template>
@@ -13,19 +15,24 @@ import { ref, watchEffect } from 'vue'
 //Defines the input for the spesific book, what kind of book should it be?
 const props = defineProps({
   imagePath: { type: String },
+
 })
 
-const logo = ref()
+const path = ref()
+
+let id = props.imagePath.split(";")[1]
+
 watchEffect(async () => {
-  logo.value = (await import(/* @vite-ignore */ `../assets/Bookformat/Author/${props.imagePath}`)).default
+  path.value = (await import(/* @vite-ignore */ `../assets/Bookformat/Author/${props.imagePath.split(";")[0]}`)).default
 })
+
 
 </script>
 
 <style>   
 
 .bookImg {
-    box-shadow: 2px 0px 0px #E98074;
+    
     border-radius: 5px;
     height: 20vh;
     width: 14vh;
@@ -33,7 +40,7 @@ watchEffect(async () => {
     vertical-align: middle;
     -webkit-transform: perspective(1px) translateZ(0);
     transform: perspective(1px) translateZ(0);
-    box-shadow: 0 0 1px rgba(0, 0, 0, 0);
+    box-shadow: 2px 0px 0px #E98074;
     -webkit-transition-duration: 0.3s;
     transition-duration: 0.3s;
     -webkit-transition-property: transform;

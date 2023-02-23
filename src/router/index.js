@@ -11,9 +11,9 @@ import UserList from '../components/UserList.vue'
 const routes = [
     { path: '/', component: HomePage },
     { path: '/search', component: SearchPage },
-    { path: '/author/:id', component: ViewAuthor },
+    { path: '/author/', component: ViewAuthor },
     { path: '/book/:id', component: ViewBook },
-    { path: '/userlist/:id', component: UserList }
+    { path: '/userlist/:id', component: UserList },
   ]
   
   const router = createRouter({
