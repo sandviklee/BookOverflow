@@ -7,18 +7,25 @@
         </div>
         <div class="search-bar">
             <form>
-                <i class="pi pi-search"></i>
+                <span class="search-icon">
+                    <i class="pi pi-search"></i>
+                </span>
+                
                 <input type="text" v-model="searchTerm" placeholder="Search BookOverflow...">
                 <button type="submit" @click.prevent="search">{{ 'All' }}</button>
             </form>
         </div>
-        <div class="user-lists">
+        <div class="vl"></div>
+        <div class="my-bookshelf">
             <a href="./UserList.vue">
-                <img src="" alt="User Lists">
+                <button class="button is-text is-ghost is-medium"><i class="pi pi-book" style="font-size: 1.5rem"></i>&ensp;My Bookshelf</button>
             </a>
         </div>
         <div class="signup-login">
-            <Button label="Sign In" icon="pi pi-user" class="p-button-text" />
+            <button class="button is-text is-ghost is-medium"><i class="pi pi-user" style="font-size: 1.5rem"></i>&ensp;Sign In</button>
+        </div>
+        <div class="menu">
+            <button class="button is-text is-ghost is-medium"><i class="pi pi-bars" style="font-size: 2rem"></i></button>
         </div>
         
 </div>
@@ -52,26 +59,36 @@ export default {
 }
 
 .logo img {
-    height: 75%;
-    width: 75%;
+    padding-left: 10vh;
+    padding-top: 1vh;
+    width: 85%;
 }
 
 .search-bar {
     display: flex;
-    padding-left: 28vh;
+    padding-left: 10vh;
     align-items: center;
     position: relative;
     flex-grow: 1;
 }
 
-i {
-    position: absolute;
-    padding: 1.5vh 1.5vh;
+.vl {
+  border-left: 2.5px solid rgb(0, 0, 0);
+  height: 45px;
+  padding-right: 10px;
+
 }
 
+.search-icon {
+    position: absolute;
+    padding: 1.3vh 1.5vh;
+}
+
+
+
 .search-bar input[type="text"] {
-    height: 45px;
-    width: 50vh;
+    height: 48px;
+    width: 80vh;
     padding: 0 40px;
     border: none;
     border-radius: 5px;
@@ -82,7 +99,7 @@ i {
 }
 
 .search-bar button {
-    height: 45px;
+    height: 48px;
     padding-right: 2vh;
     width: 50px;
     border: none;

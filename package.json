@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "vite",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/mystyles.css",
+    "css-watch": "npm run css-build -- --watch",
+    "start": "npm run css-watch"
   },
   "dependencies": {
     "bulma": "^0.9.4",
@@ -13,13 +16,14 @@
     "install": "^0.13.0",
     "npm": "^9.5.1",
     "primeicons": "^6.0.1",
-    "primevue": "^3.23.0",
     "vue": "^3.2.45",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
     "@rollup/plugin-babel": "^6.0.3",
     "@vitejs/plugin-vue": "^4.0.0",
+    "node-sass": "^8.0.0",
     "vite": "^4.0.0"
   }
+  
 }
