@@ -8,9 +8,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@babel/runtime": "^7.21.0",
     "bulma": "^0.9.4",
     "firebase": "^9.17.1",
+    "typesense": "^1.5.2",
+    "typesense-instantsearch-adapter": "^2.5.1",
     "vue": "^3.2.45",
+    "vue-instantsearch": "^4.8.5",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
