@@ -86,6 +86,13 @@ export default {
     padding: 1.3vh 1.5vh;
 }
 
+.search-icon {
+    position: absolute;
+    padding: 1.3vh 1.5vh;
+}
+
+
+
 .search-bar input[type="text"] {
     height: 48px;
     width: 65vh;
