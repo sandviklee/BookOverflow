@@ -1,4 +1,12 @@
 <template>
+    <div class="main">
+        <div class="card mb-6">
+            <div class="card-body">
+                
+
+            </div>
+        </div>
+    </div>
     <div class="container">
         <div class="row">
             <div class="col-md-6">

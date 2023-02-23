@@ -8,31 +8,26 @@
     </div>
 </template>
 
-
 <script setup>
 import { ref, watchEffect } from 'vue'
 
 //Defines the input for the spesific book, what kind of book should it be?
 const props = defineProps({
   imagePath: { type: String },
-
 })
-
 const path = ref()
-
+//Gets the id from the database.
 let id = props.imagePath.split(";")[1]
 
+//Async function to determine the path of the books. This is only for local files!
 watchEffect(async () => {
   path.value = (await import(/* @vite-ignore */ `../assets/Bookformat/Author/${props.imagePath.split(";")[0]}`)).default
 })
 
-
 </script>
 
 <style>   
-
-.bookImg {
-    
+.bookImg {    
     border-radius: 5px;
     height: 20vh;
     width: 14vh;
