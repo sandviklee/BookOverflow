@@ -1,16 +1,13 @@
 <template>
     <div>
         Script to get author ID then show info from database
-</div>
+    </div>
 </template>
   
 <script>
 
 
 export default {
-    components: {
-        
-    },
     props: ['authorId'],
     data() {
         return {
