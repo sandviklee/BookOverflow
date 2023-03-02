@@ -4,7 +4,7 @@
       <div class="card-content">
         <div class="content">
           <h1> 
-            Search page <br>
+            Signup page <br>
             Coming soon! </h1>
         </div>
       </div>
@@ -19,9 +19,8 @@
   //import * as firebase from 'firebase/app';
   //import 'firebase/database';
   
-
   export default {
-    name: 'SearchPage',
+    name: 'SignupPage',
     setup() {
       const results = ref([]);
   
@@ -35,7 +34,8 @@
       return { results };
     },
   };
-</script>
+  
+  </script>
   
 <style>
 
@@ -49,5 +49,6 @@ header {
   text-align: center;
   font-weight:700;
   text-shadow: 1px 0.5px 0px #E98074;
+
 }
 </style>

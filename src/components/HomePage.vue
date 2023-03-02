@@ -1,11 +1,4 @@
 <template>
-    <div class="main">
-        <div class="card mb-6">
-            <div class="card-body">
-                <h1>Nyheter</h1>
-            </div>
-        </div>
-    </div>
     <div class="container">
         <div class="row">
             <div class="col-md-6">
@@ -64,7 +57,7 @@ import { db } from '../firebase/firebase.js'
 import { ref, onMounted} from 'vue'
 import { collection, getDocs } from "firebase/firestore";
 
-//Implementert shuffle funksjon
+//Implement shuffle function for booklists.
 function shuffleArray(arr) {
   arr.sort(() => Math.random() - 0.5);
 }
@@ -74,6 +67,7 @@ const booksDiscover = ref([])
 const booksPopular = ref([])
 const booksToday = ref([])
 
+//Get books from database, and generalize them with id, author and title.
 onMounted(async () => {
     const querySnapshot = await getDocs(collection(db, 'books'));
     let bookArray = []
@@ -85,13 +79,7 @@ onMounted(async () => {
         }
         bookArray.push(book)
     });
-    books.value = bookArray
-    shuffleArray(bookArray)
-    booksDiscover.value = bookArray
-    shuffleArray(bookArray)
-    booksPopular.value = bookArray
-    shuffleArray(bookArray)
-    booksToday.value = bookArray
+    books.value, booksDiscover.value, booksPopular.value, booksToday.value = bookArray
 })
 </script>
 
@@ -104,12 +92,12 @@ export default {
 };
 
 </script>
+
 <style>
 .main {
     width: 80%;
     text-align: center;
     padding-left: 35vh;
-
 }
 
 .card-body {

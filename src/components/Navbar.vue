@@ -22,7 +22,7 @@
             </router-link>
         </div>
         <div class="signup-login">
-            <router-link to="/search">
+            <router-link to="/signup">
                 <button class="button is-text is-ghost is-medium"><i class="pi pi-user" style="font-size: 1.5rem"></i>&ensp;Sign In</button>
             </router-link>
         </div>

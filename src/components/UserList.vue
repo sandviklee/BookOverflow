@@ -1,7 +1,16 @@
 <template>
-    <div id="UserList">
-        <h3>My-list</h3>
-  </div>
+  <header>
+    <div class="card">
+      <div class="card-content">
+        <div class="content">
+          <h1> 
+            My Bookshelf <br>
+            Coming soon! </h1>
+        </div>
+      </div>
+    </div>
+
+  </header>
 </template>
 
 <script>
@@ -14,3 +23,7 @@ export default{
   }
 }
 </script>
+
+<style>
+
+</style>
