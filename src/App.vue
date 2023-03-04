@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    <navbar @search="performSearch"></navbar>
+    <navbar v-if="!$route.meta.hideNavbar" @search="performSearch"></navbar>
     <router-view />
-</div>
+  </div>
 </template>
 
 <script>
@@ -12,14 +12,6 @@ export default {
   name: 'App',
   components: {
     Navbar,
-
   }
 }
 </script>
-
-<style>
-#app {
-  background-color: rgba(234, 231, 220, 1);
-
-}
-</style>

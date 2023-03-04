@@ -1,58 +1,61 @@
 <template>
-    <div class="main">
-        <div class="card mb-6">
-            <div class="card-body">
-                
-
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
+    <div class="background">
+        <div :style="myStyle">
+            <div class="main">
                 <div class="card mb-6">
-                    <span class="icon-text">
-                        <div class="card-header-title pl-5">
-                        <span class="icon">
-                            <i class="pi pi-megaphone"></i>
-                        </span>
-                        <h3>Discover</h3>
-                    </div>
-                    </span>
-
                     <div class="card-body">
-                        <Book class="books" v-for="book in booksDiscover" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
+                        
                     </div>
                 </div>
             </div>
-            <div class="col-md-10">
-                <div class="card mb-6">
-                    <span class="icon-text">
-                        <div class="card-header-title pl-5">
-                        <span class="icon">
-                            <i class="pi pi-thumbs-up"></i>
-                        </span>
-                        <h3>Popular Books</h3>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-6">
+                            <span class="icon-text">
+                                <div class="card-header-title pl-5">
+                                <span class="icon">
+                                    <i class="pi pi-megaphone"></i>
+                                </span>
+                                <h3>Discover</h3>
+                            </div>
+                            </span>
+
+                            <div class="card-body">
+                                <Book class="books" v-for="book in booksDiscover" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
+                            </div>
                         </div>
-                    </span>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card mb-6">
+                            <span class="icon-text">
+                                <div class="card-header-title pl-5">
+                                <span class="icon">
+                                    <i class="pi pi-thumbs-up"></i>
+                                </span>
+                                <h3>Popular Books</h3>
+                                </div>
+                            </span>
 
-                    <div class="card-body">
-                        <Book class="books" v-for="book in booksPopular" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
+                            <div class="card-body">
+                                <Book class="books" v-for="book in booksPopular" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-10">
-                <div class="card mb-6">
-                    <span class="icon-text">
-                        <div class="card-header-title pl-5">
-                        <span class="icon">
-                            <i class="pi pi-star"></i>
-                        </span>
-                        <h3>Favorites</h3>
-                    </div>
-                    </span>
-                    <div class="card-body">
-                        <Book class="books" v-for="book in books" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
+                    <div class="col-md-10">
+                        <div class="card mb-6">
+                            <span class="icon-text">
+                                <div class="card-header-title pl-5">
+                                <span class="icon">
+                                    <i class="pi pi-star"></i>
+                                </span>
+                                <h3>Favorites</h3>
+                            </div>
+                            </span>
+                            <div class="card-body">
+                                <Book class="books" v-for="book in books" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -99,10 +102,17 @@ export default {
         Book
     }
 };
-
 </script>
 
-<style>
+<style scoped>
+.background {
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+  width: 100%;
+  background-color: rgba(234, 231, 220, 1);
+}
+
 .main {
     width: 80%;
     text-align: center;

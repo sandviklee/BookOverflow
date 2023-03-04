@@ -91,9 +91,8 @@ export default {
     padding: 1.3vh 1.5vh;
 }
 
-
-
 .search-bar input[type="text"] {
+    margin: auto;
     height: 48px;
     width: 65vh;
     padding: 0 40px;
