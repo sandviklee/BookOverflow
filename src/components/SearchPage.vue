@@ -19,7 +19,6 @@
   //import * as firebase from 'firebase/app';
   //import 'firebase/database';
   
-
   export default {
     name: 'SearchPage',
     setup() {
@@ -37,17 +36,3 @@
   };
 </script>
   
-<style>
-
-@import url('https://fonts.cdnfonts.com/css/lato');
-* {
-  font-family: "lato";
-}
-
-header {
-  padding-top: 5vh;
-  text-align: center;
-  font-weight:700;
-  text-shadow: 1px 0.5px 0px #E98074;
-}
-</style>
