@@ -17,10 +17,13 @@
         <div class="create-text">
           <h1>CREATE YOUR BOOKOVERFLOW ACCOUNT</h1>
         </div>
+        <div class="username-text">
+          <h6 id="invalid-text"></h6>
+        </div>
         
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input class="input is-medium" type="email" placeholder="Username">
+            <input v-model="usernameField" class="input is-medium" type="email" placeholder="Username">
             <span class="icon is-small is-left">
               <i class="pi pi-user"></i>
             </span>
@@ -28,7 +31,7 @@
         </div>
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input class="input is-medium" type="email" placeholder="Email">
+            <input v-model="emailField" class="input is-medium" type="email" placeholder="Email">
             <span class="icon is-small is-left">
               <i class="pi pi-envelope"></i>
             </span>
@@ -36,7 +39,7 @@
         </div>
         <div class="field">
           <p class="control has-icons-left">
-            <input class="input is-medium" type="password" placeholder="Password">
+            <input v-model="passwordField" class="input is-medium" type="password" placeholder="Password">
             <span class="icon is-small is-left">
               <i class="pi pi-lock"></i>
             </span>
@@ -44,7 +47,7 @@
         </div>
         <div class="field">
           <p class="control has-icons-left">
-            <input class="input is-medium" type="password" placeholder="Confirm Password">
+            <input v-model="passwordConfirmField" class="input is-medium" type="password" placeholder="Confirm Password">
             <span class="icon is-small is-left">
               <i class="pi pi-lock"></i>
             </span>
@@ -52,7 +55,9 @@
         </div>
 
         <div class="create-button">
-          <button class="button is-primary is-medium">CREATE ACCOUNT</button>
+            <button
+            @click="createAccount(usernameField, emailField, passwordField, passwordConfirmField); login();"
+            class="button is-primary is-medium">CREATE ACCOUNT</button>
         </div>
         
         <div class="back-button">
@@ -68,30 +73,106 @@
     
     
 <script>
+import { db } from '../firebase/firebase.js'
+import { doc, setDoc, getDocs, collection, query, where } from "firebase/firestore"; 
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 import { ref, onMounted } from 'vue';
-//import * as firebase from 'firebase/app';
-//import 'firebase/database';
+
+var formatUsername = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
+var formatEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+const auth = getAuth();
+
+let currentUser = "Test"
+
+const checkFields = async (username, email, password, passwordConfirm) => { 
+  let existsInCol = []
+
+  if (username) {
+    const usernameQuery = query(collection(db, "users"), where("username", "==", username))
+    const querySnapshotUsername = await getDocs(usernameQuery);
+    querySnapshotUsername.forEach((doc) => {
+      existsInCol.push(doc)
+    })
+  }
+  
+  if (email) {
+    const emailQuery = query(collection(db, "users"), where("email", "==", email))
+    const querySnapshotEmail = await getDocs(emailQuery);
+    querySnapshotEmail.forEach((doc) => {
+      existsInCol.push(doc)
+    })
+  }
+  
+  let div = document.getElementById("invalid-text")
+  div.innerHTML = ""
+
+  if (formatUsername.test(username) || !username) {
+    div.innerHTML += " Invalid Username."
+  }
+
+  if (existsInCol.length !== 0) {
+    div.innerHTML += " Username and/or Email already exisits!"
+  }
+
+  if (!formatEmail.test(email) || !email) {
+    div.innerHTML += " Invalid Email." 
+  } 
+
+  if ((password != passwordConfirm) || !password || !passwordConfirm) {
+    div.innerHTML += " Invalid Password." 
+  }
+}
+
+const createAccount = async(username, email, password, passwordConfirm) => {
+  await checkFields(username, email, password, passwordConfirm);
+  
+  if (document.getElementById("invalid-text").innerHTML !== "") {
+    console.log("Invalid Fields!");
+    return
+  }
+  
+  createUserWithEmailAndPassword(auth, email, password)
+  .then(async (userCredential) => {
+    // Signed in 
+    
+    const user = userCredential.user;
+    
+    await setDoc(doc(db, "users", user.uid), {
+      email: email,
+      username: username
+    })
+
+    console.log("User has been created!");
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
+}
 
 export default {
-    name: 'SignupRegisterPage',
-    setup() {
-    const results = ref([]);
-
-    onMounted(() => {
-        const term = ''; // replace with your search term
-        //const database = firebase.database();
-        //const ref = database.ref('posts');
-
-    });
-
-    return { results };
+    name: "SignupRegisterPage",
+    data() {
+      return {
+        user: currentUser,
+      }
     },
+    methods: {
+      createAccount,
+      login() {
+        console.log(this.user);
+        if (this.user) {
+          this.$router.push('/')
+        }
+      }
+    },
+    return: { currentUser }
 };
     
 </script>
     
 <style scoped>
-
 @import url('https://fonts.cdnfonts.com/css/lato');
 .background {
   margin: auto;
@@ -112,24 +193,31 @@ export default {
   height: 50vh;
 }
 .create-text {
-  padding-top: 6vh;
-  padding-bottom: 1vh;
+  padding-top: 4.5vh;
+  padding-bottom: 0.1vh;
 
+}
+.username-text {
+  text-align: left;
+  font-size: 13px;
+  width: 70%;
+  margin: auto;
+  padding-left: 1vh;
 }
 .field {
   width: 70%;
   margin: auto;
-  padding: 6px;
+  padding: 10px;
 }
 .create-button {
-  padding-top: 1vh;
+  padding-top: 0vh;
 }
 .button {
   width: 66%;
 }
 
 .back-button {
-  padding-top: 1vh;
+  padding-top: 0.1vh;
 }
 
 .round-card {
