@@ -62,7 +62,7 @@
         
         <div class="back-button">
           <router-link to="/signup/">
-            <button class="button is-text is-ghost is-medium"><i class="pi pi-arrow-circle-left" style="font-size: 1.5rem"></i>&ensp;Already have an account? Login</button>
+            <button class="button is-text is-ghost is-medium"><i class="pi pi-arrow-circle-left" style="font-size: 1.5rem"></i>&ensp;Have an account? Login</button>
           </router-link>
         </div>
 
@@ -83,36 +83,43 @@ var formatEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const auth = getAuth();
 
-let currentUser = "Test"
+let currentUser;
 
+let queryTool = async (dbcollection, arg, arg2, func, docs) => {
+  const q = query(collection(db, dbcollection), where(arg, func, arg2))
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    console.log(doc);
+    docs.push(doc)
+  })
+}
+
+/**
+ * Validate input fields.
+ * @param {*} username 
+ * @param {*} email 
+ * @param {*} password 
+ * @param {*} passwordConfirm 
+ */
 const checkFields = async (username, email, password, passwordConfirm) => { 
   let existsInCol = []
-
-  if (username) {
-    const usernameQuery = query(collection(db, "users"), where("username", "==", username))
-    const querySnapshotUsername = await getDocs(usernameQuery);
-    querySnapshotUsername.forEach((doc) => {
-      existsInCol.push(doc)
-    })
-  }
-  
-  if (email) {
-    const emailQuery = query(collection(db, "users"), where("email", "==", email))
-    const querySnapshotEmail = await getDocs(emailQuery);
-    querySnapshotEmail.forEach((doc) => {
-      existsInCol.push(doc)
-    })
-  }
-  
   let div = document.getElementById("invalid-text")
   div.innerHTML = ""
 
-  if (formatUsername.test(username) || !username) {
-    div.innerHTML += " Invalid Username."
+  if (username) {
+    await queryTool("users", "username", username, "==", existsInCol)
+  }
+  
+  if (email) {
+    await queryTool("users", "email", email, "==", existsInCol)
   }
 
   if (existsInCol.length !== 0) {
-    div.innerHTML += " Username and/or Email already exisits!"
+    div.innerHTML += " Username and/or Email already exists!"
+  }
+  
+  if (formatUsername.test(username) || !username) {
+    div.innerHTML += " Invalid Username."
   }
 
   if (!formatEmail.test(email) || !email) {
@@ -124,6 +131,13 @@ const checkFields = async (username, email, password, passwordConfirm) => {
   }
 }
 
+/**
+ * Creates User account for BookOverflow
+ * @param {*} username 
+ * @param {*} email 
+ * @param {*} password 
+ * @param {*} passwordConfirm 
+ */
 const createAccount = async(username, email, password, passwordConfirm) => {
   await checkFields(username, email, password, passwordConfirm);
   
