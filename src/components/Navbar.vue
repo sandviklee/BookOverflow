@@ -6,8 +6,10 @@
       </router-link>
     </div>
     <div class="search-bar has-icon-left">
-      <ais-instant-search :search-client="searchClient" index-name="books">
-        <ais-configure :hits-per-page.camel="8" />
+      <ais-instant-search
+        :search-client="searchClient" index-name="books"
+      >
+        <ais-configure :hits-per-page.camel="1" />
         <div class="search-panel">
           <ais-search-box
             class="searchbox"
@@ -98,11 +100,11 @@ export default {
       searchClient,
     };
   },
-  methods: {
-    search() {
-      this.$emit("search", this.searchTerm);
-    },
-  },
+  // methods: {
+  //   search() {
+  //     this.$emit("search", this.searchTerm);
+  //   },
+  // },
 };
 </script>
 
