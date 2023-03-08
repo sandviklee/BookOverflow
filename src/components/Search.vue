@@ -1,41 +1,35 @@
 <template>
-  <div id="app">
-    <navbar v-if="!$route.meta.hideNavbar" @search="performSearch"></navbar>
-    <router-view />
-  <!-- <div class="container">
-      <ais-instant-search :search-client="searchClient" index-name="books">
+    <ais-instant-search
+     :search-client="searchClient"
+     :search-function="newSearch"
+     index-name="books">
         <ais-configure :hits-per-page.camel="8" />
-        <div class="search-panel">
+        <ais-search-box class="searchbox" placeholder="Type here to search..." />
+        <!-- <div class="search-panel">
           <div class="search-panel__filters"></div>
 
           <div class="search-panel__results">
             <div class="searchbox">
-              <ais-search-box placeholder="Type here to search..." />
-            </div>
-            <ais-hits>
-              <template v-slot:item="{ item }">
-                <div>
-                  <h2>{{ item.title }}</h2>
-                  <img :src="item['image_url']" />
-                  Author: {{ item.authors[0] }}
-                  Year: {{ item.publication_year }}
-                  Average rating: {{ item.average_rating }}
-                </div>
-              </template>
-            </ais-hits>
-
-            <div class="pagination">
+              <ais-hits>
+                <template v-slot:item="{ item }">
+                  <div>
+                    <h2>{{ item.title }}</h2>
+                    <img :src="item['image_url']" />
+                    Author: {{ item.authors[0] }} Year:
+                    {{ item.publication_year }} Average rating: {{ item.average_rating }}
+                  </div>
+                </template>
+              </ais-hits>
+            </div> -->
+            <!-- <div class="pagination">
               <ais-pagination />
-            </div>
-          </div>
-        </div>
+            </div> -->
+          <!-- </div>
+        </div> -->
       </ais-instant-search>
-    </div> -->
-  </div>
 </template>
 
 <script>
-import Navbar from './components/Navbar.vue';
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
@@ -59,15 +53,18 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
 
+
+
 export default {
-  name: 'App',
-  components: {
-    Navbar,
-  },
   data() {
     return {
       searchClient,
+      searchFunction(helper) {
+          if (helper.state.query) {
+            helper.search();
+          }
+        },
     };
   },
-}
+};
 </script>
