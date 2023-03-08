@@ -56,7 +56,7 @@
 
         <div class="create-button">
             <button
-            @click="createAccount(usernameField, emailField, passwordField, passwordConfirmField); login();"
+            @click="createAccount(usernameField, emailField, passwordField, passwordConfirmField)"
             class="button is-primary is-medium">CREATE ACCOUNT</button>
         </div>
         
@@ -83,8 +83,14 @@ var formatEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const auth = getAuth();
 
-let currentUser;
-
+/**
+ * Make queries to the database.
+ * @param {*} dbcollection 
+ * @param {*} arg 
+ * @param {*} arg2 
+ * @param {*} func 
+ * @param {*} docs 
+ */
 let queryTool = async (dbcollection, arg, arg2, func, docs) => {
   const q = query(collection(db, dbcollection), where(arg, func, arg2))
   const querySnapshot = await getDocs(q);
@@ -131,57 +137,50 @@ const checkFields = async (username, email, password, passwordConfirm) => {
   }
 }
 
-/**
- * Creates User account for BookOverflow
- * @param {*} username 
- * @param {*} email 
- * @param {*} password 
- * @param {*} passwordConfirm 
- */
-const createAccount = async(username, email, password, passwordConfirm) => {
-  await checkFields(username, email, password, passwordConfirm);
-  
-  if (document.getElementById("invalid-text").innerHTML !== "") {
-    console.log("Invalid Fields!");
-    return
-  }
-  
-  createUserWithEmailAndPassword(auth, email, password)
-  .then(async (userCredential) => {
-    // Signed in 
-    
-    const user = userCredential.user;
-    
-    await setDoc(doc(db, "users", user.uid), {
-      email: email,
-      username: username
-    })
-
-    console.log("User has been created!");
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-  });
-}
-
 export default {
     name: "SignupRegisterPage",
-    data() {
-      return {
-        user: currentUser,
-      }
-    },
+    currentUser: 'SusUser',
     methods: {
-      createAccount,
-      login() {
-        console.log(this.user);
-        if (this.user) {
-          this.$router.push('/')
+      /**
+       * Creates User account for BookOverflow
+       * @param {*} username 
+       * @param {*} email 
+       * @param {*} password 
+       * @param {*} passwordConfirm 
+       */
+      async createAccount(username, email, password, passwordConfirm) {
+        await checkFields(username, email, password, passwordConfirm);
+  
+        if (document.getElementById("invalid-text").innerHTML !== "") {
+          console.log("Invalid Fields!");
+          return
         }
-      }
+
+        createUserWithEmailAndPassword(auth, email, password)
+        .then(async (userCredential) => {
+          // Signed in 
+          
+          const user = userCredential.user;
+          
+          await setDoc(doc(db, "users", user.uid), {
+            email: email,
+            username: username
+          })
+
+          console.log(user, " has been created!");
+          //Change page to homescreen.
+          if (user) {
+            this.currentUser = user;
+            this.$router.push('/')
+          }
+          
+        })
+        .catch((error) => {
+          const errorCode = error.code;
+          const errorMessage = error.message;
+        });
+      },
     },
-    return: { currentUser }
 };
     
 </script>
