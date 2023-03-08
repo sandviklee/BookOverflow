@@ -9,7 +9,7 @@
       <ais-instant-search
         :search-client="searchClient" index-name="books"
       >
-        <ais-configure :hits-per-page.camel="1" />
+        <ais-configure :hits-per-page.camel="8" />
         <div class="search-panel">
           <ais-search-box
             class="searchbox"
