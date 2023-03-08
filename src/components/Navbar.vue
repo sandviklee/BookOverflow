@@ -8,10 +8,13 @@
     <div class="search-bar has-icon-left">
       <ais-instant-search :search-client="searchClient" index-name="books">
         <ais-configure :hits-per-page.camel="8" />
-        <ais-search-box class="searchbox" placeholder="Type here to search..." />
-        <!-- <div class="search-panel">
-          <div class="search-panel__filters"></div>
-
+        <div class="search-panel">
+          <ais-search-box
+            class="searchbox"
+            placeholder="Type here to search..."
+            autofocus
+          />
+          <!-- <div class="search-panel__filters"></div> -->
           <div class="search-panel__results">
             <div class="searchbox">
               <ais-hits>
@@ -24,12 +27,12 @@
                   </div>
                 </template>
               </ais-hits>
-            </div> -->
+            </div>
             <!-- <div class="pagination">
               <ais-pagination />
             </div> -->
-          <!-- </div>
-        </div> -->
+          </div>
+        </div>
       </ais-instant-search>
       <!-- <form>
         <span class="search-icon">
