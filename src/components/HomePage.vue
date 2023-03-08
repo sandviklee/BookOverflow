@@ -12,21 +12,17 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="card mb-6">
-                            <span class="icon-text">
+                            <BookList class="card-body" :bookArray="books.value" :listName="discover"><span class="icon-text">
                                 <div class="card-header-title pl-5">
                                 <span class="icon">
                                     <i class="pi pi-megaphone"></i>
                                 </span>
-                                <h3>Discover</h3>
+                                <h3>{{ discover }}</h3>
                             </div>
-                            </span>
-
-                            <div class="card-body">
-                                <Book class="books" v-for="book in booksDiscover" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
-                            </div>
+                            </span></BookList>
                         </div>
                     </div>
-                    <div class="col-md-10">
+                    <!-- <div class="col-md-10">
                         <div class="card mb-6">
                             <span class="icon-text">
                                 <div class="card-header-title pl-5">
@@ -56,7 +52,7 @@
                                 <Book class="books" v-for="book in books" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
                             </div>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
@@ -72,6 +68,8 @@ import { collection, getDocs } from 'firebase/firestore';
 function shuffleArray(arr) {
   arr.sort(() => Math.random() - 0.5);
 }
+
+const discover = ref('Discover')
 
 const books = ref([])
 const booksDiscover = ref([])
@@ -103,11 +101,13 @@ onMounted(async () => {
 
 <script>
 import Book from './Book.vue';
+import BookList from './BookList.vue'
 import currentUser from './SignupRegisterPage.vue';
 
 export default {
     components: {
-        Book
+        Book,
+        BookList
     }
 };
 </script>

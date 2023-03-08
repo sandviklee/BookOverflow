@@ -2,7 +2,11 @@
     <div>
         <div class="card">
             <router-link :to="'/book/' + id">
-                <img class="bookImg" :src="path">
+                <img class="bookImg" :src="imageURL">
+                <div>
+                {{ title }}
+                {{ authors }}
+                </div>
             </router-link>
         </div>
     </div>
@@ -11,18 +15,18 @@
 <script setup>
 import { ref, watchEffect } from 'vue'
 
-//Defines the input for the spesific book, what kind of book should it be?
-const props = defineProps({
-  imagePath: { type: String },
-})
-const path = ref()
-//Gets the id from the database.
-let id = props.imagePath.split(";")[1]
+// The different properties a book can have
+const props = defineProps([
+  'title','authors','imageURL','id','avgRating','blurb'
+])
 
-//Async function to determine the path of the books. This is only for local files!
-watchEffect(async () => {
-  path.value = (await import(/* @vite-ignore */ `../assets/Bookformat/Author/${props.imagePath.split(";")[0]}`)).default
-})
+// Defaults when parent didn't pass field
+const title = ref('NO TITLE')
+const authors = ref('NO AUTHORS')
+const imageURL = ref('https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png')
+const id = ref(0)
+const avgRating = ref(0)
+const blurb = ref('')
 
 </script>
 
