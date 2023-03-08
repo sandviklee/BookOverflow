@@ -3,7 +3,7 @@
      :search-client="searchClient"
      :search-function="newSearch"
      index-name="books">
-        <ais-configure :hits-per-page.camel="8" />
+        <ais-configure :hits-per-page.camel="1" />
         <ais-search-box class="searchbox" placeholder="Type here to search..." />
         <!-- <div class="search-panel">
           <div class="search-panel__filters"></div>

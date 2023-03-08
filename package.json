@@ -9,7 +9,8 @@
     "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/mystyles.css",
     "css-watch": "npm run css-build -- --watch",
     "start": "npm run css-watch",
-    "typesense": "docker run -i -p 8108:8108 -v/tmp/typesense-server-data/:/data typesense/typesense:0.24.0 --data-dir /data --api-key=gruppe29apikey --listen-port 8108 --enable-cors"
+    "typesense": "docker run -i -p 8108:8108 -v/tmp/typesense-server-data/:/data typesense/typesense:0.24.0 --data-dir /data --api-key=gruppe29apikey --listen-port 8108 --enable-cors",
+    "typesense-init": "node ./src/init_typesense.js"
   },
   "dependencies": {
     "@babel/runtime": "^7.21.0",
