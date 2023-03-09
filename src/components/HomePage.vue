@@ -67,6 +67,8 @@
 import { db } from '../firebase/firebase.js'
 import { ref, onMounted} from 'vue'
 import { collection, getDocs } from 'firebase/firestore';
+import Book from './Book.vue';
+import currentUser from './SignupRegisterPage.vue';
 
 //Implement shuffle function for booklists.
 function shuffleArray(arr) {
@@ -99,17 +101,6 @@ onMounted(async () => {
     });
     books.value = booksDiscover.value = booksPopular.value = booksToday.value = bookArray
 })
-</script>
-
-<script>
-import Book from './Book.vue';
-import currentUser from './SignupRegisterPage.vue';
-
-export default {
-    components: {
-        Book
-    }
-};
 </script>
 
 <style scoped>
