@@ -102,6 +102,8 @@ const booksToday = ref([]);
 
 //Get books from database, and generalize them with id, author and title.
 onMounted(async () => {
+  console.log("The current user: ", currentUser);
+
   const querySnapshot = await getDocs(collection(db, "books"));
   let bookArray = [];
   querySnapshot.forEach((doc) => {
@@ -110,7 +112,10 @@ onMounted(async () => {
       author: doc.data().author.name,
       title: doc.data().title,
     };
-    bookArray.push(book);
+    if (bookArray.length !== 6) {
+      bookArray.push(book);
+      return;
+    }
   });
   books.value =
     booksDiscover.value =
@@ -118,17 +123,6 @@ onMounted(async () => {
     booksToday.value =
       bookArray;
 });
-</script>
-
-<script>
-import Book from "./Book.vue";
-import currentUser from "./SignupRegisterPage.vue";
-
-export default {
-  components: {
-    Book,
-  },
-};
 </script>
 
 <style scoped>

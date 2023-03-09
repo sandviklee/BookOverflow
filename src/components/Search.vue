@@ -29,7 +29,7 @@
       </ais-instant-search>
 </template>
 
-<script>
+<script setup>
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
@@ -53,18 +53,4 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
 
-
-
-export default {
-  data() {
-    return {
-      searchClient,
-      searchFunction(helper) {
-          if (helper.state.query) {
-            helper.search();
-          }
-        },
-    };
-  },
-};
 </script>

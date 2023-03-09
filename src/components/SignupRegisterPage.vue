@@ -72,16 +72,18 @@
 </template>
     
     
-<script>
+<script setup>
 import { db } from '../firebase/firebase.js'
 import { doc, setDoc, getDocs, collection, query, where } from "firebase/firestore"; 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from  'vue-router';
 import { ref, onMounted } from 'vue';
 
 var formatUsername = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 var formatEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const auth = getAuth();
+const router = useRouter();
 
 /**
  * Make queries to the database.
@@ -137,52 +139,47 @@ const checkFields = async (username, email, password, passwordConfirm) => {
   }
 }
 
-export default {
-    name: "SignupRegisterPage",
-    currentUser: 'SusUser',
-    methods: {
-      /**
-       * Creates User account for BookOverflow
-       * @param {*} username 
-       * @param {*} email 
-       * @param {*} password 
-       * @param {*} passwordConfirm 
-       */
-      async createAccount(username, email, password, passwordConfirm) {
-        await checkFields(username, email, password, passwordConfirm);
+/**
+ * Creates User account for BookOverflow
+ * @param {*} username 
+ * @param {*} email 
+ * @param {*} password 
+ * @param {*} passwordConfirm 
+ */
+async function createAccount(username, email, password, passwordConfirm) {
+  await checkFields(username, email, password, passwordConfirm);
   
-        if (document.getElementById("invalid-text").innerHTML !== "") {
-          console.log("Invalid Fields!");
-          return
-        }
+  if (document.getElementById("invalid-text").innerHTML !== "") {
+    console.log("Invalid Fields!");
+    return
+  }
 
-        createUserWithEmailAndPassword(auth, email, password)
-        .then(async (userCredential) => {
-          // Signed in 
-          
-          const user = userCredential.user;
-          
-          await setDoc(doc(db, "users", user.uid), {
-            email: email,
-            username: username
-          })
-
-          console.log(user, " has been created!");
-          //Change page to homescreen.
-          if (user) {
-            this.currentUser = user;
-            this.$router.push('/')
-          }
-          
-        })
-        .catch((error) => {
-          const errorCode = error.code;
-          const errorMessage = error.message;
-        });
-      },
-    },
-};
+  createUserWithEmailAndPassword(auth, email, password)
+  .then(async (userCredential) => {
+    // Signed in 
     
+    const user = userCredential.user;
+    
+    await setDoc(doc(db, "users", user.uid), {
+      email: email,
+      username: username
+    })
+
+    console.log(user, " has been created!");
+    //Change page to homescreen.
+    if (user) {
+      console.log("Hei!");
+      this.currentUser = user;
+      router.push('/')
+    }
+    
+  })
+  .catch((error) => {
+    const errorCode = error.code;
+    const errorMessage = error.message;
+  });
+}
+
 </script>
     
 <style scoped>

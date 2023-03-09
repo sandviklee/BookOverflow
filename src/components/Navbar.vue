@@ -7,25 +7,29 @@
     </div>
     <div class="search-bar has-icon-left">
       <ais-instant-search
-        :search-client="searchClient" index-name="books"
-      >
-        <ais-configure :hits-per-page.camel="8" />
+        :search-client="searchClient" index-name="books">
+        <ais-configure :hits-per-page.camel="3" />
         <div class="search-panel">
-          <ais-search-box
-            class="searchbox"
-            placeholder="Type here to search..."
-            autofocus
-          />
+          <ais-search-box>
+            <template v-slot="{ currentRefinement, isSearchStalled, refine }">
+              <span class="search-icon">
+                <i class="pi pi-search"></i>
+              </span>
+
+              <input type="text" :value="currentRefinement" @input="refine($event.currentTarget.value)" placeholder="Search BookOverflow..." />
+              
+            </template>
+          </ais-search-box>
+
           <!-- <div class="search-panel__filters"></div> -->
-          <div class="search-panel__results">
-            <div class="searchbox">
+          <div class="search-panel-results" >
+            <div class="search-bar-results" >
               <ais-hits>
                 <template v-slot:item="{ item }">
                   <div>
                     <h2>{{ item.title }}</h2>
-                    <img :src="item['image_url']" />
-                    Author: {{ item.authors[0] }} Year:
-                    {{ item.publication_year }} Average rating: {{ item.average_rating }}
+                    <img :src="item['image_url']"/>
+                    Author: {{ item.authors[0] }} Year: {{ item.publication_year }} Average rating: {{ item.average_rating }}
                   </div>
                 </template>
               </ais-hits>
@@ -37,15 +41,18 @@
         </div>
       </ais-instant-search>
       <!-- <form>
-        <span class="search-icon">
-          <i class="pi pi-search"></i>
-        </span>
 
-        <input type="text" v-model="searchTerm" placeholder="Search BookOverflow..." />
         <button type="submit" @click.prevent="search">{{ "All" }}</button>
       </form> -->
     </div>
     <div class="vl"></div>
+    <div class="the-library">
+      <router-link to="/userlist/:id">
+        <button class="button is-text is-ghost is-medium">
+          <i class="pi pi-book" style="font-size: 1.5rem"></i>&ensp;The library
+        </button>
+      </router-link>
+    </div>
     <div class="my-bookshelf">
       <router-link to="/userlist/:id">
         <button class="button is-text is-ghost is-medium">
@@ -60,15 +67,11 @@
         </button>
       </router-link>
     </div>
-    <div class="menu">
-      <button class="button is-text is-ghost is-medium">
-        <i class="pi pi-bars" style="font-size: 2rem"></i>
-      </button>
-    </div>
+
   </div>
 </template>
 
-<script>
+<script setup>
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
@@ -92,20 +95,6 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
 
-export default {
-  data() {
-    return {
-      searchTerm: "",
-      buttonText: "",
-      searchClient,
-    };
-  },
-  // methods: {
-  //   search() {
-  //     this.$emit("search", this.searchTerm);
-  //   },
-  // },
-};
 </script>
 
 <style>
@@ -127,11 +116,18 @@ export default {
 
 .search-bar {
   display: flex;
-  padding-left: 10vh;
-  align-items: center;
+  padding-left:10vh;
   position: relative;
   flex-grow: 1;
 }
+
+.search-panel-results {
+  display: flex;
+  padding-left: 4vh;
+  position: absolute;
+  background-color: white;
+}
+
 
 .vl {
   border-left: 2.5px solid rgb(0, 0, 0);
