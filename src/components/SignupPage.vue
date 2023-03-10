@@ -17,18 +17,22 @@
         <div class="sign-in-text">
           <h1>SIGN INTO YOUR ACCOUNT</h1>
         </div>
+
+        <div class="username-text">
+          <h6 id="invalid-text"></h6>
+        </div>
         
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input class="input is-medium" type="email" placeholder="Username">
+            <input v-model="emailField" class="input is-medium" type="email" placeholder="Email">
             <span class="icon is-small is-left">
-              <i class="pi pi-user"></i>
+              <i class="pi pi-envelope"></i>
             </span>
           </p>
         </div>
         <div class="field">
           <p class="control has-icons-left">
-            <input class="input is-medium" type="password" placeholder="Password">
+            <input v-model="passwordField" class="input is-medium" type="password" placeholder="Password">
             <span class="icon is-small is-left">
               <i class="pi pi-lock"></i>
             </span>
@@ -43,7 +47,9 @@
         </div>
 
         <div class="sign-in-button">
-          <button class="button is-primary is-medium">SIGN IN</button>
+          <button 
+          @click="signInAccount(emailField, passwordField)"
+          class="button is-primary is-medium">SIGN IN</button>
         </div>
         
         <div class="new-account-button">
@@ -58,10 +64,90 @@
 </template>
   
 <script setup>
-  import { ref, onMounted } from 'vue';
-  //import * as firebase from 'firebase/app';
-  //import 'firebase/database';
+import { db } from '../firebase/firebase.js'
+import { getDocs, collection, query, where } from "firebase/firestore"; 
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from 'vue-router';
+import { userStore } from '../stores/UsersStore'
+
+var formatEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+
+const auth = getAuth();
+const router = useRouter();
+const store = userStore();
+
+/**
+ * Make queries to the database.
+ * @param {*} dbcollection 
+ * @param {*} arg 
+ * @param {*} arg2 
+ * @param {*} func 
+ * @param {*} docs 
+ */
+ let queryTool = async (dbcollection, arg, arg2, func, docs) => {
+  const q = query(collection(db, dbcollection), where(arg, func, arg2))
+  const querySnapshot = await getDocs(q);
+  querySnapshot.forEach((doc) => {
+    console.log(doc);
+    docs.push(doc)
+  })
+}
+
+/**
+ * Validate input fields.
+ * @param {*} username 
+ * @param {*} email 
+ * @param {*} password 
+ * @param {*} passwordConfirm 
+ */
+ const checkFields = async (email, password) => { 
+  let existsInCol = []
+  let div = document.getElementById("invalid-text")
+  div.innerHTML = ""
+
+  if (email) {
+    await queryTool("users", "email", email, "==", existsInCol)
+  }
+
+  if (existsInCol.length == 0) {
+    div.innerHTML += " Email doesnt exist!"
+  }
+
+  if (!formatEmail.test(email) || !email) {
+    div.innerHTML += " Invalid Email." 
+  } 
+}
+
+async function signInAccount(email, password) {
+  await checkFields(email, password);
   
+  if (document.getElementById("invalid-text").innerHTML !== "") {
+    console.log("Invalid Fields!");
+    return
+  }
+
+  signInWithEmailAndPassword(auth, email, password)
+  .then((userCredential) => {
+    // Signed in 
+    const user = userCredential.user;
+
+    if (user) {
+      console.log(user, " has been logged in!");
+      store.$patch({
+        uid: user.uid,
+      })
+      router.push('/')
+    }
+
+  })
+  .catch((error) => {
+    const errorMessage = error.message;
+    let div = document.getElementById("invalid-text")
+    div.innerHTML += errorMessage
+  });
+  
+}
+
 </script>
   
 <style scoped>
@@ -109,6 +195,13 @@
 
 .new-account-button {
   padding-top: 2vh;
+}
+.username-text {
+  text-align: left;
+  font-size: 13px;
+  width: 70%;
+  margin: auto;
+  padding-left: 1vh;
 }
 
 .round-card {

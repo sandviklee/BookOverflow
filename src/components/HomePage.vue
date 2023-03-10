@@ -22,7 +22,7 @@
                             </span>
 
                             <div class="card-body">
-                                <Book class="books" v-for="book in booksDiscover" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
+                                <Book class="books" v-for="book in books" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
                             </div>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                             </span>
 
                             <div class="card-body">
-                                <Book class="books" v-for="book in booksPopular" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
+                                <Book class="books" v-for="book in books" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@ import { db } from '../firebase/firebase.js'
 import { ref, onMounted} from 'vue'
 import { collection, getDocs } from 'firebase/firestore';
 import Book from './Book.vue';
-import currentUser from './SignupRegisterPage.vue';
+import { userStore } from '../stores/UsersStore';
 
 //Implement shuffle function for booklists.
 function shuffleArray(arr) {
@@ -76,15 +76,11 @@ function shuffleArray(arr) {
 }
 
 const books = ref([])
-const booksDiscover = ref([])
-const booksPopular = ref([])
-const booksToday = ref([])
-
+const store = userStore();
 
 //Get books from database, and generalize them with id, author and title.
 onMounted(async () => {
-    console.log("The current user: ", currentUser);
-
+    console.log(store.uid, " er ID.");
     const querySnapshot = await getDocs(collection(db, 'books'));
     let bookArray = []
     querySnapshot.forEach((doc) => {
@@ -99,7 +95,7 @@ onMounted(async () => {
         }
         
     });
-    books.value = booksDiscover.value = booksPopular.value = booksToday.value = bookArray
+    books.value = bookArray
 })
 </script>
 
