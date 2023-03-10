@@ -63,7 +63,7 @@
 <script setup>
 import { db } from '../firebase/firebase.js'
 import { ref, onMounted} from 'vue'
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, setDoc, Timestamp } from "firebase/firestore";
 
 //Implement shuffle function for booklists.
 function shuffleArray(arr) {
@@ -89,6 +89,7 @@ onMounted(async () => {
     });
     books.value = booksDiscover.value = booksPopular.value = booksToday.value = bookArray
 })
+
 </script>
 
 <script>
