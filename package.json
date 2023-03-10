@@ -12,7 +12,7 @@
     "test": "jest --watchAll --verbose",
     "typesense": "docker run -i -p 8108:8108 -v/tmp/typesense-server-data/:/data typesense/typesense:0.24.0 --data-dir /data --api-key=gruppe29apikey --listen-port 8108 --enable-cors",
     "typesense-init": "node ./src/init_typesense.js",
-    "test": "jest"
+    "test": "jest --watchAll --verbose"
   },
   "dependencies": {
     "@babel/runtime": "^7.21.0",
