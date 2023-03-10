@@ -23,9 +23,7 @@
                 <Book
                   class="books"
                   v-for="book in books"
-                  :imagePath="
-                    book.author + '/' + book.title + '.png;' + book.id
-                  "
+                  :bookInfo="book.image_url + ';' + book.id"
                 />
               </div>
             </div>
@@ -45,9 +43,7 @@
                 <Book
                   class="books"
                   v-for="book in books"
-                  :imagePath="
-                    book.author + '/' + book.title + '.png;' + book.id
-                  "
+                  :bookInfo="book.image_url + ';' + book.id"
                 />
               </div>
             </div>
@@ -66,9 +62,7 @@
                 <Book
                   class="books"
                   v-for="book in books"
-                  :imagePath="
-                    book.author + '/' + book.title + '.png;' + book.id
-                  "
+                  :bookInfo="book.image_url + ';' + book.id"
                 />
               </div>
             </div>
@@ -102,8 +96,7 @@ onMounted(async () => {
   querySnapshot.forEach((doc) => {
     const book = {
       id: doc.id,
-      author: doc.data().author.name,
-      title: doc.data().title,
+      image_url: doc.data().image_url,
     };
     if (bookArray.length !== 6) {
       bookArray.push(book);
