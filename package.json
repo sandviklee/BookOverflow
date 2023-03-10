@@ -9,7 +9,7 @@
     "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/mystyles.css",
     "css-watch": "npm run css-build -- --watch",
     "start": "npm run css-watch",
-    "test": "jest"
+    "test": "jest --watchAll --verbose"
   },
   "dependencies": {
     "browserify": "^17.0.0",
