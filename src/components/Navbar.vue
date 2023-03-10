@@ -167,7 +167,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 
 .search-bar {
   display: flex;
-  padding-left:10vh;
+  padding-left:3vh;
   position: relative;
   flex-grow: 1;
 }
@@ -178,8 +178,8 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   position: absolute;
   background-color: #f8f7f3;
   font-size: 18px;
-  max-width: 80vh;
-  min-width: 80vh;
+  max-width: 70vh;
+  min-width: 70vh;
   box-shadow: 2px 2px 0px #e98074;
 }
 
@@ -197,7 +197,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   flex-basis: 40%;
   min-width: 10vh;
   max-width: 10vh;
-  left: 60vh;
+  left: 50vh;
   box-shadow: 2px 2px 0px #e98074;
 }
 
@@ -224,7 +224,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 .search-bar input[type="text"] {
   margin: auto;
   height: 48px;
-  width: 80vh;
+  width: 70vh;
   padding: 0 40px;
   border: none;
   border-radius: 5px;
