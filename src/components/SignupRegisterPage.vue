@@ -76,14 +76,15 @@
 import { db } from '../firebase/firebase.js'
 import { doc, setDoc, getDocs, collection, query, where } from "firebase/firestore"; 
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
-import { useRouter } from  'vue-router';
-import { ref, onMounted } from 'vue';
+import { useRouter } from 'vue-router';
+import { userStore } from '../stores/UsersStore'
 
 var formatUsername = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 var formatEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const auth = getAuth();
 const router = useRouter();
+const store = userStore();
 
 /**
  * Make queries to the database.
@@ -165,11 +166,12 @@ async function createAccount(username, email, password, passwordConfirm) {
       username: username
     })
 
-    console.log(user, " has been created!");
-    //Change page to homescreen.
+    //Change page to homescreen and emit the user to the rest of the app through Pinia store.
     if (user) {
-      console.log("Hei!");
-      this.currentUser = user;
+      console.log(user, " has been created!");
+      store.$patch({
+        uid: user.uid,
+      })
       router.push('/')
     }
     
@@ -177,9 +179,10 @@ async function createAccount(username, email, password, passwordConfirm) {
   .catch((error) => {
     const errorCode = error.code;
     const errorMessage = error.message;
+    let div = document.getElementById("invalid-text")
+    div.innerHTML += errorMessage
   });
 }
-
 </script>
     
 <style scoped>

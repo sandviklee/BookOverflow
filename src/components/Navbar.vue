@@ -20,30 +20,24 @@
               
             </template>
           </ais-search-box>
-
-          <!-- <div class="search-panel__filters"></div> -->
           <div class="search-panel-results" >
             <div class="search-bar-results" >
               <ais-hits>
                 <template v-slot:item="{ item }">
-                  <div>
-                    <h2>{{ item.title }}</h2>
-                    <img :src="item['image_url']"/>
-                    Author: {{ item.authors[0] }} Year: {{ item.publication_year }} Average rating: {{ item.average_rating }}
+                  <div class="results">
+                    <h2 class="result-title">{{ item.title }}</h2>
+                    <h6 class="result-author"> Author: {{ item.authors[0] }} </h6>
+                    <img class="result-image" :src="item['image_url']"/>
+                    <br>
+                    Year: {{ item.publication_year }}, Average rating: {{ item.average_rating }}
+                    <hr>
                   </div>
                 </template>
               </ais-hits>
             </div>
-            <!-- <div class="pagination">
-              <ais-pagination />
-            </div> -->
           </div>
         </div>
       </ais-instant-search>
-      <!-- <form>
-
-        <button type="submit" @click.prevent="search">{{ "All" }}</button>
-      </form> -->
     </div>
     <div class="vl"></div>
     <div class="the-library">
@@ -60,7 +54,7 @@
         </button>
       </router-link>
     </div>
-    <div class="signup-login">
+    <div v-show="store.uid == 'no user'" class="signup-login">
       <router-link to="/signup">
         <button class="button is-text is-ghost is-medium">
           <i class="pi pi-user" style="font-size: 1.5rem"></i>&ensp;Sign In
@@ -68,15 +62,72 @@
       </router-link>
     </div>
 
+    <div v-show="store.uid !== 'no user'" class="signup-login">
+      <div class="dropdown is-right is-hoverable">
+        <div class="dropdown-trigger">
+          <button class="button is-text is-ghost is-medium" aria-haspopup="true" aria-controls="dropdown-menu4">
+            <span class="icon is-small">
+              <i class="pi pi-user" style="font-size: 1.8rem"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+          <div class="dropdown-content">
+            <div class="dropdown-item">
+              <h1 class="welcome-text">Welcome, {{ username }}!</h1>
+              <p> You are logged in with: {{ email }}
+              </p>
+              <hr>
+
+              <button 
+              @click="logOut
+              ()"
+              class="button is-danger"><i class="pi pi-sign-out" style="font-size: 1.5rem"></i>&ensp; Sign out of your account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
   </div>
 </template>
 
 <script setup>
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
+import { db } from '../firebase/firebase.js'
+import { ref, onMounted} from 'vue'
+import { doc, getDoc } from "firebase/firestore";
+import { userStore } from "../stores/UsersStore";
+import { useRouter } from 'vue-router';
+
+const store = userStore();
+const router = useRouter();
+
+const username = ref()
+const email = ref()
+
+function logOut() {
+  store.uid = 'no user';
+  router.push('/')
+}
+
+onMounted(async () => {
+  const docRef = await doc(db, 'users', store.uid);
+  const docSnap = await getDoc(docRef);
+
+  if (store.uid !== 'no user') {
+    let usernameDoc = docSnap.data().username
+    let emailDoc = docSnap.data().email
+
+    username.value = usernameDoc;
+    email.value = emailDoc;
+  }
+
+});
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
-    apiKey: "gruppe29apikey", // Be sure to use an API key that only allows searches, in production
+    apiKey: "gruppe29apikey", 
     nodes: [
       {
         host: "localhost",
@@ -85,10 +136,6 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
       },
     ],
   },
-  // The following parameters are directly passed to Typesense's search API endpoint.
-  //  So you can pass any parameters supported by the search endpoint below.
-  //  queryBy is required.
-  //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
     query_by: "title,authors",
   },
@@ -108,6 +155,10 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   border-bottom: 1px solid #ddd;
 }
 
+.welcome-text {
+  font-size: large;
+}
+
 .logo img {
   padding-left: 10vh;
   padding-top: 1vh;
@@ -125,9 +176,34 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   display: flex;
   padding-left: 4vh;
   position: absolute;
-  background-color: white;
+  background-color: #f8f7f3;
+  font-size: 18px;
+  max-width: 80vh;
+  min-width: 80vh;
+  box-shadow: 2px 2px 0px #e98074;
 }
 
+.results {
+  
+  text-shadow: 0.5px 0px 0px #e98074;
+}
+
+.result-title {
+  font-size: large;
+
+}
+.result-image {
+  position: relative;
+  flex-basis: 40%;
+  min-width: 10vh;
+  max-width: 10vh;
+  left: 60vh;
+  box-shadow: 2px 2px 0px #e98074;
+}
+
+.result-author {
+  position: flex;
+}
 
 .vl {
   border-left: 2.5px solid rgb(0, 0, 0);
@@ -148,7 +224,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 .search-bar input[type="text"] {
   margin: auto;
   height: 48px;
-  width: 65vh;
+  width: 80vh;
   padding: 0 40px;
   border: none;
   border-radius: 5px;
