@@ -7,6 +7,7 @@
     </div>
     <div class="search-bar has-icon-left">
       <ais-instant-search
+      
         :search-client="searchClient" index-name="books">
         <ais-configure :hits-per-page.camel="3" />
         <div class="search-panel">
@@ -16,26 +17,26 @@
                 <i class="pi pi-search"></i>
               </span>
 
-              <input type="text" :value="currentRefinement" @input="refine($event.currentTarget.value)" placeholder="Search BookOverflow..." />
+              <input type="text" :value="currentRefinement" @input="refine($event.currentTarget.value);" placeholder="Search BookOverflow..." />
               
+              <div v-show="currentRefinement.length" class="search-panel-results" >
+                <div class="search-bar-results" >
+                  <ais-hits>
+                    <template v-slot:item="{ item }">
+                      <div class="results">
+                        <h2 class="result-title">{{ item.title }}</h2>
+                        <h6 class="result-author"> Author: {{ item.authors[0] }} </h6>
+                        <img class="result-image" :src="item['image_url']"/>
+                        <br>
+                        Year: {{ item.publication_year }}, Average rating: {{ item.average_rating }}
+                        <hr>
+                      </div>
+                    </template>
+                  </ais-hits>
+                </div>
+              </div>
             </template>
           </ais-search-box>
-          <div class="search-panel-results" >
-            <div class="search-bar-results" >
-              <ais-hits>
-                <template v-slot:item="{ item }">
-                  <div class="results">
-                    <h2 class="result-title">{{ item.title }}</h2>
-                    <h6 class="result-author"> Author: {{ item.authors[0] }} </h6>
-                    <img class="result-image" :src="item['image_url']"/>
-                    <br>
-                    Year: {{ item.publication_year }}, Average rating: {{ item.average_rating }}
-                    <hr>
-                  </div>
-                </template>
-              </ais-hits>
-            </div>
-          </div>
         </div>
       </ais-instant-search>
     </div>
@@ -90,6 +91,8 @@
     </div>
   
   </div>
+
+  
 </template>
 
 <script setup>
@@ -249,5 +252,22 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 .user-lists img {
   height: 40px;
   cursor: pointer;
+}
+
+/* route transitions */
+.route-enter-from {
+    opacity: 0;
+    transform: translateX(100px)
+}
+.route-enter-active {
+    transition: ass 0.3s ease-out;
+}
+.route-leave-to{
+    opacity: 0;
+    transform: translateX(-100px)
+}
+
+.route-leave-active{
+    transition: all 0.3 ease-in;
 }
 </style>
