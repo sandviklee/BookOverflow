@@ -51,11 +51,8 @@ onMounted(async () => {
 
 </script>
 
-<style>
+<style scoped>
 @import url('https://fonts.cdnfonts.com/css/lato');
-* {
-  font-family: "lato";
-}
 
 header {
   padding-top: 5vh;
