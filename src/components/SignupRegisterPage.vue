@@ -1,5 +1,5 @@
 <template>
-  <div class="background">
+<div class="background">
     <div class="card-holder">
       <div class="logo">
           <router-link to="/">
@@ -9,19 +9,26 @@
 
       <div class="round-card">
         <div class="user-icon">
-          <i class="pi pi-users"></i>
+          <i class="pi pi-user-plus"></i>
         </div>
       </div>
 
       <div class="card">
-        <div class="sign-in-text">
-          <h1>SIGN INTO YOUR ACCOUNT</h1>
+        <div class="create-text">
+          <h1>CREATE YOUR BOOKOVERFLOW ACCOUNT</h1>
         </div>
-
         <div class="username-text">
           <h6 id="invalid-text"></h6>
         </div>
         
+        <div class="field">
+          <p class="control has-icons-left has-icons-right">
+            <input v-model="usernameField" class="input is-medium" type="email" placeholder="Username">
+            <span class="icon is-small is-left">
+              <i class="pi pi-user"></i>
+            </span>
+          </p>
+        </div>
         <div class="field">
           <p class="control has-icons-left has-icons-right">
             <input v-model="emailField" class="input is-medium" type="email" placeholder="Email">
@@ -38,28 +45,27 @@
             </span>
           </p>
         </div>
-
-        <div class="sign-in-checkbox">
-          <label class="checkbox">
-            <input type="checkbox">
-            Remember me
-          </label>
+        <div class="field">
+          <p class="control has-icons-left">
+            <input v-model="passwordConfirmField" class="input is-medium" type="password" placeholder="Confirm Password">
+            <span class="icon is-small is-left">
+              <i class="pi pi-lock"></i>
+            </span>
+          </p>
         </div>
-
+        
         <div :class="{ shake: disabledAni }">
-          <div class="sign-in-button">
-            <button 
-            @click="signInAccount(emailField, passwordField);"
-            class="button is-primary is-medium">SIGN IN</button>
+          <div class="create-button">
+            <button
+            @click="createAccount(usernameField, emailField, passwordField, passwordConfirmField);"
+            class="button is-primary is-medium">CREATE ACCOUNT</button>
           </div>
         </div>
 
         
-        <div class="new-account-button">
-          <router-link to="/signup/register">
-            <transition name="fade">
-              <button class="button is-text is-ghost is-medium"><i class="pi pi-user-plus" style="font-size: 1.5rem"></i>&ensp;Create a new account</button>
-            </transition>
+        <div class="back-button">
+          <router-link to="/signup/">
+            <button class="button is-text is-ghost is-medium"><i class="pi pi-arrow-circle-left" style="font-size: 1.5rem"></i>&ensp;Have an account? Login</button>
           </router-link>
         </div>
 
@@ -67,15 +73,17 @@
     </div>
   </div>
 </template>
-  
+    
+    
 <script setup>
 import { db } from '../firebase/firebase.js'
-import { getDocs, collection, query, where } from 'firebase/firestore'; 
-import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc, getDocs, collection, query, where } from 'firebase/firestore'; 
+import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
 import { useRouter } from 'vue-router';
 import { userStore } from '../stores/UsersStore'
 import { ref } from 'vue'
 
+var formatUsername = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 var formatEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
 const disabledAni = ref(false)
@@ -91,7 +99,7 @@ const store = userStore();
  * @param {*} func         is the function to deside the equation.
  * @param {*} docs         is the collection of the database.
  */
- let queryTool = async (dbcollection, arg, arg2, func, docs) => {
+let queryTool = async (dbcollection, arg, arg2, func, docs) => {
   const q = query(collection(db, dbcollection), where(arg, func, arg2))
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
@@ -102,75 +110,103 @@ const store = userStore();
 
 /**
  * Validate input fields.
+ * @param {*} username        is the username field.
  * @param {*} email           is the email field.
+ * @param {*} password        is the password field.
+ * @param {*} passwordConfirm is the passwordConfirm field. 
  */
- const checkFields = async (email) => { 
+const checkFields = async (username, email, password, passwordConfirm) => { 
   let existsInCol = []
   let div = document.getElementById("invalid-text")
   div.innerHTML = ""
 
+  if (username) {
+    await queryTool("users", "username", username, "==", existsInCol)
+  }
+  
   if (email) {
     await queryTool("users", "email", email, "==", existsInCol)
   }
 
-  if (existsInCol.length == 0) {
-    div.innerHTML += " Email doesnt exist!"
+  if (existsInCol.length !== 0) {
+    div.innerHTML += " Username and/or Email already exists!"
+  }
+  
+  if (formatUsername.test(username) || !username) {
+    div.innerHTML += " Invalid Username."
   }
 
   if (!formatEmail.test(email) || !email) {
     div.innerHTML += " Invalid Email." 
   } 
+
+  if ((password != passwordConfirm) || !password || !passwordConfirm) {
+    div.innerHTML += " Invalid Password." 
+  }
 }
 
 /**
- * Signs you in to an account.
- * @param {*} email    is the email field.
- * @param {*} password is the password field. 
+ * Creates User account and signs you into the website.
+ * @param {*} username        is the username field.
+ * @param {*} email           is the email field.
+ * @param {*} password        is the password field.
+ * @param {*} passwordConfirm is the passwordConfirm field.
  */
-async function signInAccount(email, password) {
-  await checkFields(email, password);
+async function createAccount(username, email, password, passwordConfirm) {
+  await checkFields(username, email, password, passwordConfirm);
   
+  /**
+   * If there is any text written in the invalid field, you should'nt be signed in.
+   */
   if (document.getElementById("invalid-text").innerHTML !== "") {
     console.log("Invalid Fields!");
     warnDisabled()
     return
   }
-  
-  signInWithEmailAndPassword(auth, email, password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
 
+  createUserWithEmailAndPassword(auth, email, password)
+  .then(async (userCredential) => {
+    // Signed in 
+    
+    const user = userCredential.user;
+    
+    await setDoc(doc(db, "users", user.uid), {
+      email: email,
+      username: username
+    })
+
+    //Change page to homescreen and emit the user to the rest of the app through Pinia store.
     if (user) {
-      console.log(user, " has been logged in!");
-      //Updates the pinia store, the global user.uid is set to the signed in user.
+      console.log(user, " has been created!");
+      //Stores the user.uid in the global store.
       store.$patch({
         uid: user.uid,
       })
-      //Changes the page to the home page.
+      //Changes the page to homescreen.
       router.push('/')
     }
-
+    
   })
   .catch((error) => {
+    const errorCode = error.code;
     const errorMessage = error.message;
     let div = document.getElementById("invalid-text")
     div.innerHTML += errorMessage
   });
 }
-  /**
-   * Disabled animation on click.
-   */
-  function warnDisabled() {
-    disabledAni.value = true
-    setTimeout(() => {
-      disabledAni.value = false
-    }, 1500)
-  }
 
+/**
+ * Disabled animation on click.
+ */
+function warnDisabled() {
+  disabledAni.value = true
+  setTimeout(() => {
+    disabledAni.value = false
+  }, 1500)
+}
 
 </script>
-  
+    
 <style scoped>
 @import url('https://fonts.cdnfonts.com/css/lato');
 .background {
@@ -191,31 +227,10 @@ async function signInAccount(email, password) {
 .card {
   height: 50vh;
 }
-.sign-in-text {
-  padding-top: 6vh;
-  padding-bottom: 3vh;
+.create-text {
+  padding-top: 4.5vh;
+  padding-bottom: 0.1vh;
 
-}
-.field {
-  width: 70%;
-  margin: auto;
-  padding: 10px;
-}
-
-.sign-in-checkbox {
-  text-align: left;
-  padding-left: 9vh;
-  padding-top: 1vh;
-}
-.sign-in-button {
-  padding-top: 4vh;
-}
-.button {
-  width: 66%;
-}
-
-.new-account-button {
-  padding-top: 2vh;
 }
 .username-text {
   text-align: left;
@@ -223,6 +238,21 @@ async function signInAccount(email, password) {
   width: 70%;
   margin: auto;
   padding-left: 1vh;
+}
+.field {
+  width: 70%;
+  margin: auto;
+  padding: 10px;
+}
+.create-button {
+  padding-top: 0vh;
+}
+.button {
+  width: 66%;
+}
+
+.back-button {
+  padding-top: 0.1vh;
 }
 
 .round-card {
@@ -243,7 +273,6 @@ async function signInAccount(email, password) {
   position: relative;
   padding-bottom: 4vh;
   margin-right: 9vh;
-  
 }
 
 /* Animations */

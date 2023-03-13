@@ -4,19 +4,6 @@
     </div>
 </template>
   
-<script>
+<script setup>
 
-
-export default {
-    props: ['authorId'],
-    data() {
-        return {
-            author: null,
-        }
-    },
-    created() {
-        // call Firebase Cloud Function to get author details based on this.authorId
-        // update this.author with the author details
-    },
-}
 </script>

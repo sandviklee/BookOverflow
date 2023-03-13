@@ -16,6 +16,22 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 npm install
 ```
 
+## Typesense Setup
+
+Install Docker
+
+To start Typesense server
+
+```sh
+npm run typesense
+```
+
+To initialize Typesense server
+
+```sh
+npm run typesense-init
+```
+
 ### Compile and Hot-Reload for Development
 
 ```sh

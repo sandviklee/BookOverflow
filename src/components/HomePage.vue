@@ -1,58 +1,61 @@
 <template>
-    <div class="main">
-        <div class="card mb-6">
-            <div class="card-body">
-                
-
-            </div>
-        </div>
-    </div>
-    <div class="container">
-        <div class="row">
-            <div class="col-md-6">
+    <div class="background">
+        <div :style="myStyle">
+            <div class="main">
                 <div class="card mb-6">
-                    <span class="icon-text">
-                        <div class="card-header-title pl-5">
-                        <span class="icon">
-                            <i class="pi pi-megaphone"></i>
-                        </span>
-                        <h3>Discover</h3>
-                    </div>
-                    </span>
-
                     <div class="card-body">
-                        <Book class="books" v-for="book in booksDiscover" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
+                        
                     </div>
                 </div>
             </div>
-            <div class="col-md-10">
-                <div class="card mb-6">
-                    <span class="icon-text">
-                        <div class="card-header-title pl-5">
-                        <span class="icon">
-                            <i class="pi pi-thumbs-up"></i>
-                        </span>
-                        <h3>Popular Books</h3>
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="card mb-6">
+                            <span class="icon-text">
+                                <div class="card-header-title pl-5">
+                                <span class="icon">
+                                    <i class="pi pi-megaphone"></i>
+                                </span>
+                                <h3>Discover</h3>
+                            </div>
+                            </span>
+
+                            <div class="card-body">
+                                <Book class="books" v-for="book in books" :bookInfo="book.image_url + ';' + book.id"/>
+                            </div>
                         </div>
-                    </span>
+                    </div>
+                    <div class="col-md-10">
+                        <div class="card mb-6">
+                            <span class="icon-text">
+                                <div class="card-header-title pl-5">
+                                <span class="icon">
+                                    <i class="pi pi-thumbs-up"></i>
+                                </span>
+                                <h3>Popular Books</h3>
+                                </div>
+                            </span>
 
-                    <div class="card-body">
-                        <Book class="books" v-for="book in booksPopular" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
+                            <div class="card-body">
+                                <Book class="books" v-for="book in books" :bookInfo="book.image_url + ';' + book.id"/>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-md-10">
-                <div class="card mb-6">
-                    <span class="icon-text">
-                        <div class="card-header-title pl-5">
-                        <span class="icon">
-                            <i class="pi pi-star"></i>
-                        </span>
-                        <h3>Favorites</h3>
-                    </div>
-                    </span>
-                    <div class="card-body">
-                        <Book class="books" v-for="book in books" :imagePath="book.author + '/' + book.title + '.png;' + book.id"/>
+                    <div class="col-md-10">
+                        <div class="card mb-6">
+                            <span class="icon-text">
+                                <div class="card-header-title pl-5">
+                                <span class="icon">
+                                    <i class="pi pi-star"></i>
+                                </span>
+                                <h3>Favorites</h3>
+                            </div>
+                            </span>
+                            <div class="card-body">
+                                <Book class="books" v-for="book in books" :bookInfo="book.image_url + ';' + book.id"/>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -63,7 +66,9 @@
 <script setup>
 import { db } from '../firebase/firebase.js'
 import { ref, onMounted} from 'vue'
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs } from 'firebase/firestore';
+import Book from './Book.vue';
+import { userStore } from '../stores/UsersStore';
 
 //Implement shuffle function for booklists.
 function shuffleArray(arr) {
@@ -71,37 +76,37 @@ function shuffleArray(arr) {
 }
 
 const books = ref([])
-const booksDiscover = ref([])
-const booksPopular = ref([])
-const booksToday = ref([])
+const store = userStore();
 
 //Get books from database, and generalize them with id, author and title.
 onMounted(async () => {
+    console.log(store.uid, " er ID.");
     const querySnapshot = await getDocs(collection(db, 'books'));
     let bookArray = []
     querySnapshot.forEach((doc) => {
         const book = {
             id: doc.id,
-            author: doc.data().author.name,
-            title: doc.data().title
+            image_url: doc.data().image_url
         }
-        bookArray.push(book)
+        if (bookArray.length !== 6) {
+            bookArray.push(book)
+            return
+        }
+        
     });
-    books.value = booksDiscover.value = booksPopular.value = booksToday.value = bookArray
+    books.value = bookArray
 })
 </script>
 
-<script>
-import Book from './Book.vue';
-export default {
-    components: {
-        Book
-    }
-};
+<style scoped>
+.background {
+  padding: 0;
+  margin: 0;
+  min-height: 100%;
+  width: 100%;
+  background-color: rgba(234, 231, 220, 1);
+}
 
-</script>
-
-<style>
 .main {
     width: 80%;
     text-align: center;
