@@ -42,7 +42,7 @@
     </div>
     <div class="vl"></div>
     <div class="the-library">
-      <router-link to="/userlist/:id">
+      <router-link to="/thelibrary">
         <button class="button is-text is-ghost is-medium">
           <i class="pi pi-book" style="font-size: 1.5rem"></i>&ensp;The library
         </button>
@@ -187,7 +187,6 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 }
 
 .results {
-  
   text-shadow: 0.5px 0px 0px #e98074;
 }
 

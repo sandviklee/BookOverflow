@@ -188,6 +188,7 @@ async function createAccount(username, email, password, passwordConfirm) {
     
   })
   .catch((error) => {
+    warnDisabled()
     const errorCode = error.code;
     const errorMessage = error.message;
     let div = document.getElementById("invalid-text")

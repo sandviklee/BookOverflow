@@ -153,9 +153,11 @@ async function signInAccount(email, password) {
 
   })
   .catch((error) => {
+    
     const errorMessage = error.message;
     let div = document.getElementById("invalid-text")
     div.innerHTML += errorMessage
+    warnDisabled()
   });
 }
   /**
