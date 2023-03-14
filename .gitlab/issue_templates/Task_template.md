@@ -1,30 +1,31 @@
 # Beskrivelse
 
-<!-- Bytt ut tekst i paranteser -->
-
-(Beskriv oppgaven)
+<!-- Beskriv oppgaven -->
 
 ## Underoppgaver
 
-(Liste over mindre underoppgaver, lag nytt issue for større oppgaver)
+<!-- Liste over mindre underoppgaver, lag nytt issue for større oppgaver -->
 
-<!-- 1. Underoppgave 1
-1. Underoppgave 2
-    1. Underunderoppgave
-    - Detalj eller kommentar -->
+<!--
+1. [ ] Underoppgave 1
+2. [ ] Underoppgave 2
+    1. [ ] Underunderoppgave - Detalj eller kommentar
+-->
 
 ## Krav
 
-(Skriv eventuelle krav for at oppgaven skal være fullført)
+<!-- (Skriv krav for at oppgaven skal være fullført) -->
+TODO: Skriv krav
 
 ## Avhengig av
 
-(referer til oppgaver eller brukerhistorier denne oppgaven er avhengig av)
-<!-- Referer til issues slik: #11 -->
+<!-- Referer til oppgaver eller brukerhistorier denne oppgaven er avhengig av) -->
+<!-- Referer til issues slik: #11 og bruk quick action for å linke dette issuet til det andre slik /relate #11 -->
 
 ## Relevante filer
 
 <!-- Referer til evt filer slik:
-[README](doc/README.md) -->
+[README](doc/README.md)
+[App.vue](src/App.vue) -->
 
 /label ~Task
