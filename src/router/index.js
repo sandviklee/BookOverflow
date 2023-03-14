@@ -6,6 +6,7 @@ import SearchPage from '../components/SearchPage.vue'
 import ViewAuthor from '../components/ViewAuthorPage.vue'
 import ViewBook from '../components/ViewBookPage.vue'
 import UserList from '../components/UserList.vue'
+import TheLibrary from '../components/TheLibrary.vue'
 
 
 //createApp(App).use(router).mount('#app')
@@ -18,6 +19,7 @@ const routes = [
     { path: '/author/', component: ViewAuthor },
     { path: '/book/:id', component: ViewBook },
     { path: '/userlist/:id', component: UserList },
+    { path: '/thelibrary', component: TheLibrary },
   ]
   
 const router = createRouter({

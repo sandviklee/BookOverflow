@@ -22,7 +22,7 @@
                             </span>
 
                             <div class="card-body">
-                                <Book class="books" v-for="book in books" :bookInfo="book.image_url + ';' + book.id"/>
+                                <Book class="books" v-for="book in books" :bookInfo="book.image_url + ';' + book.id + ';' + book.rating"/>
                             </div>
                         </div>
                     </div>
@@ -38,7 +38,7 @@
                             </span>
 
                             <div class="card-body">
-                                <Book class="books" v-for="book in books" :bookInfo="book.image_url + ';' + book.id"/>
+                                <Book class="books" v-for="book in books" :bookInfo="book.image_url + ';' + book.id + ';' + book.rating"/>
                             </div>
                         </div>
                     </div>
@@ -53,7 +53,7 @@
                             </div>
                             </span>
                             <div class="card-body">
-                                <Book class="books" v-for="book in books" :bookInfo="book.image_url + ';' + book.id"/>
+                                <Book class="books" v-for="book in books" :bookInfo="book.image_url + ';' + book.id + ';' + book.rating"/>
                             </div>
                         </div>
                     </div>
@@ -86,7 +86,8 @@ onMounted(async () => {
     querySnapshot.forEach((doc) => {
         const book = {
             id: doc.id,
-            image_url: doc.data().image_url
+            image_url: doc.data().image_url,
+            rating: doc.data().avgRating
         }
         if (bookArray.length !== 6) {
             bookArray.push(book)
@@ -114,12 +115,12 @@ onMounted(async () => {
 }
 
 .card-body {
-    height: 22vh;
+    height: 23vh;
 }
 
 .books {
     display: inline-block;
-    padding: 1vh 3.7vh;
+    padding: 1vh 4.9vh;
 }
 
 </style>

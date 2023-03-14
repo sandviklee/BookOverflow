@@ -3,9 +3,12 @@
 // Start Typesense server with `npm run typesenseServer`
 // Then run `npm run populateTypesenseIndex` or `node populateTypesenseIndex.js`
 
+
 const Typesense = require('typesense');
 
 module.exports = (async () => {
+  
+
   const typesense_client = new Typesense.Client({
     nodes: [
       {
@@ -54,6 +57,7 @@ module.exports = (async () => {
 
   try {
     var fs = require('fs/promises');
+
     const booksInJsonl = await fs.readFile('./data/books.jsonl');
     const returnData = await typesense_client
       .collections('books')
