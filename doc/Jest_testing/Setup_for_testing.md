@@ -1,37 +1,45 @@
-For testing ved bruk av Jest (som er det som er mest brukt for JavaScript)
+# For testing ved bruk av Jest 
+Jest er det som er mest brukt for JavaScript enhetstesting
 
-Installerer først Jest:
--     npm install --save-dev jest
+## Installere Jest:
+
+    npm install --save-dev jest
 
 Kan installere denne for å slippe å skrive import for alle jest typene i testfilene
--     npm install --save-dev @types/jest
 
-Legger så til dette i package.json filen:
--     "scripts": {
+    npm install --save-dev @types/jest
+
+Legger så til dette i `package.json` filen:
+    
+    "scripts": {
         "test": "jest --watchAll --verbose"
-      }
+    }
 Nå kan du kjøre testene dine ved å kjøre dette i terminalen:
--     npm test
+    
+    npm test
 
-Man får da oversikt over hvilke tester som er failed eller passed og du får opp et test vindu der du kan for eksempel kjøre testene flere ganger eller bare kjøre tester for filer som er endret
+- Man får da oversikt over hvilke tester som er failed eller passed og du får opp et test vindu der du kan for eksempel kjøre testene flere ganger eller bare kjøre tester for filer som er endret
 Når man kjører denne vil den se etter filer som heter følgende
--       something.test.js
 
-Kan også være lurt å innstallere følgende utvidelse i VS Code
--     wallaby.js
-Denne skal visst kunne gi tilbakemelding om testene dine er bestått direkte i editoren, men det har jeg ikke testet så dere kan velge selv om dere vil sette dere inn i dette.
+       something.test.js
+
+**Hvis man ønsker** kan man installere følgende utvidelse i **VS Code**
+
+    wallaby.js
+
+- Denne skal visst kunne gi tilbakemelding om testene dine er bestått direkte i editoren, men det har jeg ikke testet så dere kan velge selv om dere vil sette dere inn i dette.
 
 
-
-Skrive tester:
+## Skrive tester:
 
 For å skrive beskrivelse for testen 
--          describe('My Stack')
+
+    describe('My Stack')
 
 Inni denne kan man definere man ulike tester ved test eller it (de gjør det samme)
 
-Eksempel 1 på en test:
- -       describe('My Stack', () => {
+### Eksempel 1 på en test:
+        describe('My Stack', () => {
             test.todo('is created empty', () => {
                 const stack = new Stack();
                 except(stack.top).toBe(-1); //toBe is a matcher which 
@@ -47,10 +55,30 @@ Eksempel 1 på en test:
             })
         })
 
-Eksempel 2 på en test:
--       const sum = require('./sum');
+### Eksempel 2 på en test:
+        const sum = require('./sum');
 
         test('adds 1 + 2 to equal 3', () => {
             expect(sum(1, 2)).toBe(3);
         });
 
+
+### Eksempel 3 på en test
+
+Fra AddBook.js:
+
+        function dummyfunction() {
+            return 0;
+        }
+        //exporterer dummyfunction slik at man kan bruke den i andre filer
+        module.exports.dummyfunction = dummyfunction
+
+Fra AddBook.test.js
+
+        //henter ut alt som er exportert fra AddBook
+        const AddBook = require('../javascripts/AddBook')
+
+        test('teste', () => {
+        expect('data').toMatch(/data/)
+        expect(AddBook.dummyfunction()).toBe(0)
+        })
