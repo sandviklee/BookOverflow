@@ -172,7 +172,8 @@ async function createAccount(username, email, password, passwordConfirm) {
     
     await setDoc(doc(db, "users", user.uid), {
       email: email,
-      username: username
+      username: username,
+      type: "user"
     })
 
     //Change page to homescreen and emit the user to the rest of the app through Pinia store.
