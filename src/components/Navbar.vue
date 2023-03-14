@@ -6,8 +6,7 @@
       </router-link>
     </div>
     <div class="search-bar has-icon-left">
-      <ais-instant-search
-        :search-client="searchClient" index-name="books">
+      <ais-instant-search :search-client="searchClient" index-name="books">
         <ais-configure :hits-per-page.camel="3" />
         <div class="search-panel">
           <ais-search-box>
@@ -16,23 +15,33 @@
                 <i class="pi pi-search"></i>
               </span>
 
-              <input type="text" :value="currentRefinement" @input="refine($event.currentTarget.value)" placeholder="Search BookOverflow..." />
-              
+              <input
+                type="text"
+                :value="currentRefinement"
+                @input="refine($event.currentTarget.value)"
+                placeholder="Search BookOverflow..."
+              />
             </template>
           </ais-search-box>
 
           <!-- <div class="search-panel__filters"></div> -->
-          <div class="search-panel-results" >
-            <div class="search-bar-results" >
-              <ais-hits>
-                <template v-slot:item="{ item }">
-                  <div>
-                    <h2>{{ item.title }}</h2>
-                    <img :src="item['image_url']"/>
-                    Author: {{ item.authors[0] }} Year: {{ item.publication_year }} Average rating: {{ item.average_rating }}
-                  </div>
+          <div class="search-panel-results">
+            <div class="search-bar-results">
+              <ais-state-results>
+                <template v-slot="{ state: { query } }">
+                  <ais-hits v-show="query.length > 0">
+                    <template v-slot:item="{ item }">
+                      <div>
+                        <h2>{{ item.title }}</h2>
+                        <img :src="item['image_url']" />
+                        Author: {{ item.authors[0] }} Year:
+                        {{ item.publication_year }} Average rating:
+                        {{ item.average_rating }}
+                      </div>
+                    </template>
+                  </ais-hits>
                 </template>
-              </ais-hits>
+              </ais-state-results>
             </div>
             <!-- <div class="pagination">
               <ais-pagination />
@@ -67,12 +76,12 @@
         </button>
       </router-link>
     </div>
-
   </div>
 </template>
 
 <script setup>
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
+import { AisStateResults  } from "vue-instantsearch/vue3/es";
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
@@ -94,7 +103,6 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
-
 </script>
 
 <style>
@@ -116,7 +124,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 
 .search-bar {
   display: flex;
-  padding-left:10vh;
+  padding-left: 10vh;
   position: relative;
   flex-grow: 1;
 }
@@ -127,7 +135,6 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   position: absolute;
   background-color: white;
 }
-
 
 .vl {
   border-left: 2.5px solid rgb(0, 0, 0);
