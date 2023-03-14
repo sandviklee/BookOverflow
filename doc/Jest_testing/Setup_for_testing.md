@@ -19,35 +19,38 @@ Når man kjører denne vil den se etter filer som heter følgende
 
 Kan også være lurt å innstallere følgende utvidelse i VS Code
 -     wallaby.js
-Denne skal visst kunne gi tilbakemelding om testene dine er bestått direkte i editoren.
+Denne skal visst kunne gi tilbakemelding om testene dine er bestått direkte i editoren, men det har jeg ikke testet så dere kan velge selv om dere vil sette dere inn i dette.
 
-Skrive tester
+
+
+Skrive tester:
+
 For å skrive beskrivelse for testen 
 -          describe('My Stack')
 
-Inni denne kan man definere man ulike tester ved test/it (de gjør det samme)
+Inni denne kan man definere man ulike tester ved test eller it (de gjør det samme)
+
+Eksempel 1 på en test:
  -       describe('My Stack', () => {
             test.todo('is created empty', () => {
                 const stack = new Stack();
-                except(stack.top).toBe(-1); //toBe is a matcher which checks the value to   the correct value
-            });
+                except(stack.top).toBe(-1); //toBe is a matcher which 
+                //checks the value to the correct value
+            })
 
-        test.todo('can push to the top');
+            test.todo('can push to the top', () => {
+                //test
+            })
 
-        test.todo('can pop off');
-    })
+            test.todo('can pop off', () => {
+                //test
+            })
+        })
 
+Eksempel 2 på en test:
+-       const sum = require('./sum');
 
-____________
-For testing ved bruk av Mocha JS og Chai
-nettside for chai: https://www.chaijs.com/
-nettside for mocha
+        test('adds 1 + 2 to equal 3', () => {
+            expect(sum(1, 2)).toBe(3);
+        });
 
-I prosjektet laster man ned Mocha og Chai. Bruker --save-dev for å lagre dependencies for mocha og chai slik jeg forsto det
-- npm install mocha chai --save-dev
-
-I package.json vil det legges inn for mochatest og under denne kan man skrive for å kunne bruke "npm run test" 
-- "test": "mocha"
-
-Mocha vil se etter en mappe som heter test når du kjører "npm run test".
-___________
