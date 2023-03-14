@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> af17437 (Endret og lagt til i Setup_for_testing: Ref#42)
 # For testing ved bruk av Jest 
 Jest er det som er mest brukt for JavaScript enhetstesting
 
@@ -83,6 +86,7 @@ Fra AddBook.test.js
         expect('data').toMatch(/data/)
         expect(AddBook.dummyfunction()).toBe(0)
         })
+<<<<<<< HEAD
 =======
 For testing ved bruk av Jest (som er det som er mest brukt for JavaScript):
 - npm install --save-dev jest
@@ -138,3 +142,5 @@ I package.json vil det legges inn for mochatest og under denne kan man skrive fo
 Mocha vil se etter en mappe som heter test når du kjører "npm run test".
 
 >>>>>>> af2f02c (Teste testing med Jest: Ref#42)
+=======
+>>>>>>> af17437 (Endret og lagt til i Setup_for_testing: Ref#42)
