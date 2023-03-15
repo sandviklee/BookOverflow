@@ -3,9 +3,9 @@
         <div class="card">
             <router-link :to="'/book/' + id">
                 <img class="bookImg" :src="imageURL">
-                <div>
-                {{ title }}
-                {{ authors }}
+                <div class="hide-reviews">
+                    <h1><i class="pi pi-star-fill" style="font-size: 1.5rem"></i></h1> 
+                    <h1>{{ bookRating }}</h1>
                 </div>
             </router-link>
         </div>
@@ -31,6 +31,29 @@ const blurb = ref('')
 </script>
 
 <style>   
+.hide-reviews {
+    display: none;
+    position: absolute;
+    font-size: larger;
+    font-weight: 900;
+    text-shadow: 2px 2px 0px black;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+}
+
+.bookImg:hover + .hide-reviews {
+    display: block;
+    color: yellow;
+    pointer-events: none;
+}
+
+.card {
+    position: relative;
+    text-align: center;
+}
+
 .bookImg {    
     border-radius: 5px;
     height: 20vh;
@@ -44,10 +67,12 @@ const blurb = ref('')
     transition-duration: 0.3s;
     -webkit-transition-property: transform;
     transition-property: transform;
+    
 }
 
 .bookImg:hover {
     -webkit-transform: scale(1.1);
     transform: scale(1.1);
+    filter: blur(1px);
 }
 </style>

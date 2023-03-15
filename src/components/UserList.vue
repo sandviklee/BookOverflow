@@ -13,16 +13,6 @@
   </header>
 </template>
 
-<script>
-export default{
-    name: 'User-List',
-  data(){
-    return {
-
-    }
-  }
-}
-</script>
 
 <style>
 

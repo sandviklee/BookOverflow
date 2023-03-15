@@ -1,23 +1,26 @@
-import { defineConfig } from 'vite'
-import vue from '@vitejs/plugin-vue'
+import { defineConfig } from "vite";
+import vue from "@vitejs/plugin-vue";
 
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
   build: {
-    target: 'es2015',
+    target: "es2015",
     minify: true,
     rollupOptions: {
       output: {
-        format: 'esm'
-      }
-    }
+        format: "esm",
+      },
+    },
+  },
+  test: {
+    
   },
   babel: {
-    presets: ['@babel/preset-env'],
+    presets: ["@babel/preset-env"],
     plugins: [
-      '@babel/plugin-proposal-class-properties',
-      '@babel/plugin-transform-runtime'
-    ]
-  }
+      "@babel/plugin-proposal-class-properties",
+      "@babel/plugin-transform-runtime",
+    ],
+  },
 });
