@@ -14,7 +14,8 @@ export default defineConfig({
     },
   },
   test: {
-    
+    globals: true, // Use globals so we don't need to use imports
+    environment: "jsdom", // We are developing for web
   },
   babel: {
     presets: ["@babel/preset-env"],

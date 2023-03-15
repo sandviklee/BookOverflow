@@ -43,3 +43,31 @@ npm run dev
 ```sh
 npm run build
 ```
+
+## Unit testing/TDD with Vitest
+
+[Guide](https://vitest.dev/guide/)
+
+### Install Vitest
+
+```sh
+npm install -D vitest
+```
+
+### Run Vitest
+
+```sh
+npm test
+```
+
+or, run with fancy UI
+
+```sh
+npm run test-ui
+```
+
+or
+
+```sh
+npx vitest --ui 
+```
