@@ -5,11 +5,11 @@ import InstantSearch from 'vue-instantsearch/vue3/es';
 import router from './router'
 import piniaPluginPersistedState from "pinia-plugin-persistedstate"
 
-
 //Import icons
 import primeicons from 'primeicons/primeicons.css'  
 
 const pinia = createPinia()
+pinia.use(piniaPluginPersistedState)
 const app = createApp(App)
 pinia.use(piniaPluginPersistedState)
 app.use(InstantSearch)

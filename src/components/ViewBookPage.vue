@@ -1,26 +1,34 @@
 <template>
-  <div class="background">
+  
+  <div class="background" >
     
   <header>
     <div class="container">
       <div class="row">
         <div class="col-md-6">
-          <nav class="breadcrumb is-medium" aria-label="breadcrumbs">
-            <ul>
-              <li><a href="/">BookOverflow</a></li>
-              <li><a href="/thelibrary">TheLibrary</a></li>
-              <li class="is-active"><a href="#" aria-current="page">{{ bookName }}</a></li>
-            </ul>
-          </nav>
-          <div class="card">
 
+          <div class="card">
+            
             <div class="book-image">
               <img class="bookImg" :src="imgUrl">
+              <div class="bookmark-icon">
+
+              </div>
             </div>
 
             <div class="book-title">
               <h1 class="title">{{ bookName }} </h1>
               <h1 class="author">By {{ authorName }}</h1>
+            </div>
+             
+            <div class="book-rating">
+              <img class="rating-img" src="../assets/BookOverflow/logo.png" alt="">
+              <div class="rating">
+                <h1 class="rating-text"> 
+                  <i class="pi pi-star-fill" style="font-size: 2rem"></i>&ensp;{{ bookRating }} / 5
+                </h1>
+              </div>
+              
             </div>
 
             <div class="book-desc">
@@ -29,21 +37,164 @@
               </h6>
             </div>
 
+            <div class="published">
+              <h1 class="published-text">
+                <i class="pi pi-calendar" style="font-size: 1.5rem"></i>&ensp;Published Date: {{ publishedText }}
+              </h1>
+            </div>
+
             <div class="genres">
               <h1>
-                Genres
+                <i class="pi pi-book" style="font-size: 1.5rem"></i>&ensp;Genres:
               </h1>
               <div class="genre">
                 <button class="button is-ghost is-normal" v-for="genre in bookGenres">{{ genre }}</button>
               </div>
             </div>
 
-            <div class="published">
-              <h1 class="published-text">
-                Published: {{ publishedText }}
+            <div class="awards">
+              <h1>
+                <i class="pi pi-globe" style="font-size: 1.5rem"></i>&ensp;Awards:
               </h1>
+              <div class="award">
+                <button class="button is-ghost is-normal" v-for="award in bookAwards">{{ award }}</button>
+              </div>
             </div>
+            
+            <hr class="line">
 
+            <div class="book-review">
+
+              <h1 class="title">Ratings & Reviews</h1>
+              <h1 class="subtitle">SUBMIT REVIEW:</h1>
+              <form class="box">
+                <article class="media">
+                
+                <figure class="media-left">
+                  <p class="image is-64x64">
+                    <img src="https://bulma.io/images/placeholders/128x128.png">
+                  </p>
+                </figure>
+                
+                <div class="media-content">
+                  <div class="review-title-field">
+                    <h1>Review Title</h1>
+                    <input v-model="titleField" class="input" id="title-input" type="text" placeholder="Add a review title...">
+                  </div>
+                  <div class="review-stars-field">
+                    <h6>Rating & Review</h6>
+
+                    <input v-model="count" class="input" type="text" id="rating-input" readonly>
+                    <div class="button-up-down">
+                      <button 
+                      type="button"
+                      v-bind:disabled="count > 4"
+                      @click="increment"
+                      class="button is-ghost is-small"><i class="pi pi-chevron-up" style="font-size: 1.2rem"></i></button>
+                      <button
+                      type="button"
+                      v-bind:disabled="count <= 1"
+                      @click="decrement"
+                      class="button is-ghost is-small"><i class="pi pi-chevron-down" style="font-size: 1.2rem"></i></button>
+                    </div>
+
+                  </div>
+
+                  <div class="field">
+                    <p class="control">
+                      <textarea v-model="reviewField" class="textarea" id="review-input" placeholder="Add a BookOverflow review..."></textarea>
+                    </p>
+                  </div>
+                  <nav class="level">
+                    <div class="level-left">
+                      <div class="level-item">
+                        <button
+                        type="button"
+                        @click="createReview(titleField, count, reviewField)"
+                        class="button is-link">Submit Review</button>
+                      </div>
+                    </div>
+                  </nav>
+                  <h6 id="done-text"></h6>
+                  
+                </div>
+              </article>
+              </form>
+
+              <h1 class="subtitle">REVIEWS:</h1>
+
+              <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                    <span>RATING SOURCE</span>
+                    <span class="icon is-small">
+                      <i class="pi pi-chevron-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                  <div class="dropdown-content">
+                    <div class="dropdown-item">
+                      <p>Here you can change the source of ratings.
+                        <hr>
+                        BookOverflow
+                        <hr>
+                        Outsourced
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="dropdown is-hoverable">
+                <div class="dropdown-trigger">
+                  <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
+                    <span>Sort by</span>
+                    <span class="icon is-small">
+                      <i class="pi pi-chevron-down" aria-hidden="true"></i>
+                    </span>
+                  </button>
+                </div>
+                <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+                  <div class="dropdown-content">
+                    <div class="dropdown-item">
+                      <p>
+                        Here you can change what you want to sort by:
+                        <hr>
+                        Highest rated
+                        <hr>
+                        Highest likes
+                        <hr>
+                        Lowest rated
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="paging">
+                <nav class="pagination" role="navigation" aria-label="pagination">
+                  <a class="pagination-previous is-disabled" title="This is the first page">Previous</a>
+                  <a class="pagination-next">Next page</a>
+                  <ul class="pagination-list">
+                    <li>
+                      <a class="pagination-link is-current" aria-label="Page 1" aria-current="page">1</a>
+                    </li>
+                    <li>
+                      <a class="pagination-link" aria-label="Goto page 2">2</a>
+                    </li>
+                    <li>
+                      <a class="pagination-link" aria-label="Goto page 3">3</a>
+                    </li>
+                  </ul>
+                </nav>
+              </div>
+
+              <form class="box">
+                <Review class="reviews" v-for="review in reviews" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
+              </form>
+              
+            </div>
           </div>
         </div>
       </div>
@@ -54,40 +205,80 @@
 
 <script setup>
 import { useRoute } from 'vue-router';
-import { ref, onMounted} from 'vue'
+import { ref, onMounted, getCurrentInstance} from 'vue'
 import { db } from '../firebase/firebase';
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, onSnapshot, collection, addDoc } from "firebase/firestore"; 
+import { userStore } from '../stores/UsersStore';
+import Review from './Review.vue';
 
 const route = useRoute()
+const store = userStore()
+
 const bookName = ref()
 const authorName = ref()
 const bookBlurb = ref()
 const imgUrl = ref()
 const publishedText = ref()
 const bookGenres = ref([])
+const bookAwards = ref([])
+const bookRating = ref()
+const count = ref(1)
 
 let book = ''
 book = route.params.id;
 
+const reviews = ref([])
+
+const instance = getCurrentInstance();
+
+function increment() {
+  count.value++
+}
+
+function decrement() {
+  count.value--
+}
+
 //Retrives book information from the ID when you click on a book.
-onMounted(async () => {
-  const docRef = await doc(db, 'books', book);
-  const docSnap = await getDoc(docRef);
+onMounted(async () => { 
+  onSnapshot(collection(db, 'reviews'), (querySnapshot) => {
+    const reviewArray = [];
+    querySnapshot.forEach((doc) => {
+      const review = {
+          uid: doc.data().user.id,
+          title: doc.data().title,
+          rating: doc.data().rating,
+          review: doc.data().review,
+      }
+      reviewArray.push(review)
+    });
+    reviews.value = reviewArray
+  });
 
-  let bname = docSnap.data().title
-  let aname = docSnap.data().author.name
-  let blurb = docSnap.data().blurb
-  let image = docSnap.data().image_url
-  let genres = docSnap.data().genres
-  let published = docSnap.data().published
+  const docBook = await doc(db, 'books', book);
+  const docSnapBook = await getDoc(docBook);
 
-  if (docSnap.exists()) {
-    console.log("Document data:", docSnap.data());
+  let bname = docSnapBook.data().title
+  let aname = docSnapBook.data().author.name
+  let blurb = docSnapBook.data().blurb
+  let image = docSnapBook.data().image_url
+  let genres = docSnapBook.data().genres
+  let awards = docSnapBook.data().awards
+  let published = docSnapBook.data().published
+  let rating = docSnapBook.data().avgRating
+
+  if (docSnapBook.exists()) {
+    console.log("Document data:", docSnapBook.data());
     bookName.value = bname.replace(/\_/g, ' ');
     authorName.value = aname.replace(/\_/g, ' ');
     bookBlurb.value = blurb;
     imgUrl.value = image;
     publishedText.value = published;
+    bookRating.value = rating;
+
+    awards.forEach(award => {
+      bookAwards.value.push(award)
+    });
     genres.forEach(genre => {
       bookGenres.value.push(genre)
     });
@@ -97,15 +288,34 @@ onMounted(async () => {
   }
 })
 
+
+function createReview(title, rating, review) {
+  addDoc(collection(db, "reviews"), {
+    book: {
+      id: book,
+      title: bookName.value,
+    },
+    rating: rating,
+    title: title,
+    review: review,
+    user: {
+      id: store.uid
+    },
+  });
+  document.getElementById("done-text").innerHTML = 'Review created!';
+  instance?.proxy?.$forceUpdate();
+}
+
 </script>
 
 <style scoped>
 @import url('https://fonts.cdnfonts.com/css/lato');
 .background {
+  text-shadow: 1px 0.5px 0px #E98074;
   margin: auto;
   padding: 0;
   margin: 0;
-  height: 120h;
+  height: 100%;
   width: 100%;
   background-color: #D8C3A5;
 }
@@ -117,7 +327,7 @@ header {
 
 .card {
   background-color: #EAE7DC;
-  min-height: 100vh;
+  min-height: 235vh;
 }
 
 .author {
@@ -127,41 +337,91 @@ header {
 .book-image {
   position: absolute;
   left: 8vh;
-  top: 15vh;
+  top: 17vh;
+}
+
+.bookmark-icon {
+  position: absolute;
+  bottom: 35vh;
 }
 
 .book-title {
   position: absolute;
   left: 8vh;
-  padding-top: 4vh;
+  padding-top: 5vh;
 }
 
 .book-desc {
   position: absolute;
-  padding-top: 15vh;
+  padding-top: 17vh;
   max-width: 90vh;
   left: 43vh;
 }
 
 .genres {
-  
-  padding: 58vh 8vh;
-  
+  padding: 62vh 8vh;
 }
 
-.genre {
-  display: flex;
-  padding: 0vh 0.1vh;
+.genre {  
+  position: absolute;
+  top: 64.5vh;
+  left: 20vh;
+}
+
+.awards {
+  position: absolute;
+  padding: 0vh 8vh;
+  top: 71vh;
+}
+
+.award {
+  position: relative;
+  padding-left: 12vh;
+  bottom: 3.5vh;
 }
 
 .published {
   position: relative;
-  bottom: 55vh;
+  top: 59vh;
   left: 8vh;
 }
 
+.rating {
+  color: #FCE181;
+  text-shadow: 2px 1px 3px black;
+}
+
+.rating-text {
+  font-size: 4vh;
+  font-weight: bold;
+}
+
+.book-rating {
+  position: absolute;
+  padding-top: 5vh;
+  left: 115vh;
+  text-align: center;
+}
+
+.rating-img {
+  width: 20vh;
+  padding-left: 1vh;
+}
+
 .published-text {
-  font-weight: 400vh;
+  font-weight: 700vh;
+}
+
+.book-review {
+  position: absolute;
+  width: 90%;
+  top: 80vh;
+  left: 8vh;
+}
+
+.paging {
+  padding-top: 2vh;
+  padding-bottom: 2vh;
 }
 
 .bookImg {    
@@ -181,5 +441,29 @@ header {
     -webkit-transform: scale(1.02);
     transform: scale(1.02);
 }
+
+.field {
+  width: 100%;
+}
+
+.review-title-field {
+  width: 40vh;
+  padding-bottom: 1vh;
+}
+
+.review-stars-field {
+  width: 14vh;
+  padding-bottom: 1vh;
+}
+
+.line {
+  position: relative;
+  bottom: 56vh;
+  height: 0.5vh;
+  width: 95%;
+  left: 3.5vh;
+  
+}
+
 
 </style>
