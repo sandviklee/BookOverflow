@@ -6,7 +6,8 @@
       </router-link>
     </div>
     <div class="search-bar has-icon-left">
-      <ais-instant-search :search-client="searchClient" index-name="books">
+      <ais-instant-search
+        :search-client="searchClient" index-name="books">
         <ais-configure :hits-per-page.camel="3" />
         <div class="search-panel">
           <ais-search-box>
@@ -47,16 +48,32 @@
               <ais-pagination />
             </div> -->
           </div>
+              <input type="text" :value="currentRefinement" @input="refine($event.currentTarget.value);" placeholder="Search BookOverflow..." />
+              
+              <div v-show="currentRefinement.length" class="search-panel-results" >
+                <div class="search-bar-results" >
+                  <ais-hits>
+                    <template v-slot:item="{ item }">
+                      <div class="results">
+                        <h2 class="result-title">{{ item.title }}</h2>
+                        <h6 class="result-author"> Author: {{ item.authors[0] }} </h6>
+                        <img class="result-image" :src="item['image_url']"/>
+                        <br>
+                        Year: {{ item.publication_year }}, Average rating: {{ item.average_rating }}
+                        <hr>
+                      </div>
+                    </template>
+                  </ais-hits>
+                </div>
+              </div>
+            </template>
+          </ais-search-box>
         </div>
       </ais-instant-search>
-      <!-- <form>
-
-        <button type="submit" @click.prevent="search">{{ "All" }}</button>
-      </form> -->
     </div>
     <div class="vl"></div>
     <div class="the-library">
-      <router-link to="/userlist/:id">
+      <router-link to="/thelibrary">
         <button class="button is-text is-ghost is-medium">
           <i class="pi pi-book" style="font-size: 1.5rem"></i>&ensp;The library
         </button>
@@ -69,23 +86,88 @@
         </button>
       </router-link>
     </div>
-    <div class="signup-login">
+    <div v-show="store.uid == 'no user'" class="signup-login">
       <router-link to="/signup">
         <button class="button is-text is-ghost is-medium">
           <i class="pi pi-user" style="font-size: 1.5rem"></i>&ensp;Sign In
         </button>
       </router-link>
     </div>
+
+    <div v-show="store.uid !== 'no user'" class="signup-login">
+      <div class="dropdown is-right is-hoverable">
+        <div class="dropdown-trigger">
+          <button class="button is-text is-ghost is-medium" aria-haspopup="true" aria-controls="dropdown-menu4">
+            <span class="icon is-small">
+              <i class="pi pi-user" style="font-size: 1.8rem"></i>
+            </span>
+          </button>
+        </div>
+        <div class="dropdown-menu" id="dropdown-menu4" role="menu">
+          <div class="dropdown-content">
+            <div class="dropdown-item">
+              <h1 class="welcome-text">Welcome, {{ username }}!</h1>
+              <p class="email"> You are logged in with: {{ email }}
+              </p>
+              <hr>
+              <p> Role Permissions: {{ type }}
+              </p>
+              <hr>
+
+              <button 
+              @click="logOut()"
+              class="button is-danger"><i class="pi pi-sign-out" style="font-size: 1.5rem"></i>&ensp; Sign out of your account</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  
   </div>
+
+  
 </template>
 
 <script setup>
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import { AisStateResults  } from "vue-instantsearch/vue3/es";
+import { db } from '../firebase/firebase.js'
+import { ref, onMounted} from 'vue'
+import { doc, getDoc } from "firebase/firestore";
+import { userStore } from "../stores/UsersStore";
+import { useRouter } from 'vue-router';
+
+const store = userStore();
+const router = useRouter();
+
+const username = ref()
+const email = ref()
+const type = ref()
+
+function logOut() {
+  store.uid = 'no user';
+  router.push('/')
+}
+
+onMounted(async () => {
+  const docRef = await doc(db, 'users', store.uid);
+  const docSnap = await getDoc(docRef);
+
+  if (store.uid !== 'no user') {
+    let usernameDoc = docSnap.data().username
+    let emailDoc = docSnap.data().email
+    let userType = docSnap.data().type
+
+    username.value = usernameDoc;
+    email.value = emailDoc;
+    type.value = userType;
+  }
+
+});
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
-    apiKey: "gruppe29apikey", // Be sure to use an API key that only allows searches, in production
+    apiKey: "gruppe29apikey", 
     nodes: [
       {
         host: "localhost",
@@ -94,10 +176,6 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
       },
     ],
   },
-  // The following parameters are directly passed to Typesense's search API endpoint.
-  //  So you can pass any parameters supported by the search endpoint below.
-  //  queryBy is required.
-  //  filterBy is managed and overridden by InstantSearch.js. To set it, you want to use one of the filter widgets like refinementList or use the `configure` widget.
   additionalSearchParameters: {
     query_by: "title,authors",
   },
@@ -116,6 +194,10 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   border-bottom: 1px solid #ddd;
 }
 
+.welcome-text {
+  font-size: large;
+}
+
 .logo img {
   padding-left: 10vh;
   padding-top: 1vh;
@@ -124,7 +206,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 
 .search-bar {
   display: flex;
-  padding-left: 10vh;
+  padding-left:3vh;
   position: relative;
   flex-grow: 1;
 }
@@ -133,7 +215,32 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   display: flex;
   padding-left: 4vh;
   position: absolute;
-  background-color: white;
+  background-color: #f8f7f3;
+  font-size: 18px;
+  max-width: 70vh;
+  min-width: 70vh;
+  box-shadow: 2px 2px 0px #e98074;
+}
+
+.results {
+  text-shadow: 0.5px 0px 0px #e98074;
+}
+
+.result-title {
+  font-size: large;
+
+}
+.result-image {
+  position: relative;
+  flex-basis: 40%;
+  min-width: 10vh;
+  max-width: 10vh;
+  left: 50vh;
+  box-shadow: 2px 2px 0px #e98074;
+}
+
+.result-author {
+  position: flex;
 }
 
 .vl {
@@ -155,7 +262,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 .search-bar input[type="text"] {
   margin: auto;
   height: 48px;
-  width: 65vh;
+  width: 70vh;
   padding: 0 40px;
   border: none;
   border-radius: 5px;
@@ -177,8 +284,33 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   font-size: 16px;
 }
 
+.email {
+  font-weight: bold;
+}
+
+.dropdown-menu{
+  box-shadow: 2px 2px 0px #e98074;
+}
+
 .user-lists img {
   height: 40px;
   cursor: pointer;
+}
+
+/* route transitions */
+.route-enter-from {
+    opacity: 0;
+    transform: translateX(100px)
+}
+.route-enter-active {
+    transition: ass 0.3s ease-out;
+}
+.route-leave-to{
+    opacity: 0;
+    transform: translateX(-100px)
+}
+
+.route-leave-active{
+    transition: all 0.3 ease-in;
 }
 </style>
