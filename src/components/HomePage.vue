@@ -1,6 +1,6 @@
 <template>
     <div class="background">
-        <div :style="myStyle">
+        
             <div class="main">
                 <div class="card mb-6">
                     <div class="card-body">
@@ -60,7 +60,7 @@
                 </div>
             </div>
         </div>
-    </div>
+
 </template>
   
 <script setup>
