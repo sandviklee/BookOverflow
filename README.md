@@ -26,6 +26,8 @@ To start Typesense server
 npm run typesense
 ```
 
+If you get an error message, try starting Docker or checking if typesense is already running in Docker
+
 To initialize Typesense server
 
 ```sh
