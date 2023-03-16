@@ -67,7 +67,7 @@ onMounted(async () => {
 <style scoped>
 .rating-text {
     position: absolute;
-    left: 120vh;
+    left: 102vh;
     font-size: 2vh;
     font-weight: bold;
 }

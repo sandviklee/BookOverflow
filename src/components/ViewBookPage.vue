@@ -300,7 +300,7 @@ header {
 .book-desc {
   position: absolute;
   padding-top: 17vh;
-  max-width: 90vh;
+  max-width: 80vh;
   left: 43vh;
 }
 
@@ -349,7 +349,7 @@ header {
 .book-rating {
   position: absolute;
   padding-top: 5vh;
-  left: 115vh;
+  left: 100vh;
   text-align: center;
 }
 
@@ -364,7 +364,7 @@ header {
 
 .book-review {
   position: absolute;
-  width: 90%;
+  width: 87%;
   top: 80vh;
   left: 8vh;
 }
