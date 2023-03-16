@@ -127,6 +127,6 @@ onMounted(async () => {
 
 .books {
   display: inline-block;
-  padding: 1vh 4.9vh;
+  padding: 1vh 3.7vh;
 }
 </style>
