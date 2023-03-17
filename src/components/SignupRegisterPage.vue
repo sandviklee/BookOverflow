@@ -1,10 +1,13 @@
 <template>
-<div class="background">
+  <div class="background">
     <div class="card-holder">
       <div class="logo">
-          <router-link to="/">
-              <img src="/src/assets/BookOverflow/logo.png" alt="BookOverflow Logo">
-          </router-link>
+        <router-link to="/">
+          <img
+            src="/src/assets/BookOverflow/logo.png"
+            alt="BookOverflow Logo"
+          />
+        </router-link>
       </div>
 
       <div class="round-card">
@@ -15,15 +18,20 @@
 
       <div class="card">
         <div class="create-text">
-          <h1 class="subtitle">CREATE YOUR BOOKOVERFLOW ACCOUNT</h1>
+          <h1>CREATE YOUR BOOKOVERFLOW ACCOUNT</h1>
         </div>
         <div class="username-text">
           <h6 id="invalid-text"></h6>
         </div>
-        
+
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input v-model="usernameField" class="input is-medium" type="email" placeholder="Username">
+            <input
+              v-model="usernameField"
+              class="input is-medium"
+              type="email"
+              placeholder="Username"
+            />
             <span class="icon is-small is-left">
               <i class="pi pi-user"></i>
             </span>
@@ -31,7 +39,12 @@
         </div>
         <div class="field">
           <p class="control has-icons-left has-icons-right">
-            <input v-model="emailField" class="input is-medium" type="email" placeholder="Email">
+            <input
+              v-model="emailField"
+              class="input is-medium"
+              type="email"
+              placeholder="Email"
+            />
             <span class="icon is-small is-left">
               <i class="pi pi-envelope"></i>
             </span>
@@ -39,7 +52,12 @@
         </div>
         <div class="field">
           <p class="control has-icons-left">
-            <input v-model="passwordField" class="input is-medium" type="password" placeholder="Password">
+            <input
+              v-model="passwordField"
+              class="input is-medium"
+              type="password"
+              placeholder="Password"
+            />
             <span class="icon is-small is-left">
               <i class="pi pi-lock"></i>
             </span>
@@ -47,46 +65,68 @@
         </div>
         <div class="field">
           <p class="control has-icons-left">
-            <input v-model="passwordConfirmField" class="input is-medium" type="password" placeholder="Confirm Password">
+            <input
+              v-model="passwordConfirmField"
+              class="input is-medium"
+              type="password"
+              placeholder="Confirm Password"
+            />
             <span class="icon is-small is-left">
               <i class="pi pi-lock"></i>
             </span>
           </p>
         </div>
-        
+
         <div :class="{ shake: disabledAni }">
           <div class="create-button">
             <button
-            @click="createAccount(usernameField, emailField, passwordField, passwordConfirmField);"
-            class="button is-primary is-medium">CREATE ACCOUNT</button>
+              @click="
+                createAccount(
+                  usernameField,
+                  emailField,
+                  passwordField,
+                  passwordConfirmField
+                )
+              "
+              class="button is-primary is-medium"
+            >
+              CREATE ACCOUNT
+            </button>
           </div>
         </div>
 
-        
         <div class="back-button">
           <router-link to="/signup/">
-            <button class="button is-text is-ghost is-medium"><i class="pi pi-arrow-circle-left" style="font-size: 1.5rem"></i>&ensp;Have an account? Login</button>
+            <button class="button is-text is-ghost is-medium">
+              <i class="pi pi-arrow-circle-left" style="font-size: 1.5rem"></i
+              >&ensp;Have an account? Login
+            </button>
           </router-link>
         </div>
-
       </div>
     </div>
   </div>
 </template>
-    
-    
+
 <script setup>
-import { db } from '../firebase/firebase.js'
-import { doc, setDoc, getDocs, collection, query, where } from 'firebase/firestore'; 
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
-import { useRouter } from 'vue-router';
-import { userStore } from '../stores/UsersStore'
-import { ref } from 'vue'
+import { db } from "../firebase/firebase.js";
+import {
+  doc,
+  setDoc,
+  getDocs,
+  collection,
+  query,
+  where,
+} from "firebase/firestore";
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import { useRouter } from "vue-router";
+import { userStore } from "../stores/UsersStore";
+import { ref } from "vue";
 
 var formatUsername = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?]+/;
 var formatEmail = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 
-const disabledAni = ref(false)
+const disabledAni = ref(false);
 const auth = getAuth();
 const router = useRouter();
 const store = userStore();
@@ -100,50 +140,50 @@ const store = userStore();
  * @param {*} docs         is the collection of the database.
  */
 let queryTool = async (dbcollection, arg, arg2, func, docs) => {
-  const q = query(collection(db, dbcollection), where(arg, func, arg2))
+  const q = query(collection(db, dbcollection), where(arg, func, arg2));
   const querySnapshot = await getDocs(q);
   querySnapshot.forEach((doc) => {
     console.log(doc);
-    docs.push(doc)
-  })
-}
+    docs.push(doc);
+  });
+};
 
 /**
  * Validate input fields.
  * @param {*} username        is the username field.
  * @param {*} email           is the email field.
  * @param {*} password        is the password field.
- * @param {*} passwordConfirm is the passwordConfirm field. 
+ * @param {*} passwordConfirm is the passwordConfirm field.
  */
-const checkFields = async (username, email, password, passwordConfirm) => { 
-  let existsInCol = []
-  let div = document.getElementById("invalid-text")
-  div.innerHTML = ""
+const checkFields = async (username, email, password, passwordConfirm) => {
+  let existsInCol = [];
+  let div = document.getElementById("invalid-text");
+  div.innerHTML = "";
 
   if (username) {
-    await queryTool("users", "username", username, "==", existsInCol)
+    await queryTool("users", "username", username, "==", existsInCol);
   }
-  
+
   if (email) {
-    await queryTool("users", "email", email, "==", existsInCol)
+    await queryTool("users", "email", email, "==", existsInCol);
   }
 
   if (existsInCol.length !== 0) {
-    div.innerHTML += " Username and/or Email already exists!"
+    div.innerHTML += " Username and/or Email already exists!";
   }
-  
+
   if (formatUsername.test(username) || !username) {
-    div.innerHTML += " Invalid Username."
+    div.innerHTML += " Invalid Username.";
   }
 
   if (!formatEmail.test(email) || !email) {
-    div.innerHTML += " Invalid Email." 
-  } 
-
-  if ((password != passwordConfirm) || !password || !passwordConfirm) {
-    div.innerHTML += " Invalid Password." 
+    div.innerHTML += " Invalid Email.";
   }
-}
+
+  if (password != passwordConfirm || !password || !passwordConfirm) {
+    div.innerHTML += " Invalid Password.";
+  }
+};
 
 /**
  * Creates User account and signs you into the website.
@@ -154,70 +194,68 @@ const checkFields = async (username, email, password, passwordConfirm) => {
  */
 async function createAccount(username, email, password, passwordConfirm) {
   await checkFields(username, email, password, passwordConfirm);
-  
+
   /**
    * If there is any text written in the invalid field, you should'nt be signed in.
    */
   if (document.getElementById("invalid-text").innerHTML !== "") {
     console.log("Invalid Fields!");
-    warnDisabled()
-    return
+    warnDisabled();
+    return;
   }
 
   createUserWithEmailAndPassword(auth, email, password)
-  .then(async (userCredential) => {
-    // Signed in 
-    
-    const user = userCredential.user;
-    
-    await setDoc(doc(db, "users", user.uid), {
-      email: email,
-      username: username,
-      type: "user"
-    })
+    .then(async (userCredential) => {
+      // Signed in
 
-    //Change page to homescreen and emit the user to the rest of the app through Pinia store.
-    if (user) {
-      console.log(user, " has been created!");
-      //Stores the user.uid in the global store.
-      store.$patch({
-        uid: user.uid,
-      })
-      //Changes the page to homescreen.
-      router.push('/')
-    }
-    
-  })
-  .catch((error) => {
-    warnDisabled()
-    const errorCode = error.code;
-    const errorMessage = error.message;
-    let div = document.getElementById("invalid-text")
-    div.innerHTML += errorMessage
-  });
+      const user = userCredential.user;
+
+      await setDoc(doc(db, "users", user.uid), {
+        email: email,
+        username: username,
+        type: "user",
+      });
+
+      //Change page to homescreen and emit the user to the rest of the app through Pinia store.
+      if (user) {
+        console.log(user, " has been created!");
+        //Stores the user.uid in the global store.
+        store.$patch({
+          uid: user.uid,
+        });
+        //Changes the page to homescreen.
+        router.push("/");
+      }
+    })
+    .catch((error) => {
+      warnDisabled();
+      const errorCode = error.code;
+      const errorMessage = error.message;
+      let div = document.getElementById("invalid-text");
+      div.innerHTML += errorMessage;
+    });
 }
 
 /**
  * Disabled animation on click.
  */
 function warnDisabled() {
-  disabledAni.value = true
+  disabledAni.value = true;
   setTimeout(() => {
-    disabledAni.value = false
-  }, 1500)
+    disabledAni.value = false;
+  }, 1500);
 }
-
 </script>
-    
+
 <style scoped>
-@import url('https://fonts.cdnfonts.com/css/lato');
+@import url("https://fonts.cdnfonts.com/css/lato");
 .background {
   margin: auto;
   padding: 0;
   margin: 0;
   height: 100vh;
   width: 100%;
-  background-color: #D8C3A5;
+  background-color: #d8c3a5;
 }
 
 .card-holder {
@@ -232,7 +270,6 @@ function warnDisabled() {
 .create-text {
   padding-top: 4.5vh;
   padding-bottom: 0.1vh;
-
 }
 .username-text {
   text-align: left;
@@ -240,7 +277,6 @@ function warnDisabled() {
   width: 70%;
   margin: auto;
   padding-left: 1vh;
-  color: red;
 }
 .field {
   width: 70%;
@@ -306,5 +342,4 @@ function warnDisabled() {
     transform: translate3d(4px, 0, 0);
   }
 }
-
 </style>
