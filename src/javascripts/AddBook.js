@@ -1,9 +1,10 @@
 // import { db } from '../firebase/firebase.js'
 // import { collection, query, where, getDocs } from "firebase/firestore"
 
-function dummyfunction() {
-    return 0;
+const addData = require('./AddData')
+
+module.exports.addBook = function addBook() {
+    //bruke addData funksjonen for å legge til en bok
+    //addData(collection, bookObject)
+    return 0
 }
-
-module.exports.dummyfunction = dummyfunction
-

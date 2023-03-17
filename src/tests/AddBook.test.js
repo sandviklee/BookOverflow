@@ -1,11 +1,11 @@
 // import { db } from '../firebase/firebase.js'
 // import { collection, query, where, getDocs, Timestamp } from "firebase/firestore";
 
-const AddBook = require('../javascripts/AddBook')
+const addBook = require('../javascripts/AddBook')
 
 test('teste', () => {
   expect('data').toMatch(/data/)
-  expect(AddBook.dummyfunction()).toBe(0)
+  expect(addBook.addBook()).toBe(0)
 })
 
 //Bok mal
