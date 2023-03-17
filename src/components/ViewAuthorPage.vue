@@ -1,9 +1,15 @@
 <template>
-    <div>
-        Script to get author ID then show info from database
-    </div>
+  <div>
+    <div class="card">Dette er en author side</div>
+  </div>
 </template>
-  
-<script setup>
 
+<script setup>
+import { useRoute, useRouter } from "vue-router";
+
+const route = useRoute();
+
+let author = "";
+author = route.params.id;
+console.log(author);
 </script>
