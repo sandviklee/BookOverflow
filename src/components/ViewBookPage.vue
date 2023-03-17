@@ -6,7 +6,6 @@
     <div class="container">
       <div class="row">
         <div class="col-md-6">
-
           <div class="card">
             
             <div class="book-image">
@@ -66,60 +65,35 @@
             <div class="book-review">
 
               <h1 class="title">Ratings & Reviews</h1>
-              <h1 class="subtitle">SUBMIT REVIEW:</h1>
-              <form class="box">
-                <article class="media">
-                
-                <figure class="media-left">
-                  <p class="image is-64x64">
-                    <img src="https://bulma.io/images/placeholders/128x128.png">
-                  </p>
-                </figure>
-                
-                <div class="media-content">
-                  <div class="review-title-field">
-                    <h1>Review Title</h1>
-                    <input v-model="titleField" class="input" id="title-input" type="text" placeholder="Add a review title...">
-                  </div>
-                  <div class="review-stars-field">
-                    <h6>Rating & Review</h6>
 
-                    <input v-model="count" class="input" type="text" id="rating-input" readonly>
-                    <div class="button-up-down">
-                      <button 
-                      type="button"
-                      v-bind:disabled="count > 4"
-                      @click="increment"
-                      class="button is-ghost is-small"><i class="pi pi-chevron-up" style="font-size: 1.2rem"></i></button>
-                      <button
-                      type="button"
-                      v-bind:disabled="count <= 1"
-                      @click="decrement"
-                      class="button is-ghost is-small"><i class="pi pi-chevron-down" style="font-size: 1.2rem"></i></button>
-                    </div>
-
+              <div v-show="store.uid == 'no user'" class="if-not-signed-in">
+                <h1 class="subtitle">YOU NEED TO SIGN IN TO CREATE A REVIEW:</h1>
+                <router-link to="/signup">
+                  <div class="sign-in-button">
+                    <button
+                    type="button"
+                    class="button is-link is-large"><i class="pi pi-user" style="font-size: 1rem"></i>&ensp;Sign In</button>
                   </div>
+                </router-link>
+              </div>
 
-                  <div class="field">
-                    <p class="control">
-                      <textarea v-model="reviewField" class="textarea" id="review-input" placeholder="Add a BookOverflow review..."></textarea>
-                    </p>
-                  </div>
-                  <nav class="level">
-                    <div class="level-left">
-                      <div class="level-item">
-                        <button
-                        type="button"
-                        @click="createReview(titleField, count, reviewField)"
-                        class="button is-link">Submit Review</button>
-                      </div>
-                    </div>
-                  </nav>
-                  <h6 id="done-text"></h6>
-                  
-                </div>
-              </article>
-              </form>
+              <div v-show="store.uid !== 'no user'" class="if-signed-in">
+                <h1 class="subtitle">CREATE, EDIT OR DELETE YOUR REVIEW:</h1>
+                <router-link to="/review">
+                  <button
+                  type="button"
+                  class="button is-link is-medium"><i class="pi pi-plus" style="font-size: 1rem"></i>&ensp;CREATE REVIEW</button>
+                </router-link>
+
+                <button
+                type="button"
+                class="button is-link is-medium" disabled><i class="pi pi-pencil" style="font-size: 1rem"></i>&ensp;EDIT REVIEW</button>
+
+                <button
+                type="button"
+                class="button is-danger is-medium" disabled><i class="pi pi-trash" style="font-size: 1rem"></i>&ensp;DELETE REVIEW</button>
+              </div>
+
 
               <h1 class="subtitle">REVIEWS:</h1>
 
@@ -205,7 +179,7 @@
 
 <script setup>
 import { useRoute } from 'vue-router';
-import { ref, onMounted, getCurrentInstance} from 'vue'
+import { ref, onMounted } from 'vue'
 import { db } from '../firebase/firebase';
 import { doc, getDoc, onSnapshot, collection, addDoc } from "firebase/firestore"; 
 import { userStore } from '../stores/UsersStore';
@@ -222,22 +196,11 @@ const publishedText = ref()
 const bookGenres = ref([])
 const bookAwards = ref([])
 const bookRating = ref()
-const count = ref(1)
 
 let book = ''
 book = route.params.id;
 
 const reviews = ref([])
-
-const instance = getCurrentInstance();
-
-function increment() {
-  count.value++
-}
-
-function decrement() {
-  count.value--
-}
 
 //Retrives book information from the ID when you click on a book.
 onMounted(async () => { 
@@ -288,24 +251,6 @@ onMounted(async () => {
   }
 })
 
-
-function createReview(title, rating, review) {
-  addDoc(collection(db, "reviews"), {
-    book: {
-      id: book,
-      title: bookName.value,
-    },
-    rating: rating,
-    title: title,
-    review: review,
-    user: {
-      id: store.uid
-    },
-  });
-  document.getElementById("done-text").innerHTML = 'Review created!';
-  instance?.proxy?.$forceUpdate();
-}
-
 </script>
 
 <style scoped>
@@ -327,7 +272,7 @@ header {
 
 .card {
   background-color: #EAE7DC;
-  min-height: 235vh;
+  min-height: 200vh;
 }
 
 .author {
@@ -351,6 +296,7 @@ header {
   padding-top: 5vh;
 }
 
+
 .book-desc {
   position: absolute;
   padding-top: 17vh;
@@ -358,6 +304,9 @@ header {
   left: 43vh;
 }
 
+.subtitle {
+  padding-top: 2vh;
+}
 .genres {
   padding: 62vh 8vh;
 }
@@ -367,6 +316,7 @@ header {
   top: 64.5vh;
   left: 20vh;
 }
+
 
 .awards {
   position: absolute;
@@ -441,21 +391,6 @@ header {
     -webkit-transform: scale(1.02);
     transform: scale(1.02);
 }
-
-.field {
-  width: 100%;
-}
-
-.review-title-field {
-  width: 40vh;
-  padding-bottom: 1vh;
-}
-
-.review-stars-field {
-  width: 14vh;
-  padding-bottom: 1vh;
-}
-
 .line {
   position: relative;
   bottom: 56vh;
