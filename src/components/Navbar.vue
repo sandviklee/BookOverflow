@@ -285,3 +285,19 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
     transition: all 0.3 ease-in;
 }
 </style>
+
+<script setup>
+import { useDark, useToggle } from "@vueuse/core";
+
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
+</script>
+
+<template>
+  <p>Dark theme: {{isDark}}</p>
+
+  <button @click="toggleDark()">
+    Toggle Color Mode
+  </button>
+
+</template>
