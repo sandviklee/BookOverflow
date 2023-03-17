@@ -15,7 +15,7 @@
 
       <div class="card">
         <div class="create-text">
-          <h1>CREATE YOUR BOOKOVERFLOW ACCOUNT</h1>
+          <h1 class="subtitle">CREATE YOUR BOOKOVERFLOW ACCOUNT</h1>
         </div>
         <div class="username-text">
           <h6 id="invalid-text"></h6>
@@ -240,6 +240,7 @@ function warnDisabled() {
   width: 70%;
   margin: auto;
   padding-left: 1vh;
+  color: red;
 }
 .field {
   width: 70%;
