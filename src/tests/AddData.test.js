@@ -2,15 +2,15 @@
 // import { collection, query, where, getDocs } from 'firebase/firestore'
 // import { bookFields, authorFields, reviewFields, errorMessage } from '../javascripts/AddData.js'
 
-const AddData = require('../javascripts/AddData')
+const addData = require('../javascripts/AddData')
 const authorCollection = ''
 const correctBookObject = ''
 
 test('incorrect collection for book', () => {
     //validate returnerer 0
-    expect(AddData.validateData(authorCollection, correctBookObject)).toBe(0)
+    expect(addData.validateData(authorCollection, correctBookObject)).toBe(0)
     //sjekk at error message
-    expect(AddData.errorMessage).toMatch(/Wrong collection for a book/)
+    expect(addData.errorMessage).toMatch(/Wrong collection for a book/)
 })
 
 // test('incorrect fields in book object', () => {

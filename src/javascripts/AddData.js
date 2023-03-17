@@ -20,6 +20,12 @@ module.exports.validateData = function validateData(oneCollection, dataObject) {
 }
 
 
+module.exports.addData = function addData(oneCollection, dataObject) {
+    //bruker valideringsfunksjonen på dataene
+
+    //legger data inn i databasen
+}
+
 
 //exporterer for å bruke dem i AddData.test også
 // export {
