@@ -64,6 +64,15 @@
         </button>
       </router-link>
     </div>
+
+    <div v-show="type == 'admin'" class="signup-login">
+      <router-link to="/adddata">
+        <button class="button is-text is-ghost is-medium">
+          <i class="pi pi-pencil" style="font-size: 1.5rem"></i>&ensp;Add Data
+        </button>
+      </router-link>
+    </div>
+
     <div v-show="store.uid == 'no user'" class="signup-login">
       <router-link to="/signup">
         <button class="button is-text is-ghost is-medium">
@@ -123,7 +132,7 @@ const type = ref();
 
 function logOut() {
   store.uid = "no user";
-  router.push("/");
+  window.location.reload();
 }
 
 onMounted(async () => {

@@ -9,13 +9,13 @@
     "css-build": "node-sass --omit-source-map-url sass/mystyles.scss css/mystyles.css",
     "css-watch": "npm run css-build -- --watch",
     "start": "npm run css-watch",
-    "test": "jest --watchAll --verbose",
     "typesense": "docker run -i -p 8108:8108 -v/tmp/typesense-server-data/:/data typesense/typesense:0.24.0 --data-dir /data --api-key=gruppe29apikey --listen-port 8108 --enable-cors",
     "typesense-init": "node ./src/init_typesense.js",
     "test": "jest --watchAll --verbose"
   },
   "dependencies": {
     "@babel/runtime": "^7.21.0",
+    "@vueform/multiselect": "^2.6.1",
     "browserify": "^17.0.0",
     "bulma": "^0.9.4",
     "firebase": "^9.17.1",
@@ -36,8 +36,8 @@
   },
   "devDependencies": {
     "@rollup/plugin-babel": "^6.0.3",
-    "@types/jest": "^29.4.1",
     "@tresjs/core": "^1.8.1",
+    "@types/jest": "^29.4.1",
     "@types/three": "^0.149.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/test-utils": "^2.3.1",
