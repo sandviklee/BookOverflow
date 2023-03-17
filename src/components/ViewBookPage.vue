@@ -24,7 +24,7 @@
               <img class="rating-img" src="../assets/BookOverflow/logo.png" alt="">
               <div class="rating">
                 <h1 class="rating-text"> 
-                  <i class="pi pi-star-fill" style="font-size: 2rem"></i>&ensp;{{ bookRating }} / 5
+                  <i class="pi pi-star-fill" style="font-size: 2rem; color: #FCE181;"></i>&ensp;{{ bookRating }} / 5
                 </h1>
               </div>
               
@@ -38,7 +38,7 @@
 
             <div class="published">
               <h1 class="published-text">
-                <i class="pi pi-calendar" style="font-size: 1.5rem"></i>&ensp;Published Date: {{ publishedText }}
+                <i class="pi pi-calendar" style="font-size: 1.5rem"></i>&ensp;Published Date: &ensp;{{ publishedText }}
               </h1>
             </div>
 
@@ -62,7 +62,7 @@
             
             <hr class="line">
 
-            <div class="book-review">
+            <div v-show="store.uid !== 'no user'" class="book-review">
 
               <h1 class="title">Ratings & Reviews</h1>
 
@@ -167,8 +167,6 @@
               <form class="box">
                 <Review class="reviews" v-for="review in reviews" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
               </form>
-              
-            </div>
           </div>
         </div>
       </div>
@@ -227,7 +225,7 @@ onMounted(async () => {
   let image = docSnapBook.data().image_url
   let genres = docSnapBook.data().genres
   let awards = docSnapBook.data().awards
-  let published = docSnapBook.data().published
+  let published = docSnapBook.data().published.toDate().toDateString()
   let rating = docSnapBook.data().avgRating
 
   if (docSnapBook.exists()) {
@@ -282,7 +280,7 @@ header {
 .book-image {
   position: absolute;
   left: 8vh;
-  top: 17vh;
+  top: 15vh;
 }
 
 .bookmark-icon {
@@ -331,24 +329,23 @@ header {
 }
 
 .published {
-  position: relative;
+  position: relative; 
   top: 59vh;
   left: 8vh;
 }
 
 .rating {
-  color: #FCE181;
-  text-shadow: 2px 1px 3px black;
+  color: black;
 }
 
 .rating-text {
-  font-size: 4vh;
+  font-size: 2vh;
   font-weight: bold;
 }
 
 .book-rating {
   position: absolute;
-  padding-top: 5vh;
+  padding-top: 6vh;
   left: 100vh;
   text-align: center;
 }
