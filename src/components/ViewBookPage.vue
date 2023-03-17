@@ -1,7 +1,5 @@
 <template>
-  
   <div class="background" >
-    
   <header>
     <div class="container">
       <div class="row">
@@ -24,7 +22,7 @@
               <img class="rating-img" src="../assets/BookOverflow/logo.png" alt="">
               <div class="rating">
                 <h1 class="rating-text"> 
-                  <i class="pi pi-star-fill" style="font-size: 2rem; color: #FCE181;"></i>&ensp;{{ bookRating }} / 5
+                  <i class="pi pi-star-fill" style="font-size: 2rem"></i>&ensp;{{ bookRating }} / 5
                 </h1>
               </div>
               
@@ -38,7 +36,7 @@
 
             <div class="published">
               <h1 class="published-text">
-                <i class="pi pi-calendar" style="font-size: 1.5rem"></i>&ensp;Published Date: &ensp;{{ publishedText }}
+                <i class="pi pi-calendar" style="font-size: 1.5rem"></i>&ensp;Published Date: {{ publishedText }}
               </h1>
             </div>
 
@@ -62,7 +60,7 @@
             
             <hr class="line">
 
-            <div v-show="store.uid !== 'no user'" class="book-review">
+            <div class="book-review">
 
               <h1 class="title">Ratings & Reviews</h1>
 
@@ -79,18 +77,22 @@
 
               <div v-show="store.uid !== 'no user'" class="if-signed-in">
                 <h1 class="subtitle">CREATE, EDIT OR DELETE YOUR REVIEW:</h1>
-                <router-link to="/review">
-                  <button
-                  type="button"
-                  class="button is-link is-medium"><i class="pi pi-plus" style="font-size: 1rem"></i>&ensp;CREATE REVIEW</button>
-                </router-link>
 
                 <button
                 type="button"
-                class="button is-link is-medium" disabled><i class="pi pi-pencil" style="font-size: 1rem"></i>&ensp;EDIT REVIEW</button>
+                @click="goToReview"
+                :disabled="!createReview"
+                class="button is-link is-medium"><i class="pi pi-plus" style="font-size: 1rem"></i>&ensp;CREATE REVIEW</button>
 
                 <button
                 type="button"
+                :disabled="createReview"
+                class="button is-link is-medium"><i class="pi pi-pencil" style="font-size: 1rem"></i>&ensp;EDIT REVIEW</button>
+
+                <button
+                type="button"
+                @click="deleteReview"
+                :disabled="createReview"
                 class="button is-danger is-medium" disabled><i class="pi pi-trash" style="font-size: 1rem"></i>&ensp;DELETE REVIEW</button>
               </div>
 
@@ -165,8 +167,10 @@
               </div>
 
               <form class="box">
-                <Review class="reviews" v-for="review in reviews" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
+                <Review class="reviews" v-for="review in reviews.slice(0,6)" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
               </form>
+              
+            </div>
           </div>
         </div>
       </div>
@@ -176,14 +180,15 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue'
 import { db } from '../firebase/firebase';
-import { doc, getDoc, onSnapshot, collection, addDoc } from "firebase/firestore"; 
+import { doc, getDoc, getDocs, query, collection, where, addDoc, deleteDoc  } from "firebase/firestore"; 
 import { userStore } from '../stores/UsersStore';
 import Review from './Review.vue';
 
 const route = useRoute()
+const router = useRouter()
 const store = userStore()
 
 const bookName = ref()
@@ -195,32 +200,43 @@ const bookGenres = ref([])
 const bookAwards = ref([])
 const bookRating = ref()
 
+let createReview = true;
+
 let book = ''
 book = route.params.id;
+
+let reviewId = ''
 
 const reviews = ref([])
 
 //Retrives book information from the ID when you click on a book.
 onMounted(async () => { 
-  onSnapshot(collection(db, 'reviews'), (querySnapshot) => {
-    const reviewArray = [];
-    querySnapshot.forEach((doc) => {
+  const q = query(collection(db, "reviews"), where("book.id", "==", book));
+
+  const querySnapshot = await getDocs(q);
+  const reviewArray = [];
+  querySnapshot.forEach((doc) => {
       const review = {
           uid: doc.data().user.id,
           title: doc.data().title,
           rating: doc.data().rating,
           review: doc.data().review,
       }
+      if (review.uid == store.uid) {
+        reviewId = doc.id; 
+        createReview = false;
+      }
       reviewArray.push(review)
-    });
-    reviews.value = reviewArray
   });
-
+  reviews.value = reviewArray
+  
+  //Get book information
   const docBook = await doc(db, 'books', book);
   const docSnapBook = await getDoc(docBook);
 
   let bname = docSnapBook.data().title
   let aname = docSnapBook.data().author.name
+  let aid = docSnapBook.data().author.id
   let blurb = docSnapBook.data().blurb
   let image = docSnapBook.data().image_url
   let genres = docSnapBook.data().genres
@@ -236,7 +252,6 @@ onMounted(async () => {
     imgUrl.value = image;
     publishedText.value = published;
     bookRating.value = rating;
-
     awards.forEach(award => {
       bookAwards.value.push(award)
     });
@@ -248,6 +263,17 @@ onMounted(async () => {
     console.log("No such document!");
   }
 })
+
+async function deleteReview() {
+  await deleteDoc(doc(db, "reviews", reviewId));
+  window.location.reload()
+}
+
+function goToReview() {
+  if (store.uid !== 'no user') {
+    router.push('/review/' + book)
+  }
+}
 
 </script>
 

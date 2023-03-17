@@ -20,7 +20,7 @@ const routes = [
     { path: '/book/:id', component: ViewBook },
     { path: '/userlist/:id', component: UserList },
     { path: '/thelibrary', component: TheLibrary },
-    { path: '/review', component: WriteReviewPage, meta: {hideNavbar: true} }
+    { path: '/review/:id', component: WriteReviewPage, meta: {hideNavbar: true} }
   ]
   
 const router = createRouter({
