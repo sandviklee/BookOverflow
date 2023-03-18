@@ -1,4 +1,5 @@
 <template>
+  <Search />
   <div class="navbar">
     <div class="logo">
       <router-link to="/">
@@ -31,7 +32,7 @@
                     <template v-slot:item="{ item }">
                       <div class="results">
                         <h2 class="result-title">{{ item.title }}</h2>
-                        <h6 class="result-author">Author: {{ item.authors[0] }}</h6>
+                        <h6 class="result-author">Author: {{ item.author[0] }}</h6>
                         <img class="result-image" :src="item['image_url']" />
                         <br />
                         Year: {{ item.publication_year }}, Average rating:
@@ -106,6 +107,7 @@
 
 <script setup>
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
+import Search from './Search.vue'
 import { AisStateResults } from "vue-instantsearch/vue3/es";
 import { db } from "../firebase/firebase.js";
 import { ref, onMounted } from "vue";
@@ -152,7 +154,7 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     ],
   },
   additionalSearchParameters: {
-    query_by: "title,authors",
+    query_by: "title,author",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;

@@ -105,7 +105,7 @@ module.exports = (async () => {
         genres: doc.data().genres,
         image_url: doc.data().image_url,
         published: doc.data().published,
-      };
+      }; // TODO: fiks slik at vi ikke fyller firebasebooks.jsonl med duplikater
       fs.appendFile(
         "data/firebasebooks.jsonl",
         JSON.stringify(book) + "\n",
@@ -115,7 +115,6 @@ module.exports = (async () => {
           }
         }
       );
-      console.log("HEI JON ANTA");
     });
 
     const booksInJsonl = await fs.readFile("./data/firebasebooks.jsonl"); // bytt ut med Firestore read

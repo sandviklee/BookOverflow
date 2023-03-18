@@ -21,3 +21,22 @@ describe('Import vue component', () => {
     })
   })
   
+  test("mount component", async () => {
+    expect(Search).toBeTruthy();
+  
+    const wrapper = mount(Search, {
+      props: {
+      },
+    });
+    
+    // Search.getTopList(5)
+    //   expect(wrapper.html()).toMatchSnapshot()
+  
+    //   await wrapper.get('button').trigger('click')
+  
+    //   expect(wrapper.text()).toContain('4 x 3 = 12')
+  
+    //   await wrapper.get('button').trigger('click')
+  
+    //   expect(wrapper.text()).toContain('4 x 4 = 16')
+  });

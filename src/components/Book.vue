@@ -2,7 +2,7 @@
     <div>
         <div class="card">
             <router-link :to="'/book/' + id">
-                <img class="bookImg" :src="imageURL">
+                <img class="bookImg" :src="path">
                 <div class="hide-reviews">
                     <h1><i class="pi pi-star-fill" style="font-size: 1.5rem"></i></h1> 
                     <h1>{{ bookRating }}</h1>
@@ -15,18 +15,22 @@
 <script setup>
 import { ref, watchEffect } from 'vue'
 
-// The different properties a book can have
-const props = defineProps([
-  'title','authors','imageURL','id','avgRating','blurb'
-])
+//Defines the input for the spesific book, what kind of book should it be?
+const props = defineProps({
+  bookInfo: { type: String },
+})
+const path = ref()
+//Gets the id from the database.
+let id = props.bookInfo.split(";")[1]
 
-// Defaults when parent didn't pass field
-const title = ref('NO TITLE')
-const authors = ref('NO AUTHORS')
-const imageURL = ref('https://s.gr-assets.com/assets/nophoto/book/111x148-bcc042a9c91a29c1d680899eff700a03.png')
-const id = ref(0)
-const avgRating = ref(0)
-const blurb = ref('')
+//Gets the rating from the database.
+let bookRating = props.bookInfo.split(";")[2]
+
+
+//Async function to determine the path of the books. This is only for local files!
+watchEffect(async () => {
+    path.value = props.bookInfo.split(";")[0]
+})
 
 </script>
 
