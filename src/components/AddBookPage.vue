@@ -105,6 +105,14 @@
                 { value: 'Mystery', label: 'Mystery' },
                 { value: 'Fantasy', label: 'Fantasy' },
                 { value: 'Classics', label: 'Classics' },
+                { value: 'Dystopia', label: 'Dystopia' },
+                { value: 'Science Fiction', label: 'Science Fiction' },
+                { value: 'Post Apocalyptic', label: 'Post Apocalyptic' },
+                { value: 'Adventure', label: 'Adventure' },
+                { value: 'Young Adult', label: 'Young Adult' },
+                { value: 'Teen', label: 'Teen' },
+                { value: 'Childrens', label: 'Childrens' },
+                { value: 'Nonfiction', label: 'Nonfiction' },
               ]"
             />
           </div>
