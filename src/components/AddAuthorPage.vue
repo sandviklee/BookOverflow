@@ -70,11 +70,11 @@
         </div>
 
 
-        <div class="blurb-field">
-          <h1>Blurb</h1>
+        <div class="about-field">
+          <h1>About</h1>
           <p class="control">
             <textarea
-              v-model="blurbField"
+              v-model="aboutField"
               class="textarea"
               id="review-input"
               placeholder="Write here..."
@@ -96,7 +96,7 @@
                       nameField,
                       bornField,
                       awardsField,
-                      blurbField          
+                      aboutField          
                     )
                   "
                   class="button is-primary is-medium"
@@ -190,8 +190,7 @@ function addImageUrl(url) {
  * Validate input fields.
  * @param {*} authorName is the author field.
  */
-const checkFields = async (name, born, blurb) => {
-  //title, authorName, date, blurb
+const checkFields = async (name, born, about) => {
   let existsInCol = [];
   let div = document.getElementById("invalid-text");
   div.innerHTML = "";
@@ -212,8 +211,8 @@ const checkFields = async (name, born, blurb) => {
     div.innerHTML += " Please add a valid date for field 'born'!";
   }
 
-  if (!blurb) {
-    div.innerHTML += " Please add a blurb!";
+  if (!about) {
+    div.innerHTML += " Please add a text about author!";
   }
 
   if (!imgUrl.value) {
@@ -221,8 +220,8 @@ const checkFields = async (name, born, blurb) => {
   }
 };
 
-async function createAuthor(name, born, awards, blurb) { 
-  await checkFields(name, born, blurb);
+async function createAuthor(name, born, awards, about) { 
+  await checkFields(name, born, about);
 
   if (document.getElementById("invalid-text").innerHTML !== "") {
     console.log("Invalid Fields!");
@@ -243,7 +242,7 @@ async function createAuthor(name, born, awards, blurb) {
     name: name,
     born: dateBorn,
     books: bookArray,
-    blurb: blurb,
+    about: about,
     image_url: imgUrl.value,
     awards: awardArray
   });
@@ -311,7 +310,7 @@ async function createAuthor(name, born, awards, blurb) {
   padding-left: 40vh;
 }
 
-.blurb-field {
+.about-field {
   width: 95%;
   padding-top: 1vh;
   padding-left: 40vh;
