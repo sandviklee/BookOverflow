@@ -80,12 +80,12 @@
                 <button
                 type="button"
                 @click="goToReview"
-
+                :disabled="!createReview"
                 class="button is-link is-medium"><i class="pi pi-plus" style="font-size: 1rem"></i>&ensp;CREATE REVIEW</button>
 
                 <button
                 type="button"
-                :disabled="createReview"
+                disabled
                 class="button is-link is-medium"><i class="pi pi-pencil" style="font-size: 1rem"></i>&ensp;EDIT REVIEW</button>
 
                 <button
@@ -149,24 +149,32 @@
 
               <div class="paging">
                 <nav class="pagination" role="navigation" aria-label="pagination">
-                  <a class="pagination-previous is-disabled" title="This is the first page">Previous</a>
-                  <a class="pagination-next">Next page</a>
+                  <a 
+                  @click="changeReviewPage(0)"
+                  class="pagination-previous is-disabled" title="This is the first page"
+                   >Previous</a>
+                  <a 
+                  @click="changeReviewPage(1)"
+                  class="pagination-next"
+                  >Next page</a>
                   <ul class="pagination-list">
                     <li>
-                      <a class="pagination-link is-current" aria-label="Page 1" aria-current="page">1</a>
+                      <a 
+                      @click="changeReviewPage(0)"
+                      class="pagination-link is-current" id="page1" aria-label="Page 1" aria-current="page">1</a>
                     </li>
                     <li>
-                      <a class="pagination-link" href="/" aria-label="Goto page 2">2</a>
-                    </li>
-                    <li>
-                      <a class="pagination-link" aria-label="Goto page 3">3</a>
+                      <a
+                      @click="changeReviewPage(1)" 
+                      class="pagination-link" id="page2" aria-label="Goto page 2">2</a>
                     </li>
                   </ul>
                 </nav>
               </div>
 
               <form class="box">
-                <Review class="reviews" v-for="review in reviews[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
+                <Review v-show="bookPage == 0" class="reviews" v-for="review in reviews[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
+                <Review v-show="bookPage == 1" class="reviews" v-for="review in reviews[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
               </form>
               
             </div>
@@ -189,7 +197,6 @@ import Review from './Review.vue';
 const route = useRoute()
 const router = useRouter()
 const store = userStore()
-
 const bookName = ref()
 const authorName = ref()
 const bookBlurb = ref()
@@ -197,18 +204,13 @@ const imgUrl = ref()
 const publishedText = ref()
 const bookGenres = ref([])
 const bookAwards = ref([])
+const reviews = ref([])
 const bookRating = ref()
+const bookPage = ref(0)
 
 let createReview = true;
-
-let book = ''
-book = route.params.id;
-
+let book = route.params.id;
 let reviewId = ''
-
-let authorId = ''
-
-const reviews = ref([])
 
 function sliceIntoChunks(arr, chunkSize) {
     const res = [];
@@ -217,6 +219,17 @@ function sliceIntoChunks(arr, chunkSize) {
         res.push(chunk);
     }
     return res;
+}
+
+function changeReviewPage(pageNumber) {
+  if (pageNumber == 1) {
+    document.getElementById("page2").className = 'pagination-link is-current';
+    document.getElementById("page1").className = 'pagination-link';
+  } else {
+    document.getElementById("page1").className = 'pagination-link is-current';
+    document.getElementById("page2").className = 'pagination-link';
+  }
+  bookPage.value = pageNumber;
 }
 
 //Retrives book information from the ID when you click on a book.
@@ -239,7 +252,7 @@ onMounted(async () => {
       reviewArray.push(review)
   });
   
-  reviews.value = sliceIntoChunks(reviewArray, 6);
+  reviews.value = sliceIntoChunks(reviewArray, 5);
   
   //Get book information
   const docBook = await doc(db, 'books', book);
@@ -256,9 +269,8 @@ onMounted(async () => {
   let rating = docSnapBook.data().avgRating
 
   if (docSnapBook.exists()) {
-    console.log("Document data:", docSnapBook.data());
-    bookName.value = bname.replace(/\_/g, ' ');
-    authorName.value = aname.replace(/\_/g, ' ');
+    bookName.value = bname;
+    authorName.value = aname;
     bookBlurb.value = blurb;
     imgUrl.value = image;
     publishedText.value = published;
@@ -274,6 +286,8 @@ onMounted(async () => {
   } else {
     console.log("No such document!");
   }
+
+  console.log(reviews.value[1]);
 })
 
 async function deleteReview() {
@@ -286,7 +300,6 @@ function goToReview() {
     router.push('/review/' + book)
   }
 }
-
 
 </script>
 
