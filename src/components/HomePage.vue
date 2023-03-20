@@ -97,10 +97,7 @@ onMounted(async () => {
       image_url: doc.data().image_url,
       rating: doc.data().avgRating,
     };
-    if (bookArray.length !== 6) {
-      bookArray.push(book);
-      return;
-    }
+    bookArray.push(book);
   });
   books.value = bookArray;
 });

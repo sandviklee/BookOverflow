@@ -21,6 +21,7 @@
           <h1 class="subtitle">What do you want to add?</h1>
         </div>
 
+        
         <router-link to="/adddata/addbook">
           <div class="sign-in-button">
             <button class="button is-primary is-medium">Add Book</button>
@@ -57,7 +58,7 @@
   padding-top: 20vh;
 }
 .card {
-  height: 40vh;
+  height: 35vh;
 }
 .sign-in-text {
   padding-top: 6vh;
@@ -65,7 +66,7 @@
 }
 
 .sign-in-button {
-  padding-top: 4vh;
+  padding-top: 2vh;
 }
 .button {
   width: 66%;
