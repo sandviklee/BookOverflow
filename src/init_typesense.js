@@ -9,8 +9,13 @@ const getDocs = require("firebase/firestore");
 
 const initializeApp = require("firebase/app");
 const getFirestore = require("firebase/firestore");
-import { typesenseConfig, adminKey } from "./typesense/typesenseClient";
 
+const adminKey = "OVDlEoP7Ix6oaZ4LAYL7an7qRhJtREV9";
+const typesenseURL = "TDT4140-29.idi.ntnu.no";
+const typesensePort = 8108;
+const typesenseURLwithPort = typesenseURL + ":" + typesensePort;
+const typesenseHealth = "http://TDT4140-29.idi.ntnu.no:8108/health";
+const searchKey = "eJ1tiTcH7NFixXyUONF0rEsQHQPpI62R";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBcPMAVJdmJ3yWADip0ymhN1VatVjUOuZE",
@@ -29,13 +34,16 @@ module.exports = (async () => {
   const typesense_client = new Typesense.Client({
     nodes: [
       {
-        host: typesenseConfig.url,
-        port: typesenseConfig.port,
+        host: "TDT4140-29.idi.ntnu.no",
+        port: 8108,
         protocol: "http",
       },
     ],
-    apiKey: adminKey,
+    apiKey: "h2SvzHG1U9QFjxM8jNctIxgzfvshec3e479zdsjaDzdNfR8t",
   });
+
+  console.log("Checking server health", typesenseHealth)
+  const healthResponse = await fetch(typesenseHealth).then((resp) => console.log(resp.statusText));
 
   const bookCollection = {
     name: "books",
