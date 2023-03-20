@@ -100,6 +100,11 @@
                 { value: 'Contemporary', label: 'Contemporary' },
                 { value: 'Literary Fiction', label: 'Literary Fiction' },
                 { value: 'Teen', label: 'Teen' },
+                { value: 'Thriller', label: 'Thriller' },
+                { value: 'Paranormal', label: 'Paranormal' },
+                { value: 'Mystery', label: 'Mystery' },
+                { value: 'Fantasy', label: 'Fantasy' },
+                { value: 'Classics', label: 'Classics' },
               ]"
             />
           </div>
@@ -171,8 +176,7 @@
           <div class="add-image">
             <button
               @click="addImageUrl(imageUrlField)"
-              class="button is-primary is-medium"
-            >
+              class="button is-primary is-medium">
               Add Image
             </button>
           </div>
@@ -193,7 +197,7 @@ import {
   query,
   where,
   Timestamp,
-  arrayUnion,
+  arrayUnion
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useRouter } from "vue-router";
@@ -240,6 +244,19 @@ const checkFields = async (title, authorName, date, blurb) => {
 
   if (existsInCol.length == 0) {
     div.innerHTML += " Author doesn't exist!";
+  }
+
+  if (title && authorName) {
+    const q = query(collection(db, "author"), where("name", "==", authorName));
+    let authorResult = await getDocs(q);
+    authorResult.forEach((doc) => {
+      console.log(doc.data())
+      doc.data().books.forEach((book) => {
+        if(book.title == title) {
+          div.innerHTML += " Book already exists!"
+        }
+      })
+    });
   }
 
   if (!title) {
