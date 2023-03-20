@@ -21,14 +21,14 @@
         <a class="book-image" href="#popup1">
           <h1>Cover</h1>
           <div class="plus-icon">
-            <i class="pi pi-plus-circle" href="#popup1" style="font-size: 7vh;"></i>
-            
+            <i
+              class="pi pi-plus-circle"
+              href="#popup1"
+              style="font-size: 7vh"
+            ></i>
           </div>
-          
-          <img
-            class="bookImg"
-            :src="imgUrl"
-          />
+
+          <img class="bookImg" :src="imgUrl" />
         </a>
         <div class="title-field">
           <h1><i class="pi pi-book"></i> Title</h1>
@@ -77,34 +77,33 @@
             />
           </p>
         </div>
-        
+
         <div class="genres-field">
           <h1>Genres</h1>
           <div class="multiselect">
-          <Multiselect
-            v-model="genres"
-            class="genres-multiselect"
-            mode="tags"
-            :close-on-select="false"
-            :searchable="true"
-            :create-option="false"
-            :options="[
-              { value: 'Horror', label: 'Horror' },
-              { value: 'Action', label: 'Action' },
-              { value: 'Fiction', label: 'Fiction' },
-              { value: 'Romance', label: 'Romance' },
-              { value: 'Adult', label: 'Adult' },
-              { value: 'Manga', label: 'Manga' },
-              { value: 'Historical Fiction', label: 'Historical Fiction' },
-              { value: 'American', label: 'American' },
-              { value: 'Contemporary', label: 'Contemporary' },
-              { value: 'Literary Fiction', label: 'Literary Fiction' },
-              { value: 'Teen', label: 'Teen' },
-            ]"
-          />
+            <Multiselect
+              v-model="genres"
+              class="genres-multiselect"
+              mode="tags"
+              :close-on-select="false"
+              :searchable="true"
+              :create-option="false"
+              :options="[
+                { value: 'Horror', label: 'Horror' },
+                { value: 'Action', label: 'Action' },
+                { value: 'Fiction', label: 'Fiction' },
+                { value: 'Romance', label: 'Romance' },
+                { value: 'Adult', label: 'Adult' },
+                { value: 'Manga', label: 'Manga' },
+                { value: 'Historical Fiction', label: 'Historical Fiction' },
+                { value: 'American', label: 'American' },
+                { value: 'Contemporary', label: 'Contemporary' },
+                { value: 'Literary Fiction', label: 'Literary Fiction' },
+                { value: 'Teen', label: 'Teen' },
+              ]"
+            />
+          </div>
         </div>
-        </div>
-
 
         <div class="blurb-field">
           <h1>Blurb</h1>
@@ -114,6 +113,7 @@
               class="textarea"
               id="review-input"
               placeholder="Write here..."
+              style="resize: none"
             ></textarea>
           </p>
         </div>
@@ -145,10 +145,7 @@
             </router-link>
           </div>
         </div>
-        
-        
       </div>
-      
     </div>
     <div id="popup1" class="overlay">
       <div class="popup">
@@ -156,12 +153,11 @@
         <a class="close" href="#">&times;</a>
         <div class="content">
           <h6>Please add an image with higher resolution.</h6>
-          
+
           <div class="img-url-field">
             <p class="control has-icons-left">
               <input
                 v-model="imageUrlField"
-                
                 class="input is-medium"
                 type="text"
                 placeholder="Add an image url..."
@@ -170,32 +166,42 @@
                 <i class="pi pi-globe"></i>
               </span>
             </p>
-        </div>
+          </div>
 
-        <div class="add-image">
-          <button
-            @click="addImageUrl(imageUrlField)"
-            class="button is-primary is-medium">
-            Add Image
-          </button>
-        </div>
+          <div class="add-image">
+            <button
+              @click="addImageUrl(imageUrlField)"
+              class="button is-primary is-medium"
+            >
+              Add Image
+            </button>
+          </div>
         </div>
       </div>
     </div>
   </div>
-  
 </template>
 
 <script setup>
 import Multiselect from "@vueform/multiselect";
-import { getDocs, collection, addDoc, query, where, Timestamp } from "firebase/firestore";
+import {
+  getDocs,
+  updateDoc,
+  doc,
+  collection,
+  addDoc,
+  query,
+  where,
+  Timestamp,
+  arrayUnion,
+} from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
 
 const disabledAni = ref(false);
 const router = useRouter();
-const imgUrl = ref()
+const imgUrl = ref();
 
 var dateTest = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -217,7 +223,7 @@ let queryTool = async (dbcollection, arg, arg2, func, docs) => {
 };
 
 function addImageUrl(url) {
-  imgUrl.value = url
+  imgUrl.value = url;
 }
 /**
  * Validate input fields.
@@ -262,13 +268,15 @@ async function createBook(title, aName, date, blurb, genres, awards) {
     return;
   }
 
-  let awardArray = []
-  const dateArray = date.split("-")
-  let publishedDate = Timestamp.fromDate(new Date(dateArray[0], dateArray[1], dateArray[2]))
+  let awardArray = [];
+  const dateArray = date.split("-");
+  let publishedDate = Timestamp.fromDate(
+    new Date(dateArray[0], dateArray[1], dateArray[2])
+  );
 
   if (awards) {
-    awardArray = awards.split(",")
-  } 
+    awardArray = awards.split(",");
+  }
 
   let aid = "";
 
@@ -287,7 +295,14 @@ async function createBook(title, aName, date, blurb, genres, awards) {
     blurb: blurb,
     image_url: imgUrl.value,
     genres: genres,
-    awards: awardArray
+    awards: awardArray,
+  });
+
+  // Add the book to the author.
+  const authorRef = doc(db, "author", aid);
+
+  await updateDoc(authorRef, {
+    books: arrayUnion({ id: docRef.id, name: title }),
   });
 
   console.log("Book added!");
@@ -297,13 +312,12 @@ async function createBook(title, aName, date, blurb, genres, awards) {
 /**
  * Disabled animation on click.
  */
- function warnDisabled() {
+function warnDisabled() {
   disabledAni.value = true;
   setTimeout(() => {
     disabledAni.value = false;
   }, 1500);
 }
-
 </script>
 
 <style src="@vueform/multiselect/themes/default.css"></style>
@@ -328,7 +342,7 @@ async function createBook(title, aName, date, blurb, genres, awards) {
 .card {
   text-align: left;
   text-shadow: 0.5px 0px 0px #e98074;
-  height: 70vh;
+  height: 65vh;
 }
 .sign-in-text {
   padding-top: 1vh;
@@ -353,7 +367,7 @@ async function createBook(title, aName, date, blurb, genres, awards) {
   padding-left: 40vh;
 }
 
-.awards-field{
+.awards-field {
   width: 95%;
   padding-top: 1vh;
   padding-left: 40vh;
@@ -367,9 +381,9 @@ async function createBook(title, aName, date, blurb, genres, awards) {
 
 .genres-field {
   position: absolute;
-  width: 35vh;
-  left: 2vh;  
-  padding-top: 1vh;
+  width: 30vh;
+  left: 5vh;
+  padding-top: 5vh;
 }
 
 .genres-multiselect {
@@ -380,7 +394,7 @@ async function createBook(title, aName, date, blurb, genres, awards) {
 }
 
 .add-button {
-  padding-left: 70vh;
+  padding-left: 63vh;
 }
 
 .error-text {
@@ -389,7 +403,6 @@ async function createBook(title, aName, date, blurb, genres, awards) {
   padding-top: 3.5vh;
   width: 60vh;
 }
-
 
 .book-image {
   position: absolute;
@@ -411,8 +424,8 @@ async function createBook(title, aName, date, blurb, genres, awards) {
 }
 
 .bookImg:hover {
-    -webkit-transform: scale(1.02);
-    transform: scale(1.02);
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 .plus-icon {
@@ -428,8 +441,8 @@ async function createBook(title, aName, date, blurb, genres, awards) {
 }
 
 .plus-icon:hover {
-    -webkit-transform: scale(1.02);
-    transform: scale(1.02);
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 .sign-in-button {
@@ -488,7 +501,7 @@ async function createBook(title, aName, date, blurb, genres, awards) {
   z-index: 1;
   position: absolute;
   top: 30vh;
-  left: 70vh;
+  left: 60vh;
   margin: 70px auto;
   padding: 20px;
   background: #fff;
@@ -554,5 +567,4 @@ async function createBook(title, aName, date, blurb, genres, awards) {
     transform: translate3d(4px, 0, 0);
   }
 }
-
 </style>
