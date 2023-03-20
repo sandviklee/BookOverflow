@@ -1,7 +1,7 @@
 // import Typesense from "typesense";
 import Typesense from "typesense"
 
-const adminKey = "OVDlEoP7Ix6oaZ4LAYL7an7qRhJtREV9";
+export const adminKey = "OVDlEoP7Ix6oaZ4LAYL7an7qRhJtREV9";
 
 const typesenseURL = "http://TDT4140-29.idi.ntnu.no";
 const typesensePort = "8108";

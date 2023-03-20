@@ -9,7 +9,7 @@ const getDocs = require("firebase/firestore");
 
 const initializeApp = require("firebase/app");
 const getFirestore = require("firebase/firestore");
-import { typesenseConfig } from "./typesense/typesenseClient";
+import { typesenseConfig, adminKey } from "./typesense/typesenseClient";
 
 
 const firebaseConfig = {
@@ -29,12 +29,12 @@ module.exports = (async () => {
   const typesense_client = new Typesense.Client({
     nodes: [
       {
-        host: "localhost",
-        port: "8108",
+        host: typesenseConfig.url,
+        port: typesenseConfig.port,
         protocol: "http",
       },
     ],
-    apiKey: "gruppe29apikey",
+    apiKey: adminKey,
   });
 
   const bookCollection = {
