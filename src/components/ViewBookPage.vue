@@ -8,9 +8,6 @@
             
             <div class="book-image">
               <img class="bookImg" :src="imgUrl">
-              <div class="bookmark-icon">
-
-              </div>
             </div>
 
             <div class="book-title">
@@ -83,7 +80,7 @@
                 <button
                 type="button"
                 @click="goToReview"
-                :disabled="!createReview"
+
                 class="button is-link is-medium"><i class="pi pi-plus" style="font-size: 1rem"></i>&ensp;CREATE REVIEW</button>
 
                 <button
@@ -159,7 +156,7 @@
                       <a class="pagination-link is-current" aria-label="Page 1" aria-current="page">1</a>
                     </li>
                     <li>
-                      <a class="pagination-link" aria-label="Goto page 2">2</a>
+                      <a class="pagination-link" href="/" aria-label="Goto page 2">2</a>
                     </li>
                     <li>
                       <a class="pagination-link" aria-label="Goto page 3">3</a>
@@ -169,7 +166,7 @@
               </div>
 
               <form class="box">
-                <Review class="reviews" v-for="review in reviews.slice(0,6)" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
+                <Review class="reviews" v-for="review in reviews[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
               </form>
               
             </div>
@@ -213,6 +210,15 @@ let authorId = ''
 
 const reviews = ref([])
 
+function sliceIntoChunks(arr, chunkSize) {
+    const res = [];
+    for (let i = 0; i < arr.length; i += chunkSize) {
+        const chunk = arr.slice(i, i + chunkSize);
+        res.push(chunk);
+    }
+    return res;
+}
+
 //Retrives book information from the ID when you click on a book.
 onMounted(async () => { 
   const q = query(collection(db, "reviews"), where("book.id", "==", book));
@@ -232,7 +238,8 @@ onMounted(async () => {
       }
       reviewArray.push(review)
   });
-  reviews.value = reviewArray
+  
+  reviews.value = sliceIntoChunks(reviewArray, 6);
   
   //Get book information
   const docBook = await doc(db, 'books', book);
@@ -279,6 +286,7 @@ function goToReview() {
     router.push('/review/' + book)
   }
 }
+
 
 </script>
 
