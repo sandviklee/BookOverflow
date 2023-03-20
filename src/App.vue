@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <navbar v-if="!$route.meta.hideNavbar" @search="performSearch"></navbar>
+    <navbar v-if="!$route.meta.hideNavbar"></navbar>
     <router-view />
   </div>
 </template>

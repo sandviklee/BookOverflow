@@ -7,46 +7,7 @@
       </router-link>
     </div>
     <div class="search-bar has-icon-left">
-      <ais-instant-search :search-client="searchClient" index-name="books">
-        <ais-configure :hits-per-page.camel="3" />
-        <div class="search-panel">
-          <ais-search-box>
-            <template v-slot="{ currentRefinement, isSearchStalled, refine }">
-              <span class="search-icon">
-                <i class="pi pi-search"></i>
-              </span>
-
-              <input
-                type="text"
-                :value="currentRefinement"
-                @input="refine($event.currentTarget.value)"
-                placeholder="Search BookOverflow..."
-              />
-            </template>
-          </ais-search-box>
-          <div class="search-panel-results">
-            <div class="search-bar-results">
-              <ais-state-results>
-                <template v-slot="{ state: { query } }">
-                  <ais-hits v-show="query.length > 0">
-                    <template v-slot:item="{ item }">
-                      <div class="results">
-                        <h2 class="result-title">{{ item.title }}</h2>
-                        <h6 class="result-author">Author: {{ item.author[0] }}</h6>
-                        <img class="result-image" :src="item['image_url']" />
-                        <br />
-                        Year: {{ item.publication_year }}, Average rating:
-                        {{ item.average_rating }}
-                        <hr />
-                      </div>
-                    </template>
-                  </ais-hits>
-                </template>
-              </ais-state-results>
-            </div>
-          </div>
-        </div>
-      </ais-instant-search>
+      <SearchBox></SearchBox>
     </div>
     <div class="vl"></div>
     <div class="the-library">
@@ -106,9 +67,10 @@
 </template>
 
 <script setup>
-import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
-import Search from './Search.vue'
-import { AisStateResults } from "vue-instantsearch/vue3/es";
+// import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
+// import Search from './Search.vue'
+import SearchBox from "./SearchBox.vue";
+// import { AisStateResults } from "vue-instantsearch/vue3/es";
 import { db } from "../firebase/firebase.js";
 import { ref, onMounted } from "vue";
 import { doc, getDoc } from "firebase/firestore";
@@ -142,22 +104,7 @@ onMounted(async () => {
   }
 });
 
-const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
-  server: {
-    apiKey: "gruppe29apikey",
-    nodes: [
-      {
-        host: "localhost",
-        port: "8108",
-        protocol: "http",
-      },
-    ],
-  },
-  additionalSearchParameters: {
-    query_by: "title,author",
-  },
-});
-const searchClient = typesenseInstantsearchAdapter.searchClient;
+
 </script>
 
 <style>

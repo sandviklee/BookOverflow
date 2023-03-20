@@ -9,6 +9,8 @@ const getDocs = require("firebase/firestore");
 
 const initializeApp = require("firebase/app");
 const getFirestore = require("firebase/firestore");
+import { typesenseConfig } from "./typesense/typesenseClient";
+
 
 const firebaseConfig = {
   apiKey: "AIzaSyBcPMAVJdmJ3yWADip0ymhN1VatVjUOuZE",
@@ -80,6 +82,7 @@ module.exports = (async () => {
     console.log("Deleting existing collection: books");
   } catch (error) {
     // Do nothing
+    console.error(error);
   }
 
   console.log("Creating collection: ");

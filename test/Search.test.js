@@ -1,6 +1,7 @@
 import { mount } from "@vue/test-utils";
-import { expect } from "vitest";
+import { describe, it, expect } from "vitest";
 import Search from "../src/components/Search.vue";
+
 
 describe('Import vue component', () => {
     test('Normal import as expected', async () => {
