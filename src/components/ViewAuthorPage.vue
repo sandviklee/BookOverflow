@@ -81,13 +81,10 @@ onMounted(async () => {
   const docSnapAuthor = await getDoc(docAuthor);
 
   if (docSnapAuthor.exists()) {
-    console.log("Document data:", docSnapAuthor.data());
-
     authorInfo.name = docSnapAuthor.data().name;
     authorInfo.born = docSnapAuthor.data().born.toDate().toDateString();
     imgUrl.value = docSnapAuthor.data().image_url;
     authorInfo.about = docSnapAuthor.data().about;
-
     authorInfo.awards = docSnapAuthor.data().awards.map(award => award.trim());
   } else {
     console.log("No such document!");

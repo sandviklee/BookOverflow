@@ -89,15 +89,9 @@
 
 <script setup>
 import { useRoute, useRouter } from "vue-router";
-import { ref, onMounted, getCurrentInstance } from "vue";
+import { ref } from "vue";
 import { db } from "../firebase/firebase";
-import {
-  doc,
-  getDoc,
-  onSnapshot,
-  collection,
-  addDoc,
-} from "firebase/firestore";
+import { collection, addDoc } from "firebase/firestore";
 import { userStore } from "../stores/UsersStore";
 
 const route = useRoute();
@@ -108,14 +102,26 @@ const count = ref(1);
 let book = "";
 book = route.params.id;
 
+/**
+ * Increments the review star value.
+ */
 function increment() {
   count.value++;
 }
 
+/**
+ * Decrements the review star value.
+ */
 function decrement() {
   count.value--;
 }
 
+/**
+ * Creates the review.
+ * @param {*} title  is the review title.
+ * @param {*} rating is the review rating.
+ * @param {*} review is the review itself.
+ */
 function createReview(title, rating, review) {
   addDoc(collection(db, "reviews"), {
     book: {
