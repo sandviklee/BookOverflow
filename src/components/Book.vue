@@ -9,11 +9,12 @@
                 </div>
             </router-link>
         </div>
+      
     </div>
 </template>
 
 <script setup>
-import { ref, watchEffect } from 'vue'
+import { ref, watchEffect } from "vue";
 
 //Defines the input for the spesific book, what kind of book should it be?
 const props = defineProps({

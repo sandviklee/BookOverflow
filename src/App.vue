@@ -20,3 +20,10 @@ import { defineAsyncComponent, ref, onMounted } from 'vue';
 
 const Book = defineAsyncComponent(() => import('./components/Book.vue'));
 </script>
+
+<style>
+#app {
+  background-color: rgba(234, 231, 220, 1);
+
+}
+</style>

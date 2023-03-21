@@ -1,5 +1,4 @@
 <template>
-  <Search />
   <div class="navbar">
     <div class="logo">
       <router-link to="/">
@@ -18,10 +17,27 @@
     <div class="my-bookshelf">
       <router-link to="/userlist/:id">
         <button class="button is-text is-ghost is-medium">
-          <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>&ensp;My Bookshelf
+          <i class="pi pi-book" style="font-size: 1.5rem"></i>&ensp;My Bookshelf
         </button>
       </router-link>
     </div>
+
+    <div v-show="type == 'admin'" class="signup-login">
+      <router-link to="/adddata">
+        <button class="button is-text is-ghost is-medium">
+          <i class="pi pi-pencil" style="font-size: 1.5rem"></i>&ensp;Add Data
+        </button>
+      </router-link>
+    </div>
+
+    <div v-show="type == 'editor'" class="signup-login">
+      <router-link to="/adddata">
+        <button class="button is-text is-ghost is-medium">
+          <i class="pi pi-pencil" style="font-size: 1.5rem"></i>&ensp;Add Data
+        </button>
+      </router-link>
+    </div>
+
     <div v-show="store.uid == 'no user'" class="signup-login">
       <router-link to="/signup">
         <button class="button is-text is-ghost is-medium">
@@ -53,8 +69,8 @@
               <hr />
 
               <button @click="logOut()" class="button is-danger">
-                <i class="pi pi-sign-out" style="font-size: 1.5rem"></i>&ensp; Sign out of
-                your account
+                <i class="pi pi-sign-out" style="font-size: 1.5rem"></i>&ensp;
+                Sign out of your account
               </button>
             </div>
           </div>
@@ -65,10 +81,7 @@
 </template>
 
 <script setup>
-// import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
-// import Search from './Search.vue'
 import SearchBox from "./SearchBox.vue";
-// import { AisStateResults } from "vue-instantsearch/vue3/es";
 import { db } from "../firebase/firebase.js";
 import { ref, onMounted } from "vue";
 import { doc, getDoc } from "firebase/firestore";
@@ -84,7 +97,7 @@ const type = ref();
 
 function logOut() {
   store.uid = "no user";
-  router.push("/");
+  window.location.reload();
 }
 
 onMounted(async () => {
@@ -101,9 +114,9 @@ onMounted(async () => {
     type.value = userType;
   }
 });
+
+
 </script>
-
-
 
 <style>
 .navbar {
