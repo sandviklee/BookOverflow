@@ -7,7 +7,8 @@ import { typesenseConfig } from "../typesense/typesenseClient";
 function toDateTime(secs) {
   var t = new Date(1970, 0, 1); // Epoch
   t.setSeconds(secs);
-  return t;
+  var y = t.getFullYear();
+  return y;
 }
 const router = useRouter();
 
@@ -92,8 +93,8 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
                           Author:
                           {{ item.author.name }}
                         </h6>
-                        <i class="pi pi-calendar" style="font-size: 1.2rem"></i> Year:
-                        {{ toDateTime(item.published).toDateString() }}
+                        <i class="pi pi-calendar" style="font-size: 1.2rem"></i> Published:
+                        {{ toDateTime(item.published) }}
                         <br />
                         <i class="pi pi-star-fill" style="font-size: 1.2rem"></i> Average
                         Rating: {{ item.avgRating }}
