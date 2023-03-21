@@ -11,11 +11,17 @@
     "start": "npm run css-watch",
     "typesense": "docker run -i -p 8108:8108 -v/tmp/typesense-server-data/:/data typesense/typesense:0.24.0 --data-dir /data --api-key=gruppe29apikey --listen-port 8108 --enable-cors",
     "typesense-init": "node ./src/init_typesense.js",
+    "test": "vitest",
+    "test-ui": "vitest --ui",
+    "coverage": "vitest run --coverage",
+    "typesense": "docker run -i -p 8108:8108 -v/tmp/typesense-server-data/:/data typesense/typesense:0.24.0 --data-dir /data --api-key=gruppe29apikey --listen-port 8108 --enable-cors",
+    "typesense-init": "node ./src/init_typesense.js",
     "test": "vitest --dom"
   },
   "dependencies": {
     "@babel/runtime": "^7.21.0",
     "@vueform/multiselect": "^2.6.1",
+    "@babel/runtime": "^7.21.0",
     "browserify": "^17.0.0",
     "bulma": "^0.9.4",
     "firebase": "^9.17.1",
@@ -40,12 +46,19 @@
     "@tresjs/core": "^1.8.1",
     "@types/jest": "^29.4.1",
     "@types/three": "^0.149.0",
+    "@tresjs/core": "^1.8.1",
+    "@types/three": "^0.149.0",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/test-utils": "^2.3.1",
     "jest": "^29.5.0",
+    "@vitest/ui": "^0.29.2",
+    "@vue/test-utils": "^2.3.1",
+    "jsdom": "^21.1.1",
     "node-sass": "^8.0.0",
     "three": "^0.150.1",
+    "three": "^0.150.1",
     "vite": "^4.0.0",
-    "vitest": "^0.29.7"
+    "vitest": "^0.29.7",
+    "vitest": "^0.29.2"
   }
 }

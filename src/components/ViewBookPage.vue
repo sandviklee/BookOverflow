@@ -15,7 +15,9 @@
 
             <div class="book-title">
               <h1 class="title">{{ bookName }} </h1>
-              <h1 class="author">By {{ authorName }}</h1>
+              <router-link :to="'/author/' + authorId">
+                <h1 class="author">By {{ authorName }}</h1>
+              </router-link>
             </div>
              
             <div class="book-rating">
@@ -183,7 +185,7 @@
 import { useRoute, useRouter } from 'vue-router';
 import { ref, onMounted } from 'vue'
 import { db } from '../firebase/firebase';
-import { doc, getDoc, getDocs, query, collection, where, addDoc, deleteDoc  } from "firebase/firestore"; 
+import { doc, getDoc, getDocs, query, collection, where, addDoc, deleteDoc } from "firebase/firestore"; 
 import { userStore } from '../stores/UsersStore';
 import Review from './Review.vue';
 
@@ -206,6 +208,8 @@ let book = ''
 book = route.params.id;
 
 let reviewId = ''
+
+let authorId = ''
 
 const reviews = ref([])
 
@@ -252,6 +256,7 @@ onMounted(async () => {
     imgUrl.value = image;
     publishedText.value = published;
     bookRating.value = rating;
+    authorId = aid;
     awards.forEach(award => {
       bookAwards.value.push(award)
     });

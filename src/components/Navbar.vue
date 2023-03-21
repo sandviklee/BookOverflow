@@ -121,10 +121,16 @@
       </div>
     </div>
   </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
-import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
+// import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
+// import Search from './Search.vue'
+import SearchBox from "./SearchBox.vue";
+// import { AisStateResults } from "vue-instantsearch/vue3/es";
 import { db } from "../firebase/firebase.js";
 import { ref, onMounted } from "vue";
 import { doc, getDoc } from "firebase/firestore";
@@ -140,7 +146,7 @@ const type = ref();
 
 function logOut() {
   store.uid = "no user";
-  window.location.reload();
+  router.push("/");
 }
 
 onMounted(async () => {
@@ -157,24 +163,9 @@ onMounted(async () => {
     type.value = userType;
   }
 });
-
-const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
-  server: {
-    apiKey: "gruppe29apikey",
-    nodes: [
-      {
-        host: "localhost",
-        port: "8108",
-        protocol: "http",
-      },
-    ],
-  },
-  additionalSearchParameters: {
-    query_by: "title,authors",
-  },
-});
-const searchClient = typesenseInstantsearchAdapter.searchClient;
 </script>
+
+
 
 <style>
 .navbar {
@@ -197,11 +188,8 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   width: 85%;
 }
 
-.search-bar {
-  display: flex;
-  padding-left: 3vh;
-  position: relative;
-  flex-grow: 1;
+.email {
+  font-weight: bold;
 }
 
 .search-panel-results {
@@ -235,45 +223,8 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   position: flex;
 }
 
-.vl {
-  border-left: 2.5px solid rgb(0, 0, 0);
-  height: 45px;
-  padding-right: 10px;
-}
-
-.search-icon {
-  position: absolute;
-  padding: 1.3vh 1.5vh;
-}
-
-.search-icon {
-  position: absolute;
-  padding: 1.3vh 1.5vh;
-}
-
-.search-bar input[type="text"] {
-  margin: auto;
-  height: 48px;
-  width: 70vh;
-  padding: 0 40px;
-  border: none;
-  border-radius: 5px;
+.dropdown-menu {
   box-shadow: 2px 2px 0px #e98074;
-  background-color: #edeae5;
-  font-size: 16px;
-  flex-grow: 1;
-}
-
-.search-bar button {
-  height: 48px;
-  padding-right: 2vh;
-  width: 50px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 2px 2px 0px #e98074;
-  background-color: #edeae5;
-  color: #8e8d8a;
-  font-size: 16px;
 }
 
 .email {

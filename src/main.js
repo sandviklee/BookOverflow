@@ -11,7 +11,6 @@ import primeicons from 'primeicons/primeicons.css'
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedState)
 const app = createApp(App)
-pinia.use(piniaPluginPersistedState)
 app.use(InstantSearch)
 app.use(router)
 app.use(pinia)
