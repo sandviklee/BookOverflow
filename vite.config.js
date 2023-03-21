@@ -4,6 +4,9 @@ import vue from '@vitejs/plugin-vue'
 // https://vitejs.dev/config/
 export default defineConfig({
   plugins: [vue()],
+  test: {
+    environment: 'happy-dom',
+  },
   build: {
     target: 'es2015',
     minify: true,
