@@ -86,7 +86,7 @@ function shuffleArray(arr) {
 const books = ref([]);
 const store = userStore();
 
-//Get books from database, and generalize them with id, author and title.
+//Get books from database, and generalize them with id, image_url and title.
 onMounted(async () => {
   const querySnapshot = await getDocs(collection(db, "books"));
   let bookArray = [];
