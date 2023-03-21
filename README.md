@@ -16,13 +16,22 @@ See [Vite Configuration Reference](https://vitejs.dev/config/).
 npm install
 ```
 
-## Typesense Setup
+## Typesense
 
-To initialize Typesense server
+BookOverflow uses Typesense for search. Typesense can run as a local or remote server. Currently, we use the Virtual Machine at <http://TDT4140-29.idi.ntnu.no:8108> as our Typesense server.
+
+### Typesense Setup
+
+To initialize Typesense server.
+Warning: this currently deletes the collections and fetches everything from Firestore again.
 
 ```sh
 npm run typesense-init
 ```
+
+### Typesense health check
+
+[Click here]<http://TDT4140-29.idi.ntnu.no:8108/health> to check the status of the Typesense server
 
 ### Compile and Hot-Reload for Development
 
