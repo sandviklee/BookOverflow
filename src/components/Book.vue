@@ -34,7 +34,7 @@ watchEffect(async () => {
 
 </script>
 
-<style>   
+<style scoped>   
 .hide-reviews {
     display: none;
     position: absolute;

@@ -18,7 +18,7 @@
     <div class="my-bookshelf">
       <router-link to="/userlist/:id">
         <button class="button is-text is-ghost is-medium">
-          <i class="pi pi-book" style="font-size: 1.5rem"></i>&ensp;My Bookshelf
+          <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>&ensp;My Bookshelf
         </button>
       </router-link>
     </div>
@@ -102,6 +102,8 @@ onMounted(async () => {
   }
 });
 </script>
+
+
 
 <style>
 .navbar {
