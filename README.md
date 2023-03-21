@@ -18,16 +18,6 @@ npm install
 
 ## Typesense Setup
 
-Install Docker
-
-To start Typesense server
-
-```sh
-npm run typesense
-```
-
-If you get an error message, try starting Docker or checking if typesense is already running in Docker
-
 To initialize Typesense server
 
 ```sh

@@ -31,8 +31,19 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   <ais-instant-search :search-client="searchClient" index-name="books">
     <ais-configure :hits-per-page.camel="3" />
     <div class="search-panel">
-      <ais-search-box>
-        <template v-slot="{ currentRefinement, isSearchStalled, refine }">
+      <ais-search-box
+        placeholder="Search BookOverflow..."
+        submit-title="submit --"
+        reset-title="reset --"
+        :autofocus="true"
+        :show-loading-indicator="true"
+        :class-names="{
+          'ais-SearchBox': 'search-bar',
+          'ais-SearchBox-input': 'search-bar input',
+          'ais-SearchBox-submitIcon': 'search-icon',
+        }"
+      >
+        <!-- <template v-slot="{ currentRefinement, isSearchStalled, refine }">
           <span class="search-icon">
             <i class="pi pi-search"></i>
           </span>
@@ -43,7 +54,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
             @input="refine($event.currentTarget.value)"
             placeholder="Search BookOverflow..."
           />
-        </template>
+        </template> -->
       </ais-search-box>
       <div class="search-panel-results">
         <div class="search-bar-results">
@@ -53,8 +64,8 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
                 <template v-slot:item="{ item }">
                   <div class="results">
                     <router-link :to="'/book/' + item.id">
-                    <h2 class="result-title">{{ item.title }}</h2>
-                    <img class="result-image" :src="item['image_url']" />
+                      <h2 class="result-title">{{ item.title }}</h2>
+                      <img class="result-image" :src="item['image_url']" />
                     </router-link>
                     <h6 class="result-author">Author: {{ item.author[0] }}</h6>
                     <br />
