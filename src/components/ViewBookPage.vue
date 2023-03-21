@@ -251,7 +251,7 @@ let createReview = true;
 let book = route.params.id;
 let reviewId = ''
 let authorId = ''
-let reviews;
+let reviews = []
 
 /**
  * Slices an array into a 2D array with max sized chunks.
@@ -367,6 +367,7 @@ onMounted(async () => {
   reviews = reviewArray;
   reviewsStandard.value = sliceIntoChunks(reviewArray, 5);
   addRatingToRef(reviewArray, 1, reviewsStar1);
+  console.log(reviewsStandard.value);
   addRatingToRef(reviewArray, 2, reviewsStar2);
   addRatingToRef(reviewArray, 3, reviewsStar3);
   addRatingToRef(reviewArray, 4, reviewsStar4);
