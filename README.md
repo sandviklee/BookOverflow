@@ -1,19 +1,20 @@
 # BookOverflow
 
-This template should help get you started developing with Vue 3 in Vite.
+BookOverflow is a project aspiring to function as an all in one media- and infocenter for books. With a broad collection of metadata for books and authors, reviews by both proffesionals and common users, different lists and everything one could want to know about the subject of books.  
 
 ## Recommended IDE Setup
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
-
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+[VSCode](https://code.visualstudio.com/)
 
 ## Project Setup
 
+Download Node.js
+
+Open project in VSCode and run the following commands in the terminal:
 ```sh
 npm install
+
+npm ci
 ```
 
 ## Typesense
@@ -31,7 +32,7 @@ npm run typesense-init
 
 ### Typesense health check
 
-[Click here]<http://TDT4140-29.idi.ntnu.no:8108/health> to check the status of the Typesense server
+Click here: <http://TDT4140-29.idi.ntnu.no:8108/health> to check the status of the Typesense server
 
 ### Compile and Hot-Reload for Development
 
