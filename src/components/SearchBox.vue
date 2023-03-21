@@ -5,9 +5,9 @@ import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import { AisStateResults } from "vue-instantsearch/vue3/es";
 import { typesenseConfig } from "../typesense/typesenseClient";
 
-console.log(typesenseConfig.url)
-console.log(typesenseConfig.port)
-console.log(typesenseConfig.searchKey)
+console.log(typesenseConfig.url);
+console.log(typesenseConfig.port);
+console.log(typesenseConfig.searchKey);
 
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
@@ -52,12 +52,14 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
               <ais-hits v-show="query.length > 0">
                 <template v-slot:item="{ item }">
                   <div class="results">
+                    <router-link :to="'/book/' + item.id">
                     <h2 class="result-title">{{ item.title }}</h2>
-                    <h6 class="result-author">Author: {{ item.author[0] }}</h6>
                     <img class="result-image" :src="item['image_url']" />
+                    </router-link>
+                    <h6 class="result-author">Author: {{ item.author[0] }}</h6>
                     <br />
-                    Year: {{ item.publication_year }}, Average rating:
-                    {{ item.average_rating }}
+                    Year: {{ item.published }}, Average rating:
+                    {{ item.avgRating }}
                     <hr />
                   </div>
                 </template>
