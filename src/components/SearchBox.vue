@@ -1,9 +1,25 @@
 <script setup>
-import { ref, onMounted, inject } from "vue";
 import { useRouter } from "vue-router";
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import { AisStateResults } from "vue-instantsearch/vue3/es";
 import { typesenseConfig } from "../typesense/typesenseClient";
+
+import { getCurrentInstance } from 'vue';
+
+const methodThatForcesUpdate = () => {
+  // ...
+  const instance = getCurrentInstance();
+  instance.proxy.forceUpdate();
+  // ...
+};
+
+const router = useRouter()
+
+//Goes to book when clicking, and refreshes the site.
+async function goToBook(id) {  
+  await router.push(/book/ + id);
+  router.go(0)
+}
 
 console.log(typesenseConfig.url);
 console.log(typesenseConfig.port);
@@ -63,17 +79,17 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
             <template v-slot="{ state: { query } }">
               <ais-hits v-show="query.length > 0">
                 <template v-slot:item="{ item }">
-                  <div class="results">
-                    <router-link :to="'/book/' + item.id">
-                      <h2 class="result-title">{{ item.title }}</h2>
-                      <img class="result-image" :src="item['image_url']" />
-                    </router-link>
+                  <a 
+                  @click="goToBook(item.id)"
+                  class="results">
+                    <h2 class="result-title">{{ item.title }}</h2>
+                    <img class="result-image" :src="item['image_url']" />
                     <h6 class="result-author">Author: {{ item.author.name }}</h6>
                     <br />
                     Year: {{ item.published }}, Average rating:
                     {{ item.avgRating }}
                     <hr />
-                  </div>
+                </a>
                 </template>
               </ais-hits>
             </template>
@@ -123,44 +139,14 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
   position: flex;
 }
 
-.vl {
-  border-left: 2.5px solid rgb(0, 0, 0);
-  height: 45px;
-  padding-right: 10px;
-}
-
 .search-icon {
   position: absolute;
   padding: 1.3vh 1.5vh;
 }
 
-.search-icon {
-  position: absolute;
-  padding: 1.3vh 1.5vh;
+.search-box {
+  width: 60vh;
 }
 
-.search-box input[type="text"] {
-  margin: auto;
-  height: 48px;
-  width: 70vh;
-  padding: 0 40px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 2px 2px 0px #e98074;
-  background-color: #edeae5;
-  font-size: 16px;
-  flex-grow: 1;
-}
 
-.search-box button {
-  height: 48px;
-  padding-right: 2vh;
-  width: 50px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 2px 2px 0px #e98074;
-  background-color: #edeae5;
-  color: #8e8d8a;
-  font-size: 16px;
-}
 </style>
