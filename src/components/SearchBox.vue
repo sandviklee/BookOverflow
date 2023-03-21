@@ -1,9 +1,21 @@
 <script setup>
-import { ref, onMounted, inject } from "vue";
 import { useRouter } from "vue-router";
 import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import { AisStateResults } from "vue-instantsearch/vue3/es";
 import { typesenseConfig } from "../typesense/typesenseClient";
+
+function toDateTime(secs) {
+    var t = new Date(1970, 0, 1); // Epoch
+    t.setSeconds(secs);
+    return t;
+}
+const router = useRouter()
+
+//Goes to book when clicking, and refreshes the site.
+async function goToBook(id) {  
+  await router.push(/book/ + id);
+  router.go(0)
+}
 
 console.log(typesenseConfig.url);
 console.log(typesenseConfig.port);
@@ -30,18 +42,17 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 <template>
   <ais-instant-search :search-client="searchClient" index-name="books">
     <ais-configure :hits-per-page.camel="3" />
-    <div class="search-panel">
+    <div class="search-field">
     
       <ais-search-box
         placeholder="Search BookOverflow..."
         submit-title="Submit"
-        reset-title="Reset"
-        :autofocus="true"
+
+        :autofocus="false"
         :show-loading-indicator="true"
         :class-names="{
           'ais-SearchBox': 'search-box',
           'ais-SearchBox-input': 'search-box input',
-          'ais-SearchBox-submitIcon': 'search-icon',
         }"
       >
        <!-- ais-SearchBox: the root element of the widget.
@@ -63,17 +74,22 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
             <template v-slot="{ state: { query } }">
               <ais-hits v-show="query.length > 0">
                 <template v-slot:item="{ item }">
-                  <div class="results">
-                    <router-link :to="'/book/' + item.id">
-                      <h2 class="result-title">{{ item.title }}</h2>
+                  <a 
+                  @click="goToBook(item.id); query = ''"
+                  class="results">
+                    
+                    <h2 class="subtitle">{{ item.title }}</h2>
+                    <div class="result-info">
                       <img class="result-image" :src="item['image_url']" />
-                    </router-link>
-                    <h6 class="result-author">Author: {{ item.author.name }}</h6>
-                    <br />
-                    Year: {{ item.published }}, Average rating:
-                    {{ item.avgRating }}
-                    <hr />
-                  </div>
+                      <h6 class="result-author"><i class="pi pi-user-edit" style="font-size: 1.2rem"></i> Author: {{ item.author.name }}
+                      </h6>
+                      <i class="pi pi-calendar" style="font-size: 1.2rem"></i> Year: {{ toDateTime(item.published).toDateString() }}
+                      <br>
+                      <i class="pi pi-star-fill" style="font-size: 1.2rem"></i> Average Rating: {{ item.avgRating }}
+                      <hr />
+                    </div>
+
+                </a>
                 </template>
               </ais-hits>
             </template>
@@ -98,8 +114,8 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
   position: absolute;
   background-color: #f8f7f3;
   font-size: 18px;
-  max-width: 70vh;
-  min-width: 70vh;
+  max-width: 72vh;
+  min-width: 72vh;
   box-shadow: 2px 2px 0px #e98074;
 }
 
@@ -111,56 +127,64 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
   font-size: large;
 }
 .result-image {
-  position: relative;
+  position: absolute;
   flex-basis: 40%;
   min-width: 10vh;
   max-width: 10vh;
-  left: 50vh;
+  min-height: 15vh;
+  max-height: 15vh;
+  left: 60vh;
   box-shadow: 2px 2px 0px #e98074;
+  
+}
+
+img {
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+
+}
+
+img:hover {
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 .result-author {
   position: flex;
 }
 
-.vl {
-  border-left: 2.5px solid rgb(0, 0, 0);
-  height: 45px;
-  padding-right: 10px;
+.result-info {
+  bottom: 10vh;
+  padding-bottom: 5vh;
 }
 
-.search-icon {
-  position: absolute;
-  padding: 1.3vh 1.5vh;
-}
-
-.search-icon {
-  position: absolute;
-  padding: 1.3vh 1.5vh;
-}
-
-.search-box input[type="text"] {
-  margin: auto;
-  height: 48px;
+.search-field {
+  padding-top: 0.5vh;
+  padding-right: 3vh;
   width: 70vh;
-  padding: 0 40px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 2px 2px 0px #e98074;
-  background-color: #edeae5;
-  font-size: 16px;
-  flex-grow: 1;
 }
 
-.search-box button {
-  height: 48px;
-  padding-right: 2vh;
-  width: 50px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 2px 2px 0px #e98074;
-  background-color: #edeae5;
-  color: #8e8d8a;
-  font-size: 16px;
+.ais-SearchBox-submit {
+  position: absolute;
+  background-color: white;
+  border-radius: 0.6vh;
+  width: 5vh;
+  height: 4vh;
 }
+
+.ais-SearchBox-reset {
+  position: absolute;
+  display: none;
+}
+
+.ais-SearchBox-loadingIndicator {
+  position: absolute;
+  right: 30vh;
+  top: 2.5vh;
+}
+
 </style>

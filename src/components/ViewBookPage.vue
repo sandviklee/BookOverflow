@@ -3,12 +3,13 @@
     <div class="card">
       <div class="card-content">
         <div class="content">
-          <h1>{{ bookName }} </h1>
-          <h1>by: {{ authorName }}</h1>
-          <br>
-          <h6>
-            {{ bookBlurb }}
-          </h6>
+            <h1>{{ bookName }} </h1>
+            <h1>by: {{ authorName }}</h1>
+            <br>
+            <h6>
+              {{ bookBlurb }}
+            </h6>
+
         </div>
       </div>
     </div>
@@ -17,12 +18,13 @@
 </template>
 
 <script setup>
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 import { ref, onMounted} from 'vue'
 import { db } from '../firebase/firebase';
 import { doc, getDoc } from "firebase/firestore";
 
 const route = useRoute()
+const router = useRouter()
 const bookName = ref()
 const authorName = ref()
 const bookBlurb = ref()
@@ -60,5 +62,7 @@ header {
   font-weight:700;
   text-shadow: 1px 0.5px 0px #E98074;
 }
+
+[v-cloak] { display: none; }
 
 </style>
