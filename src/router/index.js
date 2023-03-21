@@ -16,7 +16,7 @@ const routes = [
     { path: '/search', component: SearchPage },
     { path: '/signup', component: SignupPage, meta: {hideNavbar: true}},
     { path: '/signup/register', component: SignupRegisterPage, meta: {hideNavbar: true}},
-    { path: '/author/', component: ViewAuthor },
+    { path: '/author/:id', component: ViewAuthor },
     { path: '/book/:id', component: ViewBook },
     { path: '/userlist/:id', component: UserList },
     { path: '/thelibrary', component: TheLibrary },

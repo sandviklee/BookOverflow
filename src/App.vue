@@ -1,22 +1,22 @@
 <template>
-  <div id="app">
-    <navbar v-if="!$route.meta.hideNavbar" @search="performSearch"></navbar>
-    <router-view />
+  <div>
+    <Suspense>
+      <template #default>
+        <div id="app">
+          <navbar v-if="!$route.meta.hideNavbar" @search="performSearch"></navbar>
+          <RouterView />
+        </div>
+      </template>
+      <template #fallback>
+        <div>Loading...</div>
+      </template>
+    </Suspense>
   </div>
 </template>
 
-<script>
+<script setup>
 import Navbar from './components/Navbar.vue';
+import { defineAsyncComponent, ref, onMounted } from 'vue';
 
-export default {
-  name: 'App',
-  components: {
-    Navbar,
-  },
-  // data() {
-  //   return {
-  //     searchClient,
-  //   };
-  // },
-}
+const Book = defineAsyncComponent(() => import('./components/Book.vue'));
 </script>
