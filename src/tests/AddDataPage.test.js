@@ -1,6 +1,4 @@
-// import { db } from '../firebase/firebase.js'
-// import { collection, query, where, getDocs } from 'firebase/firestore'
-// import { bookFields, authorFields, reviewFields, errorMessage } from '../javascripts/AddData.js'
+import { test, expect } from 'vitest'
 
 const addData = require('../javascripts/AddData')
 const authorCollection = ''

@@ -1,5 +1,6 @@
 // import { db } from '../firebase/firebase.js'
 // import { collection, query, where, getDocs, Timestamp } from "firebase/firestore";
+import { test, expect } from 'vitest'
 
 const addBook = require('../javascripts/AddBook')
 
@@ -70,7 +71,6 @@ test('teste', () => {
 
 
 
-<<<<<<< HEAD
 //     const q = query(collection(db, "cities"), where("capital", "==", true));
 //     const querySnapshot = await getDocs(q);
 //     querySnapshot.forEach((doc) => {
@@ -91,32 +91,3 @@ test('teste', () => {
 //   // doc.data() is never undefined for query doc snapshots
 //   console.log(doc.id, " => ", doc.data());
 // });
-=======
-    const q = query(collection(db, "cities"), where("capital", "==", true));
-    const querySnapshot = await getDocs(q);
-    querySnapshot.forEach((doc) => {
-    // doc.data() is never undefined for query doc snapshots
-    console.log(doc.id, " => ", doc.data());
-    });
-
-    const allBooks = doc(db, 'books');
-    const docSnap = await getDocs(allBooks);
-})
-
-
-
-const q = query(collection(db, "cities"), where("capital", "==", true));
-
-const querySnapshot = await getDocs(q);
-querySnapshot.forEach((doc) => {
-  // doc.data() is never undefined for query doc snapshots
-  console.log(doc.id, " => ", doc.data());
-});
-
-//B25.2 Lag valideringsfunksjon
-
-//B25.A - Når en bruker med riktig tilgang prøver å legge til data med 
-//feil oppsett vil den få feilmelding og data blir 
-//ikke lagt til, mens data med riktig oppsett 
-//blir lagt inn i databasen
->>>>>>> a13bf66 (Skriv funksjon AddBook og test for den: Ref #42)
