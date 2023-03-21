@@ -6,9 +6,7 @@
         <img src="/src/assets/BookOverflow/logo.png" alt="BookOverflow Logo" />
       </router-link>
     </div>
-    <div class="search-bar has-icon-left">
-      <SearchBox></SearchBox>
-    </div>
+    <SearchBox></SearchBox>
     <div class="vl"></div>
     <div class="the-library">
       <router-link to="/thelibrary">
@@ -103,8 +101,6 @@ onMounted(async () => {
     type.value = userType;
   }
 });
-
-
 </script>
 
 <style>
@@ -126,85 +122,6 @@ onMounted(async () => {
   padding-left: 10vh;
   padding-top: 1vh;
   width: 85%;
-}
-
-.search-bar {
-  display: flex;
-  padding-left: 3vh;
-  position: relative;
-  flex-grow: 1;
-}
-
-.search-panel-results {
-  display: flex;
-  padding-left: 4vh;
-  position: absolute;
-  background-color: #f8f7f3;
-  font-size: 18px;
-  max-width: 70vh;
-  min-width: 70vh;
-  box-shadow: 2px 2px 0px #e98074;
-}
-
-.results {
-  text-shadow: 0.5px 0px 0px #e98074;
-}
-
-.result-title {
-  font-size: large;
-}
-.result-image {
-  position: relative;
-  flex-basis: 40%;
-  min-width: 10vh;
-  max-width: 10vh;
-  left: 50vh;
-  box-shadow: 2px 2px 0px #e98074;
-}
-
-.result-author {
-  position: flex;
-}
-
-.vl {
-  border-left: 2.5px solid rgb(0, 0, 0);
-  height: 45px;
-  padding-right: 10px;
-}
-
-.search-icon {
-  position: absolute;
-  padding: 1.3vh 1.5vh;
-}
-
-.search-icon {
-  position: absolute;
-  padding: 1.3vh 1.5vh;
-}
-
-.search-bar input[type="text"] {
-  margin: auto;
-  height: 48px;
-  width: 70vh;
-  padding: 0 40px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 2px 2px 0px #e98074;
-  background-color: #edeae5;
-  font-size: 16px;
-  flex-grow: 1;
-}
-
-.search-bar button {
-  height: 48px;
-  padding-right: 2vh;
-  width: 50px;
-  border: none;
-  border-radius: 5px;
-  box-shadow: 2px 2px 0px #e98074;
-  background-color: #edeae5;
-  color: #8e8d8a;
-  font-size: 16px;
 }
 
 .email {

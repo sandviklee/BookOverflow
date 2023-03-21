@@ -1,9 +1,3 @@
-<template>
-<slot>
-</slot>
-
-</template>
-
 <script setup>
 import Typesense from "typesense";
 import { ref, onMounted, provide } from "vue";
@@ -51,13 +45,19 @@ async function getTopList(number) {
     sort_by: "avgRating:desc",
     limit_hits: number,
   };
-
+  
   await listClient
-    .collections("books")
-    .documents()
-    .search(searchParameters)
-    .then(function (searchResults) {
-      console.log(searchResults);
-    });
+  .collections("books")
+  .documents()
+  .search(searchParameters)
+  .then(function (searchResults) {
+    console.log(searchResults);
+  });
 }
 </script>
+
+<template>
+<slot>
+</slot>
+
+</template>
