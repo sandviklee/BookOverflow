@@ -4,7 +4,8 @@ import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import { AisStateResults } from "vue-instantsearch/vue3/es";
 import { typesenseConfig } from "../typesense/typesenseClient";
 
-function toDateTime(secs) {
+// Turns timestamp in seconds into year
+function toYear(secs) {
   var t = new Date(1970, 0, 1); // Epoch
   t.setSeconds(secs);
   var y = t.getFullYear();
@@ -42,7 +43,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 
 <template>
   <ais-instant-search :search-client="searchClient" index-name="combined">
-    <ais-configure :hits-per-page.camel="3" />
+    <ais-configure :hits-per-page.camel="6" />
     <div class="search-field">
       <ais-search-box
         placeholder="Search BookOverflow..."
@@ -89,8 +90,9 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
                           Author:
                           {{ item.author.name }}
                         </h6>
-                        <i class="pi pi-calendar" style="font-size: 1.2rem"></i> Published:
-                        {{ toDateTime(item.published) }}
+                        <i class="pi pi-calendar" style="font-size: 1.2rem"></i>
+                        Published:
+                        {{ toYear(item.published) }}
                         <br />
                         <i class="pi pi-star-fill" style="font-size: 1.2rem"></i> Average
                         Rating: {{ item.avgRating }}
