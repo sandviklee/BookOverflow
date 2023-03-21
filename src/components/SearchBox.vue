@@ -31,30 +31,31 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   <ais-instant-search :search-client="searchClient" index-name="books">
     <ais-configure :hits-per-page.camel="3" />
     <div class="search-panel">
+    
       <ais-search-box
         placeholder="Search BookOverflow..."
-        submit-title="submit --"
-        reset-title="reset --"
+        submit-title="Submit"
+        reset-title="Reset"
         :autofocus="true"
         :show-loading-indicator="true"
         :class-names="{
-          'ais-SearchBox': 'search-bar',
-          'ais-SearchBox-input': 'search-bar input',
+          'ais-SearchBox': 'search-box',
+          'ais-SearchBox-input': 'search-box input',
           'ais-SearchBox-submitIcon': 'search-icon',
         }"
       >
-        <!-- <template v-slot="{ currentRefinement, isSearchStalled, refine }">
-          <span class="search-icon">
-            <i class="pi pi-search"></i>
-          </span>
-
-          <input
-            type="text"
-            :value="currentRefinement"
-            @input="refine($event.currentTarget.value)"
-            placeholder="Search BookOverflow..."
-          />
-        </template> -->
+       <!-- ais-SearchBox: the root element of the widget.
+ais-SearchBox-form: the form element.
+ais-SearchBox-input: the input element.
+ais-SearchBox-submit: the submit button element.
+ais-SearchBox-submitIcon: Magnifier icon used with the search input.
+ais-SearchBox-reset: the reset button element. 
+ais-SearchBox-resetIcon: the reset button icon.
+ais-SearchBox-loadingIndicator: the loading indicator element.
+ais-SearchBox-loadingIcon: the loading indicator icon. -->
+      <template v-slot:submit-icon><i class="pi pi-search"></i></template>
+      <!-- <template v-slot:reset-icon><i class="pi pi-reset"></i></template> -->
+      <!-- <template v-slot:loading-indicator>⏳</template> -->
       </ais-search-box>
       <div class="search-panel-results">
         <div class="search-bar-results">
@@ -67,7 +68,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
                       <h2 class="result-title">{{ item.title }}</h2>
                       <img class="result-image" :src="item['image_url']" />
                     </router-link>
-                    <h6 class="result-author">Author: {{ item.author[0] }}</h6>
+                    <h6 class="result-author">Author: {{ item.author.name }}</h6>
                     <br />
                     Year: {{ item.published }}, Average rating:
                     {{ item.avgRating }}
@@ -138,7 +139,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   padding: 1.3vh 1.5vh;
 }
 
-.search-bar input[type="text"] {
+.search-box input[type="text"] {
   margin: auto;
   height: 48px;
   width: 70vh;
@@ -151,7 +152,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   flex-grow: 1;
 }
 
-.search-bar button {
+.search-box button {
   height: 48px;
   padding-right: 2vh;
   width: 50px;
