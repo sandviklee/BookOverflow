@@ -4,15 +4,11 @@ import TypesenseInstantSearchAdapter from "typesense-instantsearch-adapter";
 import { AisStateResults } from "vue-instantsearch/vue3/es";
 import { typesenseConfig } from "../typesense/typesenseClient";
 
-import { getCurrentInstance } from 'vue';
-
-const methodThatForcesUpdate = () => {
-  // ...
-  const instance = getCurrentInstance();
-  instance.proxy.forceUpdate();
-  // ...
-};
-
+function toDateTime(secs) {
+    var t = new Date(1970, 0, 1); // Epoch
+    t.setSeconds(secs);
+    return t;
+}
 const router = useRouter()
 
 //Goes to book when clicking, and refreshes the site.
@@ -46,18 +42,17 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 <template>
   <ais-instant-search :search-client="searchClient" index-name="books">
     <ais-configure :hits-per-page.camel="3" />
-    <div class="search-panel">
+    <div class="search-field">
     
       <ais-search-box
         placeholder="Search BookOverflow..."
         submit-title="Submit"
-        reset-title="Reset"
-        :autofocus="true"
+
+        :autofocus="false"
         :show-loading-indicator="true"
         :class-names="{
           'ais-SearchBox': 'search-box',
           'ais-SearchBox-input': 'search-box input',
-          'ais-SearchBox-submitIcon': 'search-icon',
         }"
       >
        <!-- ais-SearchBox: the root element of the widget.
@@ -80,15 +75,20 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
               <ais-hits v-show="query.length > 0">
                 <template v-slot:item="{ item }">
                   <a 
-                  @click="goToBook(item.id)"
+                  @click="goToBook(item.id); query = ''"
                   class="results">
-                    <h2 class="result-title">{{ item.title }}</h2>
-                    <img class="result-image" :src="item['image_url']" />
-                    <h6 class="result-author">Author: {{ item.author.name }}</h6>
-                    <br />
-                    Year: {{ item.published }}, Average rating:
-                    {{ item.avgRating }}
-                    <hr />
+                    
+                    <h2 class="subtitle">{{ item.title }}</h2>
+                    <div class="result-info">
+                      <img class="result-image" :src="item['image_url']" />
+                      <h6 class="result-author"><i class="pi pi-user-edit" style="font-size: 1.2rem"></i> Author: {{ item.author.name }}
+                      </h6>
+                      <i class="pi pi-calendar" style="font-size: 1.2rem"></i> Year: {{ toDateTime(item.published).toDateString() }}
+                      <br>
+                      <i class="pi pi-star-fill" style="font-size: 1.2rem"></i> Average Rating: {{ item.avgRating }}
+                      <hr />
+                    </div>
+
                 </a>
                 </template>
               </ais-hits>
@@ -114,8 +114,8 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
   position: absolute;
   background-color: #f8f7f3;
   font-size: 18px;
-  max-width: 70vh;
-  min-width: 70vh;
+  max-width: 72vh;
+  min-width: 72vh;
   box-shadow: 2px 2px 0px #e98074;
 }
 
@@ -127,26 +127,64 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
   font-size: large;
 }
 .result-image {
-  position: relative;
+  position: absolute;
   flex-basis: 40%;
   min-width: 10vh;
   max-width: 10vh;
-  left: 50vh;
+  min-height: 15vh;
+  max-height: 15vh;
+  left: 60vh;
   box-shadow: 2px 2px 0px #e98074;
+  
+}
+
+img {
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+
+}
+
+img:hover {
+  -webkit-transform: scale(1.02);
+  transform: scale(1.02);
 }
 
 .result-author {
   position: flex;
 }
 
-.search-icon {
+.result-info {
+  bottom: 10vh;
+  padding-bottom: 5vh;
+}
+
+.search-field {
+  padding-top: 0.5vh;
+  padding-right: 3vh;
+  width: 70vh;
+}
+
+.ais-SearchBox-submit {
   position: absolute;
-  padding: 1.3vh 1.5vh;
+  background-color: white;
+  border-radius: 0.6vh;
+  width: 5vh;
+  height: 4vh;
 }
 
-.search-box {
-  width: 60vh;
+.ais-SearchBox-reset {
+  position: absolute;
+  display: none;
 }
 
+.ais-SearchBox-loadingIndicator {
+  position: absolute;
+  right: 30vh;
+  top: 2.5vh;
+}
 
 </style>
