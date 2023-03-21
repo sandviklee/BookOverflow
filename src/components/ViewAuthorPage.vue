@@ -1,29 +1,54 @@
 <template>
   <div class="background">
-    <div class="card">
-      <div class="author-image">
-        <img class="authorImg" :src="imgUrl">
-        <div class="author-icon"></div>
-      </div>
-      <div class="author-Name">
-        <h1 class="name">{{ authorInfo.name }}</h1>
-      </div>
-      <div class="author-desc">
-        <h6>Born: {{ authorInfo.born }}</h6>
-      </div>
-      <div class="awards">
-        <h1>
-          <i class="pi pi-globe" style="font-size: 1.5rem"></i>&ensp;Awards:
-        </h1>
-        <div class="award">
-          <button class="button is-ghost is-normal" v-for="award in authorInfo.awards">{{ award }}</button>
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <div id="card">
+
+            <div class="author-image">
+              <img class="authorImg" :src="imgUrl">
+              <div class="author-icon"></div>
+            </div>
+
+            <div class="author-Name">
+              <h1 class="name">{{ authorInfo.name }}</h1>
+            </div>
+            <div class="born">
+              <h2>
+                <strong>
+                  <i class="pi pi-calendar" style="font-size: 1.5rem"></i>&ensp;Born:
+                </strong>
+              </h2>
+              <div id="born">{{ authorInfo.born }}</div>
+            </div>
+            <div class="author-desc">
+              <p>{{ authorInfo.about }}</p>
+            </div>
+            <div class="awards">
+              <h1>
+                <strong>
+                  <i class="pi pi-globe" style="font-size: 1.5rem"></i>&ensp;Awards:
+                </strong>
+              </h1>
+              <div class="award">
+                <button class="button is-ghost is-normal" v-for="award in authorInfo.awards">{{ award }}</button>
+              </div>
+
+            </div>
+            <div id="container">
+              <div class="row">
+                <div class="col-md-10">
+                  <div class="card mb-6">
+                    <div class="card-body" v-if="books.length">
+                      <Book class="books" v-for="book in books" :key="book.id"
+                        :bookInfo="`${book.image_url};${book.id};${book.rating}`" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <div class="author-desc">
-          <p>{{ authorInfo.about }}</p>
-        </div>
-      </div>
-      <div class="card-body" v-if="books.length">
-        <Book v-for="book in books" :key="book.id" :bookInfo="`${book.image_url};${book.id};${book.rating}`" />
       </div>
     </div>
   </div>
@@ -97,7 +122,8 @@ onMounted(async () => {
   margin: 0;
   height: 100%;
   width: 100%;
-  background-color: #D8C3A5;
+  background-color: rgba(216, 195, 165, 0.56);
+
 }
 
 header {
@@ -105,43 +131,45 @@ header {
   font-weight: 700;
 }
 
-.card {
+#card {
   background-color: #EAE7DC;
-  min-height: 200vh;
+  min-height: 100vh;
+}
+
+#container {
+  margin-top: 50vh;
+  color: #D8C3A5;
+  padding: 15px 15px;
 }
 
 .author-image {
-  position: relative;
-  margin-top: 5vh;
-  margin-left: auto;
-  margin-right: auto;
-  width: 25vh;
-  height: 35vh;
-  border-radius: 5px;
-  overflow: hidden;
+  position: absolute;
+  left: 8vh;
+  top: 5vh;
 }
 
 .authorImg {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  border-radius: 5px;
+  height: 40vh;
+  width: 28vh;
+  box-shadow: 4px 0px 0px #E98074;
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+  -webkit-transition-duration: 0.3s;
+  transition-duration: 0.3s;
+  -webkit-transition-property: transform;
+  transition-property: transform;
 }
 
 .author-icon {
   position: absolute;
-  bottom: -3vh;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 5vh;
-  height: 5vh;
-  border-radius: 50%;
-  background-color: #E98074;
-  box-shadow: 0px 3px 0px 0px #C97966;
+  bottom: 35vh;
 }
 
 .author-Name {
-  margin-top: 4vh;
-  text-align: center;
+  position: relative;
+  padding-top: 5vh;
+  left: 49vh;
 }
 
 .name {
@@ -149,51 +177,45 @@ header {
   font-weight: bold;
 }
 
+.born {
+  position: relative;
+  padding-top: 2vh;
+  left: 49vh;
+}
+#born {
+  position: relative;
+  padding-left: 13.7vh;
+  bottom: 2.7vh;
+}
 .author-desc {
-  margin-top: 1vh;
-  text-align: center;
+  position: absolute;
+  margin-top: 12vh;
+  max-width: 80vh;
+  left: 49vh;
+  right: 12vh;
+  font-size: 19px;
 }
 
 .awards {
-  margin-top: 2vh;
-  padding: 0 8vh;
+  position: absolute;
+  left: 47.5vh;
+  padding: 15px;
 }
 
 .award {
-  margin-top: 2vh;
-  display: flex;
-  justify-content: center;
-}
-
-.button {
-  margin: 0 1vh;
-  background-color: #E98074;
-  color: white;
-  font-weight: bold;
-  border: none;
-  border-radius: 2vh;
-  cursor: pointer;
-  transition: background-color 0.2s ease;
-}
-
-.button:hover {
-  background-color:
-    #C97966;
+  position: relative;
+  padding-left: 12vh;
+  bottom: 3.5vh;
 }
 
 .card-body {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  margin-top: 5vh;
+  height: 23vh;
+  background-color: #D8C3A5;
+  padding-left: 10px;
 }
 
 .books {
-  margin: 2vh;
-  width: 20vw;
-  height: 35vh;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  display: inline-block;
+  padding: 1vh 3.7vh;
 }
 </style>
