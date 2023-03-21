@@ -88,7 +88,6 @@ const store = userStore();
 
 //Get books from database, and generalize them with id, author and title.
 onMounted(async () => {
-  console.log(store.uid, " er ID.");
   const querySnapshot = await getDocs(collection(db, "books"));
   let bookArray = [];
   querySnapshot.forEach((doc) => {

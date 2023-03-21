@@ -22,10 +22,6 @@ async function goToAuthor(id) {
   router.go(0);
 }
 
-console.log(typesenseConfig.url);
-console.log(typesenseConfig.port);
-console.log(typesenseConfig.searchKey);
-
 const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
   server: {
     apiKey: typesenseConfig.searchKey,
