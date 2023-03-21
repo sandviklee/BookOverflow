@@ -51,7 +51,7 @@
     <div class="my-bookshelf">
       <router-link to="/userlist/:id">
         <button class="button is-text is-ghost is-medium">
-          <i class="pi pi-book" style="font-size: 1.5rem"></i>&ensp;My Bookshelf
+          <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>&ensp;My Bookshelf
         </button>
       </router-link>
     </div>
@@ -76,13 +76,15 @@
           <div class="dropdown-content">
             <div class="dropdown-item">
               <h1 class="welcome-text">Welcome, {{ username }}!</h1>
-              <p> You are logged in with: {{ email }}
+              <p class="email"> You are logged in with: {{ email }}
+              </p>
+              <hr>
+              <p> Role Permissions: {{ type }}
               </p>
               <hr>
 
               <button 
-              @click="logOut
-              ()"
+              @click="logOut()"
               class="button is-danger"><i class="pi pi-sign-out" style="font-size: 1.5rem"></i>&ensp; Sign out of your account</button>
             </div>
           </div>
@@ -108,6 +110,7 @@ const router = useRouter();
 
 const username = ref()
 const email = ref()
+const type = ref()
 
 function logOut() {
   store.uid = 'no user';
@@ -121,9 +124,11 @@ onMounted(async () => {
   if (store.uid !== 'no user') {
     let usernameDoc = docSnap.data().username
     let emailDoc = docSnap.data().email
+    let userType = docSnap.data().type
 
     username.value = usernameDoc;
     email.value = emailDoc;
+    type.value = userType;
   }
 
 });
@@ -146,6 +151,8 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
 const searchClient = typesenseInstantsearchAdapter.searchClient;
 
 </script>
+
+
 
 <style>
 .navbar {
@@ -246,6 +253,14 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
   background-color: #edeae5;
   color: #8e8d8a;
   font-size: 16px;
+}
+
+.email {
+  font-weight: bold;
+}
+
+.dropdown-menu{
+  box-shadow: 2px 2px 0px #e98074;
 }
 
 .user-lists img {

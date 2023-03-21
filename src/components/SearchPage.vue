@@ -4,7 +4,8 @@
       <div class="card-content">
         <div class="content">
           <h1> 
-            Search page <br>
+            Search page 
+            <br>
             Coming soon! </h1>
         </div>
       </div>
