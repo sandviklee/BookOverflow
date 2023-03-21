@@ -18,6 +18,9 @@
         <div class="award">
           <button class="button is-ghost is-normal" v-for="award in authorInfo.awards">{{ award }}</button>
         </div>
+        <div class="author-desc">
+          <p>{{ authorInfo.about }}</p>
+        </div>
       </div>
       <div class="card-body" v-if="books.length">
         <Book v-for="book in books" :key="book.id" :bookInfo="`${book.image_url};${book.id};${book.rating}`" />
@@ -38,6 +41,7 @@ const authorInfo = reactive({
   born: '',
   awards: [],
   image_url: '',
+  about: '',
 })
 
 const imgUrl = ref('')
@@ -57,6 +61,7 @@ onMounted(async () => {
     authorInfo.name = docSnapAuthor.data().name;
     authorInfo.born = docSnapAuthor.data().born.toDate().toDateString();
     imgUrl.value = docSnapAuthor.data().image_url;
+    authorInfo.about = docSnapAuthor.data().about;
 
     authorInfo.awards = docSnapAuthor.data().awards.map(award => award.trim());
   } else {
