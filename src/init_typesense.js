@@ -89,34 +89,85 @@ module.exports = (async () => {
     default_sorting_field: "born",
   };
 
+  const combinedCollection = {
+    name: "combined",
+    enable_nested_fields: true,
+    fields: [
+      // Common fields
+      { name: "id", type: "string" },
+      { name: "type", type: "string", facet: true }, // Type of record
+      { name: "image_url", type: "string", index: false, optional: true },
+      { name: "avgRating", type: "float" },
+
+      // Book fields
+      { name: "title", type: "string", facet: true, optional: true },
+      { name: "author", type: "object", facet: true, optional: true },
+      { name: "genres", type: "string[]", facet: true, optional: true },
+      { name: "published", type: "int32", facet: true, optional: true },
+
+      // Author fields
+      { name: "name", type: "string", facet: true, optional: true },
+      { name: "books", type: "object[]", facet: true, optional: true },
+      { name: "born", type: "int32", optional: true },
+
+      // Only fields that need to be searched / filtered by need to be specified in the collection's collection
+      // The documents you index can still contain other additional fields.
+      //  These fields not mentioned in the collection, will be returned as is as part of the search results.
+      // { name: 'image_url', type: 'string' },
+    ],
+    default_sorting_field: "avgRating",
+  };
+
   // console.log("Populating index in Typesense");
 
   if (resetFlag) {
     try {
       await typesenseAdminClient.collections("books").delete();
       console.log("Deleting existing collection: books");
-      await typesenseAdminClient.collections("authors").delete();
-      console.log("Deleting existing collection: authors");
     } catch (error) {
       // Do nothing
       console.error(error);
     }
+    try {
+      await typesenseAdminClient.collections("authors").delete();
+      console.log("Deleting existing collection: authors");
+      
+    } catch (error) {
+      console.error(error);
+    }
+    try {
+      
+      await typesenseAdminClient.collections("combined").delete();
+      console.log("Deleting existing collection: combined");
+    } catch (error) {
+      console.error(error);
+    }
   }
 
+
+  // try {
+  //   console.log("Creating collection: ", bookCollection.name);
+  //   let response = await typesenseAdminClient
+  //     .collections()
+  //     .create(bookCollection);
+  //   console.log(response.name);
+  // } catch (error) {
+  //   console.error(error);
+  // }
+  // try {
+  //   console.log("Creating collection: ", authorsCollection.name);
+  //   let response = await typesenseAdminClient
+  //     .collections()
+  //     .create(authorsCollection);
+  //   console.log(response.name);
+  // } catch (error) {
+  //   console.error(error);
+  // }
   try {
-    console.log("Creating collection: ", bookCollection.name);
+    console.log("Creating collection: ", combinedCollection.name);
     let response = await typesenseAdminClient
       .collections()
-      .create(bookCollection);
-    console.log(response.name);
-  } catch (error) {
-    console.error(error);
-  }
-  try {
-    console.log("Creating collection: ", authorsCollection.name);
-    let response = await typesenseAdminClient
-      .collections()
-      .create(authorsCollection);
+      .create(combinedCollection);
     console.log(response.name);
   } catch (error) {
     console.error(error);
@@ -129,12 +180,17 @@ module.exports = (async () => {
     const querySnapshotBooks = await getDocs.getDocs(
       collection.collection(db, "books")
     );
+    const querySnapshotAuthors = await getDocs.getDocs(
+      collection.collection(db, "author")
+    );
     // console.log(querySnapshotBooks)
-    let bookDocuments = [];
+    let combinedDocuments = [];
+    // let bookDocuments = [];
     querySnapshotBooks.forEach((doc) => {
       // let data = "{ id: " + doc.id + " }\n";
       const book = {
         id: doc.id,
+        type: "book",
         title: doc.data().title,
         author: doc.data().author,
         avgRating: doc.data().avgRating,
@@ -142,11 +198,9 @@ module.exports = (async () => {
         image_url: doc.data().image_url,
         published: doc.data().published.seconds,
       };
-      bookDocuments.push(book);
+      combinedDocuments.push(book);
+      // bookDocuments.push(book);
     });
-    const querySnapshotAuthors = await getDocs.getDocs(
-      collection.collection(db, "author")
-    );
     // console.log(querySnapshotAuthors)
     let authorDocuments = [];
     querySnapshotAuthors.forEach((doc) => {
@@ -154,43 +208,51 @@ module.exports = (async () => {
       // console.log(doc.data().born);
       const author = {
         id: doc.id,
+        type: "author",
+        avgRating: doc.data().avgRating,
         name: doc.data().name,
         books: doc.data().books,
         image_url: doc.data().image_url,
         born: doc.data().born.seconds,
       };
       // console.log("Adding author ", author);
-      authorDocuments.push(author);
+      combinedDocuments.push(author);
+      // authorDocuments.push(author);
     });
     // console.log(authorDocuments);
     // const booksInJsonl = await fs.readFile("./data/firebasebooks.jsonl"); // bytt ut med Firestore read
 
     // console.log(booksInJsonl)
 
-    const returnDataBooks = await typesenseAdminClient
-      .collections("books")
-      .documents()
-      .import(bookDocuments, { action: "upsert" });
-    console.log("Done indexing books.");
+    // const returnDataBooks = await typesenseAdminClient
+    //   .collections("books")
+    //   .documents()
+    //   .import(bookDocuments, { action: "upsert" });
+    // console.log("Done indexing books.");
     // console.log(returnDataBooks);
     // var linesBooks = returnDataBooks.split("\n");
     // var wrappedBooks = "[" + linesBooks.join(",") + "]";
     // var returnObjectBooks = JSON.parse(wrappedBooks);
     // console.log(returnObject);
 
-    let failedBooks = returnDataBooks.filter((item) => item.success === false);
-    if (failedBooks.length > 0) {
-      throw new Error(
-        `Error indexing books ${JSON.stringify(failedBooks, null, 2)}`
-      );
-    } else {
-      console.log("Success")
-    }
-    const returnDataAuthors = await typesenseAdminClient
-      .collections("authors")
+    // let failedBooks = returnDataBooks.filter((item) => item.success === false);
+    // if (failedBooks.length > 0) {
+    //   throw new Error(
+    //     `Error indexing books ${JSON.stringify(failedBooks, null, 2)}`
+    //   );
+    // } else {
+    //   console.log("Success");
+    // }
+    // const returnDataAuthors = await typesenseAdminClient
+    //   .collections("authors")
+    //   .documents()
+    //   .import(authorDocuments, { action: "upsert" });
+    // console.log("Done indexing authors.");
+    const returnDataCombined = await typesenseAdminClient
+      .collections("combined")
       .documents()
-      .import(authorDocuments, { action: "upsert" });
-    console.log("Done indexing authors.");
+      .import(combinedDocuments, { action: "upsert" });
+    console.log("Done indexing combined documents.");
     // console.log(returnDataAuthors);
 
     // var lines = returnDataAuthors.split("\n");
@@ -198,15 +260,15 @@ module.exports = (async () => {
     // var returnObjectAuthors = JSON.parse(wrapped);
     // console.log(returnObject);
 
-    let failedAuthors = returnDataAuthors.filter(
+    let failedCombined = returnDataCombined.filter(
       (item) => item.success === false
     );
-    if (failedAuthors.length > 0) {
+    if (failedCombined.length > 0) {
       throw new Error(
-        `Error indexing authors ${JSON.stringify(failedAuthors, null, 2)}`
+        `Error indexing authors ${JSON.stringify(failedCombined, null, 2)}`
       );
     } else {
-      console.log("Success")
+      console.log("Success");
     }
 
     // return returnData;

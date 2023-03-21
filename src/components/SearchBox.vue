@@ -5,16 +5,20 @@ import { AisStateResults } from "vue-instantsearch/vue3/es";
 import { typesenseConfig } from "../typesense/typesenseClient";
 
 function toDateTime(secs) {
-    var t = new Date(1970, 0, 1); // Epoch
-    t.setSeconds(secs);
-    return t;
+  var t = new Date(1970, 0, 1); // Epoch
+  t.setSeconds(secs);
+  return t;
 }
-const router = useRouter()
+const router = useRouter();
 
 //Goes to book when clicking, and refreshes the site.
-async function goToBook(id) {  
+async function goToBook(id) {
   await router.push(/book/ + id);
-  router.go(0)
+  router.go(0);
+}
+async function goToAuthor(id) {
+  await router.push(/author/ + id);
+  router.go(0);
 }
 
 console.log(typesenseConfig.url);
@@ -33,21 +37,19 @@ const typesenseInstantsearchAdapter = new TypesenseInstantSearchAdapter({
     ],
   },
   additionalSearchParameters: {
-    query_by: "title,author",
+    query_by: "title,author,name",
   },
 });
 const searchClient = typesenseInstantsearchAdapter.searchClient;
 </script>
 
 <template>
-  <ais-instant-search :search-client="searchClient" index-name="books">
+  <ais-instant-search :search-client="searchClient" index-name="combined">
     <ais-configure :hits-per-page.camel="3" />
     <div class="search-field">
-    
       <ais-search-box
         placeholder="Search BookOverflow..."
         submit-title="Submit"
-
         :autofocus="false"
         :show-loading-indicator="true"
         :class-names="{
@@ -55,7 +57,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
           'ais-SearchBox-input': 'search-box input',
         }"
       >
-       <!-- ais-SearchBox: the root element of the widget.
+        <!-- ais-SearchBox: the root element of the widget.
 ais-SearchBox-form: the form element.
 ais-SearchBox-input: the input element.
 ais-SearchBox-submit: the submit button element.
@@ -64,32 +66,53 @@ ais-SearchBox-reset: the reset button element.
 ais-SearchBox-resetIcon: the reset button icon.
 ais-SearchBox-loadingIndicator: the loading indicator element.
 ais-SearchBox-loadingIcon: the loading indicator icon. -->
-      <template v-slot:submit-icon><i class="pi pi-search"></i></template>
-      <!-- <template v-slot:reset-icon><i class="pi pi-reset"></i></template> -->
-      <!-- <template v-slot:loading-indicator>⏳</template> -->
+        <template v-slot:submit-icon><i class="pi pi-search"></i></template>
+        <!-- <template v-slot:reset-icon><i class="pi pi-reset"></i></template> -->
+        <!-- <template v-slot:loading-indicator>⏳</template> -->
       </ais-search-box>
       <div class="search-panel-results">
         <div class="search-bar-results">
           <ais-state-results>
             <template v-slot="{ state: { query } }">
-              <ais-hits v-show="query.length > 0">
+              <ais-hits v-show="query.length">
                 <template v-slot:item="{ item }">
-                  <a 
-                  @click="goToBook(item.id); query = ''"
-                  class="results">
-                    
-                    <h2 class="subtitle">{{ item.title }}</h2>
-                    <div class="result-info">
-                      <img class="result-image" :src="item['image_url']" />
-                      <h6 class="result-author"><i class="pi pi-user-edit" style="font-size: 1.2rem"></i> Author: {{ item.author.name }}
-                      </h6>
-                      <i class="pi pi-calendar" style="font-size: 1.2rem"></i> Year: {{ toDateTime(item.published).toDateString() }}
-                      <br>
-                      <i class="pi pi-star-fill" style="font-size: 1.2rem"></i> Average Rating: {{ item.avgRating }}
-                      <hr />
-                    </div>
-
-                </a>
+                  <template v-if="item.type == 'book'">
+                    <a
+                      @click="
+                        goToBook(item.id);
+                        query = '';
+                      "
+                      class="results"
+                    >
+                      <h2 class="subtitle">{{ item.title }}</h2>
+                      <div class="result-info">
+                        <img class="result-image" :src="item['image_url']" />
+                        <h6 class="result-author">
+                          <i class="pi pi-user-edit" style="font-size: 1.2rem"></i>
+                          Author:
+                          {{ item.author.name }}
+                        </h6>
+                        <i class="pi pi-calendar" style="font-size: 1.2rem"></i> Year:
+                        {{ toDateTime(item.published).toDateString() }}
+                        <br />
+                        <i class="pi pi-star-fill" style="font-size: 1.2rem"></i> Average
+                        Rating: {{ item.avgRating }}
+                        <hr /></div></a
+                  ></template>
+                  <template v-else-if="item.type == 'author'">
+                    <a
+                      @click="
+                        goToAuthor(item.id);
+                        query = '';
+                      "
+                      class="results"
+                    >
+                      <h2 class="subtitle">{{ item.name }}</h2>
+                      <div class="result-info">
+                        <img class="result-image" :src="item['image_url']" />
+                        <hr /></div
+                    ></a>
+                  </template>
                 </template>
               </ais-hits>
             </template>
@@ -135,7 +158,6 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
   max-height: 15vh;
   left: 60vh;
   box-shadow: 2px 2px 0px #e98074;
-  
 }
 
 img {
@@ -145,7 +167,6 @@ img {
   transition-duration: 0.3s;
   -webkit-transition-property: transform;
   transition-property: transform;
-
 }
 
 img:hover {
@@ -186,5 +207,4 @@ img:hover {
   right: 30vh;
   top: 2.5vh;
 }
-
 </style>
