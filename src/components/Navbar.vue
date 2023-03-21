@@ -1,54 +1,12 @@
 <template>
+  <Search />
   <div class="navbar">
     <div class="logo">
       <router-link to="/">
         <img src="/src/assets/BookOverflow/logo.png" alt="BookOverflow Logo" />
       </router-link>
     </div>
-    <div class="search-bar has-icon-left">
-      <ais-instant-search :search-client="searchClient" index-name="books">
-        <ais-configure :hits-per-page.camel="3" />
-        <div class="search-panel">
-          <ais-search-box>
-            <template v-slot="{ currentRefinement, isSearchStalled, refine }">
-              <span class="search-icon">
-                <i class="pi pi-search"></i>
-              </span>
-
-              <input
-                type="text"
-                :value="currentRefinement"
-                @input="refine($event.currentTarget.value)"
-                placeholder="Search BookOverflow..."
-              />
-
-              <div
-                v-show="currentRefinement.length"
-                class="search-panel-results"
-              >
-                <div class="search-bar-results">
-                  <ais-hits>
-                    <template v-slot:item="{ item }">
-                      <div class="results">
-                        <h2 class="result-title">{{ item.title }}</h2>
-                        <h6 class="result-author">
-                          Author: {{ item.authors[0] }}
-                        </h6>
-                        <img class="result-image" :src="item['image_url']" />
-                        <br />
-                        Year: {{ item.publication_year }}, Average rating:
-                        {{ item.average_rating }}
-                        <hr />
-                      </div>
-                    </template>
-                  </ais-hits>
-                </div>
-              </div>
-            </template>
-          </ais-search-box>
-        </div>
-      </ais-instant-search>
-    </div>
+    <SearchBox></SearchBox>
     <div class="vl"></div>
     <div class="the-library">
       <router-link to="/thelibrary">
@@ -60,27 +18,10 @@
     <div class="my-bookshelf">
       <router-link to="/userlist/:id">
         <button class="button is-text is-ghost is-medium">
-          <i class="pi pi-book" style="font-size: 1.5rem"></i>&ensp;My Bookshelf
+          <i class="pi pi-bookmark" style="font-size: 1.5rem"></i>&ensp;My Bookshelf
         </button>
       </router-link>
     </div>
-
-    <div v-show="type == 'admin'" class="signup-login">
-      <router-link to="/adddata">
-        <button class="button is-text is-ghost is-medium">
-          <i class="pi pi-pencil" style="font-size: 1.5rem"></i>&ensp;Add Data
-        </button>
-      </router-link>
-    </div>
-
-    <div v-show="type == 'editor'" class="signup-login">
-      <router-link to="/adddata">
-        <button class="button is-text is-ghost is-medium">
-          <i class="pi pi-pencil" style="font-size: 1.5rem"></i>&ensp;Add Data
-        </button>
-      </router-link>
-    </div>
-
     <div v-show="store.uid == 'no user'" class="signup-login">
       <router-link to="/signup">
         <button class="button is-text is-ghost is-medium">
@@ -112,15 +53,12 @@
               <hr />
 
               <button @click="logOut()" class="button is-danger">
-                <i class="pi pi-sign-out" style="font-size: 1.5rem"></i>&ensp;
-                Sign out of your account
+                <i class="pi pi-sign-out" style="font-size: 1.5rem"></i>&ensp; Sign out of
+                your account
               </button>
             </div>
           </div>
         </div>
-      </div>
-    </div>
-  </div>
       </div>
     </div>
   </div>
@@ -186,45 +124,6 @@ onMounted(async () => {
   padding-left: 10vh;
   padding-top: 1vh;
   width: 85%;
-}
-
-.email {
-  font-weight: bold;
-}
-
-.search-panel-results {
-  display: flex;
-  padding-left: 4vh;
-  position: absolute;
-  background-color: #f8f7f3;
-  font-size: 18px;
-  max-width: 70vh;
-  min-width: 70vh;
-  box-shadow: 2px 2px 0px #e98074;
-}
-
-.results {
-  text-shadow: 0.5px 0px 0px #e98074;
-}
-
-.result-title {
-  font-size: large;
-}
-.result-image {
-  position: relative;
-  flex-basis: 40%;
-  min-width: 10vh;
-  max-width: 10vh;
-  left: 50vh;
-  box-shadow: 2px 2px 0px #e98074;
-}
-
-.result-author {
-  position: flex;
-}
-
-.dropdown-menu {
-  box-shadow: 2px 2px 0px #e98074;
 }
 
 .email {

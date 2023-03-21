@@ -9,9 +9,8 @@
                 </div>
             </router-link>
         </div>
-      </router-link>
+      
     </div>
-  </div>
 </template>
 
 <script setup>
