@@ -334,7 +334,7 @@ code {
   padding: 0.25em 0.5em 0.25em; }
 
 hr {
-  background-color: whitesmoke;
+  background-color: rgb(129, 128, 128);
   border: none;
   display: block;
   height: 2px;
@@ -397,7 +397,7 @@ table th {
 .box {
   background-color: white;
   border-radius: 6px;
-  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
+  box-shadow: 3px 3px 0px #E85A4F;
   color: #4a4a4a;
   display: block;
   padding: 1.25rem; }
@@ -3060,11 +3060,10 @@ a.tag:hover {
 .card {
   background-color: white;
   border-radius: 1rem;
-  box-shadow: 0 0.5em 1em -0.125em rgba(10, 10, 10, 0.1), 0 0px 0 1px rgba(10, 10, 10, 0.02);
   box-shadow: 3px 3px 0px #E85A4F;
   color: black;
   max-width: 100%;
-  text-shadow: 1px 0.5px 0px #E98074;
+  
   font-family: "Lato";
   font-size: large;
   position: relative; }

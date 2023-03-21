@@ -15,7 +15,7 @@
 
       <div class="card">
         <div class="sign-in-text">
-          <h1>SIGN INTO YOUR ACCOUNT</h1>
+          <h1 class="subtitle">SIGN INTO YOUR ACCOUNT</h1>
         </div>
 
         <div class="username-text">
@@ -225,6 +225,7 @@ async function signInAccount(email, password) {
   width: 70%;
   margin: auto;
   padding-left: 1vh;
+  color: red;
 }
 
 .round-card {

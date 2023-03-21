@@ -7,7 +7,7 @@ import ViewAuthor from '../components/ViewAuthorPage.vue'
 import ViewBook from '../components/ViewBookPage.vue'
 import UserList from '../components/UserList.vue'
 import TheLibrary from '../components/TheLibrary.vue'
-
+import WriteReviewPage from '../components/WriteReviewPage.vue'
 
 //createApp(App).use(router).mount('#app')
 
@@ -16,10 +16,11 @@ const routes = [
     { path: '/search', component: SearchPage },
     { path: '/signup', component: SignupPage, meta: {hideNavbar: true}},
     { path: '/signup/register', component: SignupRegisterPage, meta: {hideNavbar: true}},
-    { path: '/author/', component: ViewAuthor },
+    { path: '/author/:id', component: ViewAuthor },
     { path: '/book/:id', component: ViewBook },
     { path: '/userlist/:id', component: UserList },
     { path: '/thelibrary', component: TheLibrary },
+    { path: '/review/:id', component: WriteReviewPage, meta: {hideNavbar: true} }
   ]
   
 const router = createRouter({

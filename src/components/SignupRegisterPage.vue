@@ -15,7 +15,7 @@
 
       <div class="card">
         <div class="create-text">
-          <h1>CREATE YOUR BOOKOVERFLOW ACCOUNT</h1>
+          <h1 class="subtitle">CREATE YOUR BOOKOVERFLOW ACCOUNT</h1>
         </div>
         <div class="username-text">
           <h6 id="invalid-text"></h6>
@@ -172,7 +172,8 @@ async function createAccount(username, email, password, passwordConfirm) {
     
     await setDoc(doc(db, "users", user.uid), {
       email: email,
-      username: username
+      username: username,
+      type: "user"
     })
 
     //Change page to homescreen and emit the user to the rest of the app through Pinia store.
@@ -239,6 +240,7 @@ function warnDisabled() {
   width: 70%;
   margin: auto;
   padding-left: 1vh;
+  color: red;
 }
 .field {
   width: 70%;
