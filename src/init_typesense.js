@@ -32,7 +32,8 @@ const app = initializeApp.initializeApp(firebaseConfig);
 const db = getFirestore.getFirestore(app);
 
 // Set this to true to reset - deletes collections
-const resetFlag = true;
+const resetFlag = false;
+const createCollectionsFlag = false;
 
 module.exports = (async () => {
   const typesenseAdminClient = new Typesense.Client({
@@ -45,134 +46,132 @@ module.exports = (async () => {
     ],
     apiKey: "h2SvzHG1U9QFjxM8jNctIxgzfvshec3e479zdsjaDzdNfR8t",
   });
-
+  
   console.log("Checking server health", typesenseHealth);
   const healthResponse = await typesenseAdminClient.health.retrieve();
   console.log(healthResponse);
-
+  if (createCollectionsFlag) {
   const bookCollection = {
     name: "books",
     enable_nested_fields: true,
     fields: [
       { name: "id", type: "string" },
       { name: "title", type: "string", facet: true },
-      { name: "author", type: "object", facet: true },
-      { name: "avgRating", type: "float" },
-      { name: "genres", type: "string[]", facet: true, optional: true },
-      { name: "image_url", type: "string", index: false, optional: true },
-      { name: "published", type: "int32", facet: true },
+        { name: "author", type: "object", facet: true },
+        { name: "avgRating", type: "float" },
+        { name: "genres", type: "string[]", facet: true, optional: true },
+        { name: "image_url", type: "string", index: false, optional: true },
+        { name: "published", type: "int32", facet: true },
+        
+        // Only fields that need to be searched / filtered by need to be specified in the collection's collection
+        // The documents you index can still contain other additional fields.
+        //  These fields not mentioned in the collection, will be returned as is as part of the search results.
+        // { name: 'image_url', type: 'string' },
+      ],
+      default_sorting_field: "avgRating",
+    };
+    
+    const authorsCollection = {
+      name: "authors",
+      enable_nested_fields: true,
+      fields: [
+        { name: "id", type: "string" },
+        { name: "name", type: "string", facet: true },
+        
+        { name: "books", type: "object[]", facet: true },
+        { name: "image_url", type: "string", index: false, optional: true },
+        { name: "born", type: "int32", facet: true },
+        
+        // Only fields that need to be searched / filtered by need to be specified in the collection's collection
+        // The documents you index can still contain other additional fields.
+        //  These fields not mentioned in the collection, will be returned as is as part of the search results.
+        // { name: 'image_url', type: 'string' },
+      ],
+      default_sorting_field: "born",
+    };
 
-      // Only fields that need to be searched / filtered by need to be specified in the collection's collection
-      // The documents you index can still contain other additional fields.
-      //  These fields not mentioned in the collection, will be returned as is as part of the search results.
-      // { name: 'image_url', type: 'string' },
-    ],
-    default_sorting_field: "avgRating",
-  };
+    const combinedCollection = {
+      name: "combined",
+      enable_nested_fields: true,
+      fields: [
+        // Common fields
+        { name: "id", type: "string" },
+        { name: "type", type: "string", facet: true }, // Type of record
+        { name: "image_url", type: "string", index: false, optional: true },
+        { name: "avgRating", type: "float" },
 
-  const authorsCollection = {
-    name: "authors",
-    enable_nested_fields: true,
-    fields: [
-      { name: "id", type: "string" },
-      { name: "name", type: "string", facet: true },
+        // Book fields
+        { name: "title", type: "string", facet: true, optional: true },
+        { name: "author", type: "object", facet: true, optional: true },
+        { name: "genres", type: "string[]", facet: true, optional: true },
+        { name: "published", type: "int32", facet: true, optional: true },
 
-      { name: "books", type: "object[]", facet: true },
-      { name: "image_url", type: "string", index: false, optional: true },
-      { name: "born", type: "int32", facet: true },
+        // Author fields
+        { name: "name", type: "string", facet: true, optional: true },
+        { name: "books", type: "object[]", facet: true, optional: true },
+        { name: "born", type: "int32", optional: true },
 
-      // Only fields that need to be searched / filtered by need to be specified in the collection's collection
-      // The documents you index can still contain other additional fields.
-      //  These fields not mentioned in the collection, will be returned as is as part of the search results.
-      // { name: 'image_url', type: 'string' },
-    ],
-    default_sorting_field: "born",
-  };
+        // Only fields that need to be searched / filtered by need to be specified in the collection's collection
+        // The documents you index can still contain other additional fields.
+        //  These fields not mentioned in the collection, will be returned as is as part of the search results.
+        // { name: 'image_url', type: 'string' },
+      ],
+      default_sorting_field: "avgRating",
+    };
+  }
+    // console.log("Populating index in Typesense");
 
-  const combinedCollection = {
-    name: "combined",
-    enable_nested_fields: true,
-    fields: [
-      // Common fields
-      { name: "id", type: "string" },
-      { name: "type", type: "string", facet: true }, // Type of record
-      { name: "image_url", type: "string", index: false, optional: true },
-      { name: "avgRating", type: "float" },
-
-      // Book fields
-      { name: "title", type: "string", facet: true, optional: true },
-      { name: "author", type: "object", facet: true, optional: true },
-      { name: "genres", type: "string[]", facet: true, optional: true },
-      { name: "published", type: "int32", facet: true, optional: true },
-
-      // Author fields
-      { name: "name", type: "string", facet: true, optional: true },
-      { name: "books", type: "object[]", facet: true, optional: true },
-      { name: "born", type: "int32", optional: true },
-
-      // Only fields that need to be searched / filtered by need to be specified in the collection's collection
-      // The documents you index can still contain other additional fields.
-      //  These fields not mentioned in the collection, will be returned as is as part of the search results.
-      // { name: 'image_url', type: 'string' },
-    ],
-    default_sorting_field: "avgRating",
-  };
-
-  // console.log("Populating index in Typesense");
-
-  if (resetFlag) {
-    try {
-      await typesenseAdminClient.collections("books").delete();
-      console.log("Deleting existing collection: books");
-    } catch (error) {
-      // Do nothing
-      console.error(error);
+    if (resetFlag) {
+      try {
+        await typesenseAdminClient.collections("books").delete();
+        console.log("Deleting existing collection: books");
+      } catch (error) {
+        // Do nothing
+        console.error(error);
+      }
+      try {
+        await typesenseAdminClient.collections("authors").delete();
+        console.log("Deleting existing collection: authors");
+      } catch (error) {
+        console.error(error);
+      }
+      try {
+        await typesenseAdminClient.collections("combined").delete();
+        console.log("Deleting existing collection: combined");
+      } catch (error) {
+        console.error(error);
+      }
     }
+
+    // try {
+    //   console.log("Creating collection: ", bookCollection.name);
+    //   let response = await typesenseAdminClient
+    //     .collections()
+    //     .create(bookCollection);
+    //   console.log(response.name);
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    // try {
+    //   console.log("Creating collection: ", authorsCollection.name);
+    //   let response = await typesenseAdminClient
+    //     .collections()
+    //     .create(authorsCollection);
+    //   console.log(response.name);
+    // } catch (error) {
+    //   console.error(error);
+    // }
+    if(createCollectionsFlag) {
     try {
-      await typesenseAdminClient.collections("authors").delete();
-      console.log("Deleting existing collection: authors");
-      
-    } catch (error) {
-      console.error(error);
-    }
-    try {
-      
-      await typesenseAdminClient.collections("combined").delete();
-      console.log("Deleting existing collection: combined");
+      console.log("Creating collection: ", combinedCollection.name);
+      let response = await typesenseAdminClient
+        .collections()
+        .create(combinedCollection);
+      console.log(response.name);
     } catch (error) {
       console.error(error);
     }
   }
-
-
-  // try {
-  //   console.log("Creating collection: ", bookCollection.name);
-  //   let response = await typesenseAdminClient
-  //     .collections()
-  //     .create(bookCollection);
-  //   console.log(response.name);
-  // } catch (error) {
-  //   console.error(error);
-  // }
-  // try {
-  //   console.log("Creating collection: ", authorsCollection.name);
-  //   let response = await typesenseAdminClient
-  //     .collections()
-  //     .create(authorsCollection);
-  //   console.log(response.name);
-  // } catch (error) {
-  //   console.error(error);
-  // }
-  try {
-    console.log("Creating collection: ", combinedCollection.name);
-    let response = await typesenseAdminClient
-      .collections()
-      .create(combinedCollection);
-    console.log(response.name);
-  } catch (error) {
-    console.error(error);
-  }
-
   try {
     console.log("Adding records: ");
     // var fs = require("fs/promises");
