@@ -39,6 +39,14 @@
               <div class="row">
                 <div class="col-md-10">
                   <div class="card mb-6">
+                    <span class="icon-text">
+                      <div class="card-header-title pl-5">
+                        <span class="icon">
+                          <i class="pi pi-book"></i>
+                        </span>
+                        <h3 class="subtitle">Books by the author</h3>
+                      </div>
+                    </span>
                     <div class="card-body" v-if="books.length">
                       <Book class="books" v-for="book in books" :key="book.id"
                         :bookInfo="`${book.image_url};${book.id};${book.rating}`" />
@@ -147,8 +155,8 @@ header {
 
 .authorImg {
   border-radius: 5px;
-  height: 40vh;
-  width: 28vh;
+  height: 50vh;
+  width: 36vh;
   box-shadow: 4px 0px 0px #E98074;
   -webkit-transform: perspective(1px) translateZ(0);
   transform: perspective(1px) translateZ(0);
@@ -186,7 +194,7 @@ header {
 }
 .author-desc {
   position: absolute;
-  margin-top: 12vh;
+  margin-top: 7vh;
   max-width: 80vh;
   left: 49vh;
   right: 12vh;
@@ -209,6 +217,7 @@ header {
   height: 23vh;
   background-color: #D8C3A5;
   padding-left: 10px;
+  border-radius: 1vh;
 }
 
 .books {

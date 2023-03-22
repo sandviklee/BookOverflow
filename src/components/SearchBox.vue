@@ -43,7 +43,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 
 <template>
   <ais-instant-search :search-client="searchClient" index-name="combined">
-    <ais-configure :hits-per-page.camel="6" />
+    <ais-configure :hits-per-page.camel="3" />
     <div class="search-field">
       <ais-search-box
         placeholder="Search BookOverflow..."
@@ -96,8 +96,9 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
                         <br />
                         <i class="pi pi-star-fill" style="font-size: 1.2rem"></i> Average
                         Rating: {{ item.avgRating }}
-                        <hr /></div></a
-                  ></template>
+                        </div></a>
+                        <hr>
+                      </template>
                   <template v-else-if="item.type == 'author'">
                     <a
                       @click="
@@ -109,6 +110,9 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
                       <h2 class="subtitle">{{ item.name }}</h2>
                       <div class="result-info">
                         <img class="result-image" :src="item['image_url']" />
+                        <h1><i class="pi pi-user-edit" style="font-size: 1.2rem"></i> Author Profile</h1>
+                        <h1>Information about the author <br>
+                        and his/her books</h1>
                         <hr /></div
                     ></a>
                   </template>
