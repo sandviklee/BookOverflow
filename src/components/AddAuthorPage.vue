@@ -244,7 +244,8 @@ async function createAuthor(name, born, awards, about) {
     books: bookArray,
     about: about,
     image_url: imgUrl.value,
-    awards: awardArray
+    awards: awardArray,
+    avgRating: 2.5 // workaround for typesense - TODO: replace with something proper
   });
 
   console.log("Author added!");
