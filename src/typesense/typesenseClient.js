@@ -1,7 +1,7 @@
 // import Typesense from "typesense";
 import Typesense from "typesense"
 import { db } from "../firebase/firebase";
-import { getDocs, collection } from "@firebase/firestore";
+import { getDocs, collection } from "firebase/firestore";
 
 export const adminKey = "OVDlEoP7Ix6oaZ4LAYL7an7qRhJtREV9";
 
@@ -88,11 +88,11 @@ export async function useTypesenseUpdate() {
     console.log("Adding records: ");
     // var fs = require("fs/promises");
 
-    const querySnapshotBooks = await getDocs.getDocs(
-      collection.collection(db, "books")
+    const querySnapshotBooks = await getDocs(
+      collection(db, "books")
     );
-    const querySnapshotAuthors = await getDocs.getDocs(
-      collection.collection(db, "author")
+    const querySnapshotAuthors = await getDocs(
+      collection(db, "author")
     );
     // console.log(querySnapshotBooks)
     let combinedDocuments = [];
