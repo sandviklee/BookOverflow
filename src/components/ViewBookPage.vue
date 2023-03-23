@@ -288,6 +288,9 @@ function addRatingToRef(array, rating, ref) {
  */
 async function calculateAvgRating() {
   let avgRating = 0;
+  if (reviews.length == 0) {
+    return
+  }
   reviews.forEach(review => {
     avgRating = avgRating + review.rating;
   });
