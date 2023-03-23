@@ -140,8 +140,8 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
   position: absolute;
   background-color: #f8f7f3;
   font-size: 18px;
-  max-width: 72vh;
-  min-width: 72vh;
+  max-width: 67vh;
+  min-width: 67vh;
   box-shadow: 2px 2px 0px #e98074;
 }
 
@@ -159,7 +159,7 @@ ais-SearchBox-loadingIcon: the loading indicator icon. -->
   max-width: 10vh;
   min-height: 15vh;
   max-height: 15vh;
-  left: 60vh;
+  left: 55vh;
   box-shadow: 2px 2px 0px #e98074;
 }
 
@@ -193,6 +193,7 @@ img:hover {
 }
 
 .ais-SearchBox-submit {
+  visibility: hidden;
   position: absolute;
   background-color: white;
   border-radius: 0.6vh;

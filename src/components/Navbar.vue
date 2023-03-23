@@ -22,15 +22,7 @@
       </router-link>
     </div>
 
-    <div v-show="type == 'admin'" class="signup-login">
-      <router-link to="/adddata">
-        <button class="button is-text is-ghost is-medium">
-          <i class="pi pi-pencil" style="font-size: 1.5rem"></i>&ensp;Add Data
-        </button>
-      </router-link>
-    </div>
-
-    <div v-show="type == 'editor'" class="signup-login">
+    <div v-show="type == 'admin' || type == 'editor'" class="signup-login">
       <router-link to="/adddata">
         <button class="button is-text is-ghost is-medium">
           <i class="pi pi-pencil" style="font-size: 1.5rem"></i>&ensp;Add Data

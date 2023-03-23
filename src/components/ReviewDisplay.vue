@@ -1,31 +1,30 @@
 <template>
-    <article class="media">
-        <figure class="media-left">
-        </figure>
-        <div class="media-content">
-            <div class="content">
-                <h1 class="rating-text"> 
-                <i class="pi pi-star-fill" style="font-size: 2vh"></i>&ensp;{{ rating }} / 5
-            </h1>
-            <p>
-                <strong>{{ title }}</strong> <small>&ensp;@{{ username }}</small>
-                <br>
-                {{ review }}
-            </p>
-            <div v-show="type == 'admin'" class="delete-icon">
-                <a 
-                @click="deleteReview()"
-                ><i class="pi pi-trash" style="font-size: 2vh"></i></a>
-            </div>
-            
+    <div class="review">
+        <div class="card">
+            <figure class="media-left">
+            </figure>
+            <div class="media-content">
+                <div class="content">
+                    <p>
+                        <strong>{{ title }}</strong> <small>&ensp;@{{ username }}</small>
+                        <br>
+                        {{ review }}
+                        <br>
+                        <i class="pi pi-star-fill" style="font-size: 2vh"></i>&ensp;{{ rating }} / 5
+                    </p>
+                    
+                </div>
             </div>
         </div>
-    </article>
+    </div>
+
+
 </template>
 
 <script setup>
+
 import { ref, onMounted } from 'vue'
-import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import { db } from '../firebase/firebase';
 import { userStore } from '../stores/UsersStore'
 
@@ -44,22 +43,11 @@ let uid = props.reviewInfo.split(";")[0]
 //Gets the title from the database.
 let title = props.reviewInfo.split(";")[1]
 
-//Gets the rating from the database.
-let rating = props.reviewInfo.split(";")[2]
-
 //Gets the review from the database.
 let review = props.reviewInfo.split(";")[3]
 
-//Gets the reviewID
-let reviewId = props.reviewInfo.split(";")[4]
-
-/**
- * deletes the review.
- */
- async function deleteReview() {
-  await deleteDoc(doc(db, "reviews", reviewId));
-  window.location.reload()
-}
+//Gets the rating from the database.
+let rating = props.reviewInfo.split(";")[2]
 
 onMounted(async () => {
     const docRef = doc(db, "users", uid);
@@ -89,4 +77,13 @@ onMounted(async () => {
 .delete-icon {
     position: absolute;
 }
+
+.content {
+    padding-left: 1vh;
+}
+
+.card {
+    background-color: antiquewhite;
+}
+
 </style>

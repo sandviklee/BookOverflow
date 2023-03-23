@@ -197,18 +197,18 @@
                 </div>
 
                 <form class="box">
-                  <Review v-show="reviewPage == 0 && ratingPage == 0" class="reviews" v-for="review in reviewsStandard[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
-                  <Review v-show="reviewPage == 1 && ratingPage == 0" class="reviews" v-for="review in reviewsStandard[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
-                  <Review v-show="reviewPage == 0 && ratingPage == 1" class="reviews" v-for="review in reviewsStar1[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
-                  <Review v-show="reviewPage == 1 && ratingPage == 1" class="reviews" v-for="review in reviewsStar1[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
-                  <Review v-show="reviewPage == 0 && ratingPage == 2" class="reviews" v-for="review in reviewsStar2[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
-                  <Review v-show="reviewPage == 1 && ratingPage == 2" class="reviews" v-for="review in reviewsStar2[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
-                  <Review v-show="reviewPage == 0 && ratingPage == 3" class="reviews" v-for="review in reviewsStar3[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
-                  <Review v-show="reviewPage == 1 && ratingPage == 3" class="reviews" v-for="review in reviewsStar3[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
-                  <Review v-show="reviewPage == 0 && ratingPage == 4" class="reviews" v-for="review in reviewsStar4[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
-                  <Review v-show="reviewPage == 1 && ratingPage == 4" class="reviews" v-for="review in reviewsStar4[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
-                  <Review v-show="reviewPage == 0 && ratingPage == 5" class="reviews" v-for="review in reviewsStar5[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
-                  <Review v-show="reviewPage == 1 && ratingPage == 5" class="reviews" v-for="review in reviewsStar5[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review"/>
+                  <Review v-show="reviewPage == 0 && ratingPage == 0" class="reviews" v-for="review in reviewsStandard[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
+                  <Review v-show="reviewPage == 1 && ratingPage == 0" class="reviews" v-for="review in reviewsStandard[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
+                  <Review v-show="reviewPage == 0 && ratingPage == 1" class="reviews" v-for="review in reviewsStar1[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
+                  <Review v-show="reviewPage == 1 && ratingPage == 1" class="reviews" v-for="review in reviewsStar1[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
+                  <Review v-show="reviewPage == 0 && ratingPage == 2" class="reviews" v-for="review in reviewsStar2[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
+                  <Review v-show="reviewPage == 1 && ratingPage == 2" class="reviews" v-for="review in reviewsStar2[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
+                  <Review v-show="reviewPage == 0 && ratingPage == 3" class="reviews" v-for="review in reviewsStar3[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
+                  <Review v-show="reviewPage == 1 && ratingPage == 3" class="reviews" v-for="review in reviewsStar3[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
+                  <Review v-show="reviewPage == 0 && ratingPage == 4" class="reviews" v-for="review in reviewsStar4[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
+                  <Review v-show="reviewPage == 1 && ratingPage == 4" class="reviews" v-for="review in reviewsStar4[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
+                  <Review v-show="reviewPage == 0 && ratingPage == 5" class="reviews" v-for="review in reviewsStar5[0]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
+                  <Review v-show="reviewPage == 1 && ratingPage == 5" class="reviews" v-for="review in reviewsStar5[1]" :reviewInfo="review.uid + ';' + review.title + ';' + review.rating + ';' + review.review + ';' + review.id"/>
                 </form>
               </div>
             </div>
@@ -291,8 +291,8 @@ async function calculateAvgRating() {
   reviews.forEach(review => {
     avgRating = avgRating + review.rating;
   });
-  avgRating = avgRating/reviews.length;
-
+  avgRating =(avgRating/reviews.length).toFixed(2); 
+  
   if (avgRating == bookRating.value) {
     return
   }
@@ -357,6 +357,7 @@ onMounted(async () => {
           title: doc.data().title,
           rating: doc.data().rating,
           review: doc.data().review,
+          id: doc.id
       }
       if (review.uid == store.uid) {
         reviewId = doc.id; 
@@ -367,7 +368,6 @@ onMounted(async () => {
   reviews = reviewArray;
   reviewsStandard.value = sliceIntoChunks(reviewArray, 5);
   addRatingToRef(reviewArray, 1, reviewsStar1);
-  console.log(reviewsStandard.value);
   addRatingToRef(reviewArray, 2, reviewsStar2);
   addRatingToRef(reviewArray, 3, reviewsStar3);
   addRatingToRef(reviewArray, 4, reviewsStar4);
@@ -552,7 +552,7 @@ header {
 }
 .line {
   position: relative;
-  bottom: 56vh;
+  bottom: 54vh;
   height: 0.5vh;
   width: 95%;
   left: 3.5vh;
