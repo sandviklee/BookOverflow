@@ -34,6 +34,17 @@ export const typesenseClient = new Typesense.Client({
   connectionTimeoutSeconds: 2,
 });
 
+const typesenseAdminClient = new Typesense.Client({
+  nodes: [
+    {
+      host: "TDT4140-29.idi.ntnu.no",
+      port: 8108,
+      protocol: "http",
+    },
+  ],
+  apiKey: "h2SvzHG1U9QFjxM8jNctIxgzfvshec3e479zdsjaDzdNfR8t",
+});
+
 function extractDocuments(result) {
   let output = []
   result.forEach(element => {
