@@ -93,6 +93,7 @@ import { ref } from "vue";
 import { db } from "../firebase/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { userStore } from "../stores/UsersStore";
+import { useTypesenseUpdate } from "../typesense/typesenseClient";
 
 const route = useRoute();
 const router = useRouter();
@@ -135,6 +136,7 @@ function createReview(title, rating, review) {
     },
   });
   document.getElementById("done-text").innerHTML = "Review created!";
+  useTypesenseUpdate();
   router.push("/book/" + book);
 }
 </script>
