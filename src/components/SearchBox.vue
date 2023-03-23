@@ -43,7 +43,7 @@ const searchClient = typesenseInstantsearchAdapter.searchClient;
 
 <template>
   <ais-instant-search :search-client="searchClient" index-name="combined">
-    <ais-configure :hits-per-page.camel="3" />
+    <ais-configure :hits-per-page.camel="4" />
     <div class="search-field">
       <ais-search-box
         placeholder="Search BookOverflow..."
