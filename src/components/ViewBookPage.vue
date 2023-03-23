@@ -96,30 +96,6 @@
                 <div class="dropdown is-hoverable">
                   <div class="dropdown-trigger">
                     <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-                      <span>RATING SOURCE</span>
-                      <span class="icon is-small">
-                        <i class="pi pi-chevron-down" aria-hidden="true"></i>
-                      </span>
-                    </button>
-                  </div>
-                  <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-                    <div class="dropdown-content">
-                      <div class="dropdown-item">
-                        <p>Here you can change the source of ratings.
-                          <hr>
-                          <button
-                          type="button"
-                          disabled
-                          class="button is-link is-medium">BookOverflow</button>
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div class="dropdown is-hoverable">
-                  <div class="dropdown-trigger">
-                    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
                       <span>Sort by</span>
                       <span class="icon is-small">
                         <i class="pi pi-chevron-down" aria-hidden="true"></i>
