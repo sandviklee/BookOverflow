@@ -19,7 +19,7 @@ export const typesenseConfig = {
   healthURL: typesenseHealth,
 };
 
-export const listClient = new Typesense.Client({
+export const typesenseClient = new Typesense.Client({
   nodes: [
     {
       host: typesenseURL,
@@ -43,7 +43,7 @@ function extractDocuments(result) {
 }
 
 export async function useClientCheckHealth() {
-  const health = await listClient.health.retrieve()
+  const health = await typesenseClient.health.retrieve()
   return health.ok
 }
 
@@ -54,7 +54,7 @@ export async function useBookList(number, query, sort) {
     sort_by: sort,
     limit_hits: number,
   };
-  result = await listClient
+  result = await typesenseClient
     .collections("books")
     .documents()
     .search(searchParameters)
@@ -72,7 +72,7 @@ export async function useBookTopList(number) {
     sort_by: "avgRating:desc",
     limit_hits: number,
   };
-  const result = await listClient
+  const result = await typesenseClient
     .collections("books")
     .documents()
     .search(searchParameters)
