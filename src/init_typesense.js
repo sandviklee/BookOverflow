@@ -272,7 +272,7 @@ module.exports = (async () => {
 
     // return returnData;
   } catch (error) {
-    console.log(error);
-    console.log(error.importResults);
+    console.error(error);
+    console.error(error.importResults);
   }
 })();
