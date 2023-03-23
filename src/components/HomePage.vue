@@ -222,7 +222,8 @@ onMounted(async () => {
     const book = {
       id: doc.id,
       image_url: doc.data().image_url,
-      rating: doc.data().avgRating,
+          // Fra https://stackoverflow.com/questions/5623096/how-do-i-format-a-number-to-2-decimal-places-but-only-if-there-are-already-deci
+      rating: doc.data().avgRating.toFixed(2).replace(/[.,]00$/, ""), 
       genres: doc.data().genres
     };
     bookArray.push(book);

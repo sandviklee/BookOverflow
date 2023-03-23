@@ -159,6 +159,7 @@ import {
 import { db } from "../firebase/firebase";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { useTypesenseUpdate } from "../typesense/typesenseClient";
 
 const disabledAni = ref(false);
 const router = useRouter();
@@ -249,6 +250,7 @@ async function createAuthor(name, born, awards, about) {
   });
 
   console.log("Author added!");
+  useTypesenseUpdate();
   router.push("/");
 }
 

@@ -21,11 +21,7 @@
         <a class="book-image" href="#popup1">
           <h1>Cover</h1>
           <div class="plus-icon">
-            <i
-              class="pi pi-plus-circle"
-              href="#popup1"
-              style="font-size: 7vh"
-            ></i>
+            <i class="pi pi-plus-circle" href="#popup1" style="font-size: 7vh"></i>
           </div>
 
           <img class="bookImg" :src="imgUrl" />
@@ -184,7 +180,8 @@
           <div class="add-image">
             <button
               @click="addImageUrl(imageUrlField)"
-              class="button is-primary is-medium">
+              class="button is-primary is-medium"
+            >
               Add Image
             </button>
           </div>
@@ -205,11 +202,12 @@ import {
   query,
   where,
   Timestamp,
-  arrayUnion
+  arrayUnion,
 } from "firebase/firestore";
 import { db } from "../firebase/firebase";
 import { useRouter } from "vue-router";
 import { ref } from "vue";
+import { useTypesenseUpdate } from "../typesense/typesenseClient";
 
 const disabledAni = ref(false);
 const router = useRouter();
@@ -258,12 +256,12 @@ const checkFields = async (title, authorName, date, blurb) => {
     const q = query(collection(db, "author"), where("name", "==", authorName));
     let authorResult = await getDocs(q);
     authorResult.forEach((doc) => {
-      console.log(doc.data())
+      console.log(doc.data());
       doc.data().books.forEach((book) => {
-        if(book.title == title) {
-          div.innerHTML += " Book already exists!"
+        if (book.title == title) {
+          div.innerHTML += " Book already exists!";
         }
-      })
+      });
     });
   }
 
@@ -331,6 +329,8 @@ async function createBook(title, aName, date, blurb, genres, awards) {
   });
 
   console.log("Book added!");
+  // Update Typesense
+  useTypesenseUpdate();
   router.push("/");
 }
 

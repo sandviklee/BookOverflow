@@ -250,7 +250,7 @@ module.exports = (async () => {
     const returnDataCombined = await typesenseAdminClient
       .collections("combined")
       .documents()
-      .import(combinedDocuments, { action: "upsert" });
+      .import(combinedDocuments, { action: "upsert", dirty_values: "coerce_or_reject" });
     console.log("Done indexing combined documents.");
     // console.log(returnDataAuthors);
 
@@ -272,7 +272,7 @@ module.exports = (async () => {
 
     // return returnData;
   } catch (error) {
-    console.log(error);
-    console.log(error.importResults);
+    console.error(error);
+    console.error(error.importResults);
   }
 })();

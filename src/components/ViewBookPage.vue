@@ -288,10 +288,13 @@ function addRatingToRef(array, rating, ref) {
  */
 async function calculateAvgRating() {
   let avgRating = 0;
+  if (reviews.length == 0) {
+    return
+  }
   reviews.forEach(review => {
     avgRating = avgRating + review.rating;
   });
-  avgRating =(avgRating/reviews.length).toFixed(2); 
+  avgRating =(avgRating/reviews.length); 
   
   if (avgRating == bookRating.value) {
     return
@@ -393,7 +396,8 @@ onMounted(async () => {
     bookBlurb.value = blurb;
     imgUrl.value = image;
     publishedText.value = published;
-    bookRating.value = rating;
+    // Fra https://stackoverflow.com/questions/5623096/how-do-i-format-a-number-to-2-decimal-places-but-only-if-there-are-already-deci
+    bookRating.value = rating.toFixed(2).replace(/[.,]00$/, ""); 
     authorId = aid;
     if (awards) {
       awards.forEach(award => {
