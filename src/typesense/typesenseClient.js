@@ -1,5 +1,5 @@
 // import Typesense from "typesense";
-import Typesense from "typesense"
+import Typesense from "typesense";
 import { db } from "../firebase/firebase";
 import { getDocs, collection } from "firebase/firestore";
 
@@ -46,16 +46,16 @@ const typesenseAdminClient = new Typesense.Client({
 });
 
 function extractDocuments(result) {
-  let output = []
-  result.forEach(element => {
-    output.push(element.document)
+  let output = [];
+  result.forEach((element) => {
+    output.push(element.document);
   });
-  return output
+  return output;
 }
 
 export async function useClientCheckHealth() {
-  const health = await typesenseClient.health.retrieve()
-  return health.ok
+  const health = await typesenseClient.health.retrieve();
+  return health.ok;
 }
 
 export async function useBookList(number, query, sort) {
@@ -72,8 +72,8 @@ export async function useBookList(number, query, sort) {
     .then(function (searchResults) {
       console.log(searchResults);
     });
-    const hits = extractDocuments(result.hits)
-    return { hits }
+  const hits = extractDocuments(result.hits);
+  return { hits };
 }
 
 export async function useBookTopList(number) {
@@ -86,12 +86,12 @@ export async function useBookTopList(number) {
   const result = await typesenseClient
     .collections("books")
     .documents()
-    .search(searchParameters)
-    // .then(function (searchResults) {
-    //   console.log(searchResults);
-    // });
-    const hits = extractDocuments(result.hits)
-    return { hits }
+    .search(searchParameters);
+  // .then(function (searchResults) {
+  //   console.log(searchResults);
+  // });
+  const hits = extractDocuments(result.hits);
+  return { hits };
 }
 
 export async function useTypesenseUpdate() {
@@ -99,12 +99,8 @@ export async function useTypesenseUpdate() {
     console.log("Adding records: ");
     // var fs = require("fs/promises");
 
-    const querySnapshotBooks = await getDocs(
-      collection(db, "books")
-    );
-    const querySnapshotAuthors = await getDocs(
-      collection(db, "author")
-    );
+    const querySnapshotBooks = await getDocs(collection(db, "books"));
+    const querySnapshotAuthors = await getDocs(collection(db, "author"));
     // console.log(querySnapshotBooks)
     let combinedDocuments = [];
     // let bookDocuments = [];
@@ -173,7 +169,10 @@ export async function useTypesenseUpdate() {
     const returnDataCombined = await typesenseAdminClient
       .collections("combined")
       .documents()
-      .import(combinedDocuments, { action: "upsert" });
+      .import(combinedDocuments, {
+        action: "upsert",
+        dirty_values: "coerce_or_reject",
+      });
     console.log("Done indexing combined documents.");
     // console.log(returnDataAuthors);
 
