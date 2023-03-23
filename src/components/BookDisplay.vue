@@ -66,10 +66,10 @@ watchEffect(async () => {
 <style scoped>   
 
 .book{ 
-    padding-right: 48vh;
+    padding-right: 52vh;
     padding-bottom: 1vh;
     text-align: center;
-    animation-name: floating;
+    animation-name: float;
     animation-duration: 5s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
@@ -100,10 +100,10 @@ watchEffect(async () => {
     text-align: left;
     position: absolute;
     top: 4vh;
-    left: 32vh;
+    left: 30vh;
     width: 50vh;
     height: 20vh;
-    animation-name: floating;
+    animation-name: float;
     animation-duration: 9s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
@@ -114,10 +114,10 @@ watchEffect(async () => {
     text-align: left;
     position: absolute;
     top: 18vh;
-    left: 32vh;
+    left: 30vh;
     width: 50vh;
     height: 20vh;
-    animation-name: floating;
+    animation-name: float;
     animation-duration: 8s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
@@ -125,7 +125,7 @@ watchEffect(async () => {
 }
 
 
-@keyframes floating {
+@keyframes float {
     0% { transform: translate(0,  0px); }
     50%  { transform: translate(0, 22px); }
     100%   { transform: translate(0, -0px); }   

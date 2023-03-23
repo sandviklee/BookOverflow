@@ -105,7 +105,7 @@ onMounted(async () => {
     const book = {
       id: doc.id,
       image_url: doc.data().image_url,
-      rating: doc.data().avgRating,
+      rating: doc.data().avgRating.toFixed(2).replace(/[.,]00$/, ""),
     };
     if (bookArray.length !== 6) {
       bookArray.push(book);

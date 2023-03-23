@@ -25,7 +25,7 @@
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { doc, getDoc, deleteDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc, DocumentSnapshot } from "firebase/firestore";
 import { db } from '../firebase/firebase';
 import { userStore } from '../stores/UsersStore'
 
@@ -64,7 +64,11 @@ let reviewId = props.reviewInfo.split(";")[4]
 onMounted(async () => {
     const docRef = doc(db, "users", uid);
     const docSnap = await getDoc(docRef);
-    let usernameFromDB = docSnap.data().username
+    let usernameFromDB = "Not found!"
+
+    if (docSnap.data()) {
+        usernameFromDB = docSnap.data().username
+    }
     username.value = usernameFromDB;
 
     if (store.uid !== "no user") {
