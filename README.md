@@ -84,3 +84,15 @@ or
 ```sh
 npx vitest --ui 
 ```
+
+## Check commitlog
+
+To check the amount of commits by each on the project, use the .mailmap file.
+Go into console and type:
+
+```sh
+git shortlog -se
+```
+
+You will now get a log, that is easier to read, since everyone on the project is written as one person.
+Even if they use different accounts to commit, it will group them up.
