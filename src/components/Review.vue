@@ -1,9 +1,6 @@
 <template>
     <article class="media">
         <figure class="media-left">
-            <p class="image is-64x64">
-            <img src="https://bulma.io/images/placeholders/128x128.png">
-            </p>
         </figure>
         <div class="media-content">
             <div class="content">
@@ -14,33 +11,33 @@
                 <strong>{{ title }}</strong> <small>&ensp;@{{ username }}</small>
                 <br>
                 {{ review }}
-                
             </p>
-
+            <div v-show="type == 'admin'" class="delete-icon">
+                <a 
+                @click="deleteReview()"
+                ><i class="pi pi-trash" style="font-size: 2vh"></i></a>
             </div>
-            <nav class="level is-mobile">
-            <div class="level-left">
-                <a class="level-item">
-                <span><i class="pi pi-thumbs-up"></i>&ensp;{{ likeCounter }}</span>
-                </a>
+            
             </div>
-            </nav>
         </div>
-
     </article>
 </template>
 
 <script setup>
 import { ref, onMounted } from 'vue'
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, deleteDoc, DocumentSnapshot } from "firebase/firestore";
 import { db } from '../firebase/firebase';
+import { userStore } from '../stores/UsersStore'
 
-//Defines the input for the spesific book, what kind of book should it be?
+const store = userStore();
+
+//Defines the input for the spesific review
 const props = defineProps({
   reviewInfo: { type: String },
 })
-const likeCounter = ref(0);
+
 const username = ref();
+const type = ref();
 
 let uid = props.reviewInfo.split(";")[0]
 
@@ -50,17 +47,38 @@ let title = props.reviewInfo.split(";")[1]
 //Gets the rating from the database.
 let rating = props.reviewInfo.split(";")[2]
 
-//Gets the title from the database.
+//Gets the review from the database.
 let review = props.reviewInfo.split(";")[3]
+
+//Gets the reviewID
+let reviewId = props.reviewInfo.split(";")[4]
+
+/**
+ * deletes the review.
+ */
+ async function deleteReview() {
+  await deleteDoc(doc(db, "reviews", reviewId));
+  window.location.reload()
+}
 
 onMounted(async () => {
     const docRef = doc(db, "users", uid);
     const docSnap = await getDoc(docRef);
+    let usernameFromDB = "Not found!"
 
-    let usernameFromDB = docSnap.data().username
+    if (docSnap.data()) {
+        usernameFromDB = docSnap.data().username
+    }
     username.value = usernameFromDB;
-});
 
+    if (store.uid !== "no user") {
+            
+        const docRef = await doc(db, "users", store.uid);
+        const docSnap = await getDoc(docRef);
+        let userType = docSnap.data().type;
+        type.value = userType;
+    }
+});
 
 </script>
 
@@ -70,5 +88,9 @@ onMounted(async () => {
     left: 102vh;
     font-size: 2vh;
     font-weight: bold;
+}
+
+.delete-icon {
+    position: absolute;
 }
 </style>

@@ -6,7 +6,7 @@ import router from './router'
 import piniaPluginPersistedState from "pinia-plugin-persistedstate"
 
 //Import icons
-import primeicons from 'primeicons/primeicons.css'                           //icons
+import primeicons from 'primeicons/primeicons.css'  
 
 const pinia = createPinia()
 pinia.use(piniaPluginPersistedState)
