@@ -20,6 +20,9 @@ npm ci
 
 ## Typesense
 
+Warning: To see the searchbox and use typesense on the application, you need to be on the NTNU network. 
+This can be achieved by being on the network or using a VPN.
+
 BookOverflow uses Typesense for search. Typesense can run as a local or remote server. Currently, we use the Virtual Machine at <http://TDT4140-29.idi.ntnu.no:8108> as our Typesense server.
 
 ##### Typesense Setup
