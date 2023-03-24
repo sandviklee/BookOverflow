@@ -2,7 +2,7 @@ import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
 
 const firebaseConfig = {
-    apiKey: "AIzaSyBcPMAVJdmJ3yWADip0ymhN1VatVjUOuZE",
+    apiKey: "",
     authDomain: "bookoverflow-561d1.firebaseapp.com",
     projectId: "bookoverflow-561d1",
     storageBucket: "bookoverflow-561d1.appspot.com",
